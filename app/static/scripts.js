@@ -12,10 +12,16 @@ async function getUserSettings(setting) {
 document.addEventListener('DOMContentLoaded', async (event) => {
     if (localStorage.getItem('dark-mode') === '2') {
         document.body.classList.add('dark-mode');
-        document.getElementById('color-palette').setAttribute('checked', 'checked')
+        let colorPalette = document.getElementById('color-palette')
+        if (colorPalette) {
+            colorPalette.setAttribute('checked', 'checked')
+        }
     }
     else if (await getUserSettings('color-palette') === 'dark mode') {
         document.body.classList.toggle('dark-mode');
-        document.getElementById('color-palette').setAttribute('checked', 'checked');
+        let colorPalette = document.getElementById('color-palette')
+        if (colorPalette) {
+            colorPalette.setAttribute('checked', 'checked')
+        }
     }
 });

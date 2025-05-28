@@ -4,7 +4,7 @@
     <div>
         <select id="years" name="years" size="1">
             {% for year in years %}
-                {% if current_mm_yy[1] == year.year %}
+                {% if today.year == year.year %}
                     <hr>
                         <option selected value="{{ year.year }}">{{ year.year }}</option>
                     <hr>
@@ -15,13 +15,12 @@
         </select>
         <select id="menses" name="menses">
             {% for mensis in menses %}
-                {% if current_mm_yy[0] == mensis.month_id %}
+                {% if today.month == mensis.month_id %}
                     <hr>
                     <option selected name="{{ mensis.month }}" value="{{ mensis.month_id }}">{{ mensis.month }}</option>
                     <hr>
                 {% else %}
                     <option name="{{ mensis.month }}" value="{{ mensis.month_id }}">{{ mensis.month }}</option>
-                {% endif %}
             {% endfor %}
         </select>
     </div>
@@ -51,8 +50,13 @@
     </div>
 
     <script>
-        let month = document.getElementById('menses')
-        let year = document.getElementById('years')
+        let month = document.getElementById('menses');
+        let year = document.getElementById('years');
+
+        const today = new Date();
+        const currentDay = today.getDate();
+        const currentMonth = today.getMonth() + 1;
+        const currentYear = today.getFullYear();
 
         document.addEventListener("DOMContentLoaded", getDates);
         month.addEventListener('change', getDates);
@@ -67,43 +71,46 @@
             });
             let dates = await datesResponse.json();
             let html = '';
-            let day_id = 1;
+            let calendarDayIndex = 1;
             for (date of dates) {
                 // Initializes the calendar by creating a table row.
                 if (date['date'] === 1) {
                     html += '<tr class="month-tr">';
                 } 
                // Prints empty cells if the starting day of the month and the calendar format do not match.  
-                while (day_id != date['day_id']) {
+                while (calendarDayIndex != date['day_id']) {
                     html += '<td class="month-td"></td>';
-                    if (day_id + 1 < 8) {
-                        day_id = day_id + 1;
+                    if (calendarDayIndex + 1 < 8) {
+                        calendarDayIndex = calendarDayIndex + 1;
                     } else {
                         html += '</tr>';
                         html += '<tr class="month-tr">';
-                        day_id = 1;
+                        calendarDayIndex = 1;
                     }
                 }
                 // Prints the date otherwise.
-                if (day_id === date['day_id']) {
-                    html += `<td class="month-td">${date['date']}</td>`;
+                if (calendarDayIndex === date['day_id']) {
+                    if (date['date'] === currentDay && month.value == currentMonth && year.value == currentYear) {
+                        html += `<td id="today" class="month-td">${date['date']}</td>`;
+                    } else {
+                        html += `<td class="month-td">${date['date']}</td>`;
+                    }
                     if (date['date'] === dates[dates.length - 1]['date']) {
-                        let range = 7 - day_id
+                        let range = 7 - calendarDayIndex
                         for (let i = 0; i < range; i++) {
                             html += '<td class="month-td"></td>'
                         }
                     }
                 }
-                if (day_id + 1 < 8) {
-                    day_id = day_id + 1;
+                if (calendarDayIndex + 1 < 8) {
+                    calendarDayIndex = calendarDayIndex + 1;
                 } else {
                     html += '</tr>';
                     html += '<tr class="month-tr">';
-                    day_id = 1;
+                    calendarDayIndex = 1;
                 }
             }
             document.getElementById('month-tbody').innerHTML = html;
         }
-
     </script>
 {% endblock %}

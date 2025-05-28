@@ -1,8 +1,14 @@
 :root {
+    /* Webpage */
     --background-color-light: white;
     --text-color-light: #1e1e22;
     --background-color-dark: #1e1e22;
     --text-color-dark: #c5c8c6;
+    /* Today */
+    --today-background-color-light: #c5c0ec;
+    --today-color-light: #4f515f;
+    --today-bakcground-color-dark: #4f515f;
+    --today-color-dark: #c5c0ec;
 }
 
 
@@ -32,6 +38,15 @@ body {
     width: 14.2857142857%;
     border: 1px solid #c5c8c6;
     padding: 5px
+}
+
+.month-opt {
+    width: 500px;
+    height: 1200px
+}
+
+#today {
+    color: #05a1e8;
 }
 
 

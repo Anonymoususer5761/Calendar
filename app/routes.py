@@ -15,8 +15,8 @@ from flask_login import logout_user, login_required, current_user
 def index():
     menses = get_months()
     years = get_years()
-    current_mm_yy = (datetime.today().month, datetime.today().year)
-    return render_template("index.html", menses=menses, years=years, current_mm_yy=current_mm_yy)
+    today = datetime.today()
+    return render_template("index.html", menses=menses, years=years, today=today)
 
 
 @app.route("/settings", methods=["GET", "POST"])
