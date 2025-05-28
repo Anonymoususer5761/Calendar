@@ -15,4 +15,3 @@ with open("calendar.csv", "w") as file:
             day_id = 1
         else:
             day_id += 1
-            
