@@ -4,8 +4,6 @@ from app.error_handler import error
 from app.forms import LoginForm, RegistrationForm
 from app.user import sign_in_user, register_user
 
-from datetime import datetime
-
 from flask import render_template, request, redirect, url_for, flash, jsonify
 from flask_login import logout_user, login_required, current_user
 
@@ -15,8 +13,7 @@ from flask_login import logout_user, login_required, current_user
 def index():
     menses = get_months()
     years = get_years()
-    today = datetime.today()
-    return render_template("index.html", menses=menses, years=years, today=today)
+    return render_template("index.html", menses=menses, years=years)
 
 
 @app.route("/settings", methods=["GET", "POST"])

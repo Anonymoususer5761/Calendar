@@ -4,24 +4,12 @@
     <div>
         <select id="years" name="years" size="1">
             {% for year in years %}
-                {% if today.year == year.year %}
-                    <hr>
-                        <option selected value="{{ year.year }}">{{ year.year }}</option>
-                    <hr>
-                {% else %}
-                    <option value="{{ year.year }}">{{ year.year }}</option>
-                {% endif %}
+                <option value="{{ year.year }}">{{ year.year }}</option>
             {% endfor %}
         </select>
         <select id="menses" name="menses">
             {% for mensis in menses %}
-                {% if today.month == mensis.month_id %}
-                    <hr>
-                    <option selected name="{{ mensis.month }}" value="{{ mensis.month_id }}">{{ mensis.month }}</option>
-                    <hr>
-                {% else %}
-                    <option name="{{ mensis.month }}" value="{{ mensis.month_id }}">{{ mensis.month }}</option>
-                {% endif %}
+                <option name="{{ mensis.month }}" value="{{ mensis.month_id }}">{{ mensis.month }}</option>
             {% endfor %}
         </select>
     </div>
@@ -58,6 +46,9 @@
         const currentDay = today.getDate();
         const currentMonth = today.getMonth() + 1;
         const currentYear = today.getFullYear();
+
+        month.options[currentMonth - 1].setAttribute('selected', 'selected');
+        year.options[currentYear - 1971].setAttribute('selected', 'selected');
 
         document.addEventListener("DOMContentLoaded", getDates);
         month.addEventListener('change', getDates);
