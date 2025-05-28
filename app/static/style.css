@@ -1,0 +1,44 @@
+:root {
+    --background-color-light: white;
+    --text-color-light: #1e1e22;
+    --background-color-dark: #1e1e22;
+    --text-color-dark: #c5c8c6;
+}
+
+
+/* Webpage */
+body {
+    background-color: var(--bakcground-color-light);
+    color: var(--text-color-light);
+} 
+
+.dark-mode {
+    background-color: var(--background-color-dark);
+    color: var(--text-color-dark);
+}
+
+
+/* Calendar */
+.month-table {
+    /* width: 1820px;
+    height: 800px; */
+    border: 2px solid rgb(140, 140, 140);
+    font-family: sans-serif;
+    letter-spacing: 1px;
+    padding: 3px;
+}
+
+.month-th, .month-td {
+    width: 14.2857142857%;
+    border: 1px solid #c5c8c6;
+    padding: 5px
+}
+
+
+/* Login page */
+#remember-me {
+    font-size: 11px
+}
+
+
+/* Settings */

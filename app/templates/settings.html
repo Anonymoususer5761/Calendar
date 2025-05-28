@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block main %}
+  <label class="switch">
+    <input id="color-palette" name="color-palette" type="checkbox">
+    <label for="color-palette">Dark Mode</label>
+  </label>
+
+  <script>
+    async function setUserSettings(setting, optionValue) {
+      let response = await fetch(`api/settings/set-settings?setting=${setting}&option=${optionValue}`, {
+        headers: {
+          'Request-Source': 'JS-AJAX'
+        }
+      });
+    }
+
+    document.getElementById('color-palette').addEventListener('change', () => {
+      let colorPalette = document.body.classList.toggle('dark-mode');
+      let colorPaletteValue = colorPalette ? 2 : 1;
+      localStorage.setItem('dark-mode', colorPaletteValue);
+      setUserSettings('1', colorPaletteValue);
+    });
+  </script>
+{% endblock %}

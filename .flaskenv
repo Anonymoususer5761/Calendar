@@ -1,0 +1,2 @@
+FLASK_APP=calendar_app.py
+FLASK_DEBUG=1

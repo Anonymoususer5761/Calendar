@@ -1,0 +1,109 @@
+{% extends "layout.html" %}
+
+{% block main %}
+    <div>
+        <select id="years" name="years" size="1">
+            {% for year in years %}
+                {% if current_mm_yy[1] == year.year %}
+                    <hr>
+                        <option selected value="{{ year.year }}">{{ year.year }}</option>
+                    <hr>
+                {% else %}
+                    <option value="{{ year.year }}">{{ year.year }}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+        <select id="menses" name="menses">
+            {% for mensis in menses %}
+                {% if current_mm_yy[0] == mensis.month_id %}
+                    <hr>
+                    <option selected name="{{ mensis.month }}" value="{{ mensis.month_id }}">{{ mensis.month }}</option>
+                    <hr>
+                {% else %}
+                    <option name="{{ mensis.month }}" value="{{ mensis.month_id }}">{{ mensis.month }}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+    </div>
+
+    <div>
+
+        <table class="month-table">
+
+            <thead>
+                <caption>
+
+                </caption>
+                <tr class="month-tr">
+                    <th class="month-th">Monday</th>
+                    <th class="month-th">Tuesday</th>
+                    <th class="month-th">Wednesday</th>
+                    <th class="month-th">Thursday</th>
+                    <th class="month-th">Friday</th>
+                    <th class="month-th">Saturday</th>
+                    <th class="month-th">Sunday</th>
+                </tr>
+            </thead>
+            <tbody id="month-tbody">
+
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        let month = document.getElementById('menses')
+        let year = document.getElementById('years')
+
+        document.addEventListener("DOMContentLoaded", getDates);
+        month.addEventListener('change', getDates);
+        year.addEventListener('change', getDates);
+
+        async function getDates() {
+            document.querySelector('caption').innerHTML = `${month.options[month.selectedIndex].text} ${year.value}`;
+            let datesResponse = await fetch(`/api/index/dates?month=${month.value}&year=${year.value}`, {
+                headers: {
+                    'Request-Source': 'JS-AJAX'
+                }
+            });
+            let dates = await datesResponse.json();
+            let html = '';
+            let day_id = 1;
+            for (date of dates) {
+                // Initializes the calendar by creating a table row.
+                if (date['date'] === 1) {
+                    html += '<tr class="month-tr">';
+                } 
+               // Prints empty cells if the starting day of the month and the calendar format do not match.  
+                while (day_id != date['day_id']) {
+                    html += '<td class="month-td"></td>';
+                    if (day_id + 1 < 8) {
+                        day_id = day_id + 1;
+                    } else {
+                        html += '</tr>';
+                        html += '<tr class="month-tr">';
+                        day_id = 1;
+                    }
+                }
+                // Prints the date otherwise.
+                if (day_id === date['day_id']) {
+                    html += `<td class="month-td">${date['date']}</td>`;
+                    if (date['date'] === dates[dates.length - 1]['date']) {
+                        let range = 7 - day_id
+                        for (let i = 0; i < range; i++) {
+                            html += '<td class="month-td"></td>'
+                        }
+                    }
+                }
+                if (day_id + 1 < 8) {
+                    day_id = day_id + 1;
+                } else {
+                    html += '</tr>';
+                    html += '<tr class="month-tr">';
+                    day_id = 1;
+                }
+            }
+            document.getElementById('month-tbody').innerHTML = html;
+        }
+
+    </script>
+{% endblock %}
