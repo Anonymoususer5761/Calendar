@@ -2,13 +2,6 @@ from app.database_manager import get_db
 
 from collections import namedtuple
 
-def get_month(month):
-    db = get_db()
-    month_table = db.execute(f"SELECT * FROM {month}").fetchall()
-    weeks = db.execute(f"SELECT week FROM {month} ORDER BY week DESC LIMIT 1").fetchone()[0]
-    db.close()
-    return month_table, weeks
-
 def get_years():
     db = get_db()
     years = db.execute("SELECT DISTINCT year FROM calendar").fetchall()

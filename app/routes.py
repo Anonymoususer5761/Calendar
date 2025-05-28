@@ -1,5 +1,5 @@
 from app import app
-from app.calendar_db import get_month, get_dates, get_months, get_years
+from app.calendar_db import get_dates, get_months, get_years
 from app.error_handler import error
 from app.forms import LoginForm, RegistrationForm
 from app.user import sign_in_user, register_user
