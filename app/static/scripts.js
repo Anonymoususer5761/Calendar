@@ -10,9 +10,9 @@ async function getUserSettings() {
 
 function toggleDarkMode(status) {
     if (status === '2' || status === 'dark mode') {
-        document.getElementById('css-id').setAttribute('href', "{{ url_for('static', filename='dark-style.css') }}");
+        document.getElementById('css-id').setAttribute('href', "../static/style.css");
     } else if (status === '1' || status === 'light mode') {
-        document.getElementById('css-id').setAttribute('href', "{{ url_for('static', filename='stle.css') }}");
+        document.getElementById('css-id').setAttribute('href', "../static/dark-style.css");
     }
 }
 
