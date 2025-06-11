@@ -1,5 +1,5 @@
-async function getUserSettings(setting) {
-    const response = await fetch(`/api/settings/get-settings?setting=${setting}`, {
+async function getUserSettings() {
+    const response = await fetch(`/api/settings/get-settings?`, {
         headers: {
             'Request-Source': 'JS-AJAX'
         }
@@ -8,17 +8,26 @@ async function getUserSettings(setting) {
     return option;
 }
 
+function toggleDarkMode(status) {
+    if (status === '2' || status === 'dark mode') {
+        document.getElementById('css-id').setAttribute('href', "{{ url_for('static', filename='dark-style.css') }}");
+    } else if (status === '1' || status === 'light mode') {
+        document.getElementById('css-id').setAttribute('href', "{{ url_for('static', filename='stle.css') }}");
+    }
+}
+
+
 // AI Usage Disclaimer: Needed some help from the AI to make the async part of this work.
 document.addEventListener('DOMContentLoaded', async (event) => {
-    if (localStorage.getItem('dark-mode') === '2') {
-        document.body.classList.add('dark-mode');
+    darkModeStatus = localStorage.getItem('dark-mode');
+    toggleDarkMode(darkModeStatus)
+    if (darkModeStatus === '2') {
         let colorPalette = document.getElementById('color-palette')
         if (colorPalette) {
             colorPalette.setAttribute('checked', 'checked')
         }
     }
-    else if (await getUserSettings('color-palette') === 'dark mode') {
-        document.body.classList.toggle('dark-mode');
+    else if (getUserSettings()['color-palette'] === 'dark mode') {
         let colorPalette = document.getElementById('color-palette')
         if (colorPalette) {
             colorPalette.setAttribute('checked', 'checked')

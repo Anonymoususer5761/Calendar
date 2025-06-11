@@ -102,7 +102,5 @@ def api_get_settings():
     if request.headers.get("Request-Source") != "JS-AJAX":
         return redirect(url_for("index"))
     if current_user.is_authenticated:
-        print(request.args.get("setting"))
-        print(current_user.settings[request.args.get("setting")])
-        return jsonify(current_user.settings[request.args.get("setting")])
+        return jsonify(current_user.settings)
     return jsonify("User is not logged in.")
