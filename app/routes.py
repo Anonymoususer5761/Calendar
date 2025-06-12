@@ -16,6 +16,11 @@ def index():
     return render_template("index.html", menses=menses, years=years)
 
 
+@app.route("/dates/<year>/<month>/<date>")
+def dates(year, month, date):
+    return "Placeholdr Text"
+
+
 @app.route("/settings", methods=["GET", "POST"])
 def settings():
     if request.method == "POST":
