@@ -54,6 +54,14 @@
         month.addEventListener('change', getDates);
         year.addEventListener('change', getDates);
 
+        let tableRowStart = '<tr class="calendar-tr">';
+        let tableRowEnd = '</tr>';
+        let emptyCells = '<td class="calendar-td"></td>';
+        let presentDayCellStart = `<td id="today" class="calendar-td calendar-td-hover">`;
+        let cellStart = `<td class="calendar-td calendar-td-hover">`;
+        let cellEnd = `</td>`;
+
+
         async function getDates() {
             document.querySelector('caption').innerHTML = `${month.options[month.selectedIndex].text} ${year.value}`;
             let datesResponse = await fetch(`/api/index/dates?month=${month.value}&year=${year.value}`, {
@@ -67,38 +75,42 @@
             for (date of dates) {
                 // Initializes the calendar by creating a table row.
                 if (date['date'] === 1) {
-                    html += '<tr class="calendar-tr">';
+                    html += tableRowStart;
                 } 
                // Prints empty cells if the starting day of the month and the calendar format do not match.  
                 while (calendarDayIndex != date['day_id']) {
-                    html += '<td class="calendar-td"></td>';
+                    html += emptyCells;
                     if (calendarDayIndex + 1 < 8) {
                         calendarDayIndex = calendarDayIndex + 1;
                     } else {
-                        html += '</tr>';
-                        html += '<tr class="calendar-tr">';
+                        html += tableRowEnd;
+                        html += tableRowStart;
                         calendarDayIndex = 1;
                     }
                 }
                 // Prints the date otherwise.
                 if (calendarDayIndex === date['day_id']) {
                     if (date['date'] === currentDay && month.value == currentMonth && year.value == currentYear) {
-                        html += `<td id="today" class="calendar-td calendar-td-hover">${date['date']}</td>`;
+                        html += presentDayCellStart;
+                        html += `${date['date']}`;
+                        html += cellEnd;
                     } else {
-                        html += `<td class="calendar-td calendar-td-hover">${date['date']}</td>`;
+                        html += cellStart;
+                        html += `${date['date']}`;
+                        html += cellEnd;
                     }
                     if (date['date'] === dates[dates.length - 1]['date']) {
-                        let range = 7 - calendarDayIndex
+                        let range = 7 - calendarDayIndex;
                         for (let i = 0; i < range; i++) {
-                            html += '<td class="calendar-td"></td>'
+                            html += emptyCells;
                         }
                     }
                 }
                 if (calendarDayIndex + 1 < 8) {
                     calendarDayIndex = calendarDayIndex + 1;
                 } else {
-                    html += '</tr>';
-                    html += '<tr class="calendar-tr">';
+                    html += tableRowEnd;
+                    html += tableRowStart;
                     calendarDayIndex = 1;
                 }
             }
