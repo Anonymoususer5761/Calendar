@@ -19,7 +19,10 @@ document.addEventListener('DOMContentLoaded', async (event) => {
     }
     var darkModeStatus = localStorage.getItem('dark-mode');
     if (darkModeStatus === '2') {
-        document.getElementById('color-palette').setAttribute('checked', 'checked');
+        let colorPalette = document.getElementById('color-palette');
+        if (colorPalette) {
+            colorPalette.setAttribute('checked', 'checked');
+        }
         document.querySelector('link').setAttribute('href', '../static/dark-style.css'); 
     } else {
         document.querySelector('link').setAttribute('href', '../static/style.css'); 
