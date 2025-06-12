@@ -20,9 +20,8 @@ body {
     padding: 5px;
 }
 
-.month-opt {
-    width: 500px;
-    height: 1200px
+.month-td:hover {
+    background-color: #454345;
 }
 
 #today {
