@@ -6,8 +6,8 @@ body {
 
 /* Calendar */
 .calendar-table {
-    /* width: 1820px;
-    height: 800px; */
+    width: 1820px;
+    height: 800px;
     border: 2px solid rgb(140, 140, 140);
     font-family: sans-serif;
     letter-spacing: 1px;
