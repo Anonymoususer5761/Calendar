@@ -16,23 +16,23 @@
 
     <div>
 
-        <table class="month-table">
+        <table class="calendar-table">
 
             <thead>
                 <caption>
 
                 </caption>
-                <tr class="month-tr">
-                    <th class="month-th">Monday</th>
-                    <th class="month-th">Tuesday</th>
-                    <th class="month-th">Wednesday</th>
-                    <th class="month-th">Thursday</th>
-                    <th class="month-th">Friday</th>
-                    <th class="month-th">Saturday</th>
-                    <th class="month-th">Sunday</th>
+                <tr class="calendar-tr">
+                    <th class="calendar-th">Monday</th>
+                    <th class="calendar-th">Tuesday</th>
+                    <th class="calendar-th">Wednesday</th>
+                    <th class="calendar-th">Thursday</th>
+                    <th class="calendar-th">Friday</th>
+                    <th class="calendar-th">Saturday</th>
+                    <th class="calendar-th">Sunday</th>
                 </tr>
             </thead>
-            <tbody id="month-tbody">
+            <tbody id="calendar-tbody">
 
             </tbody>
         </table>
@@ -67,30 +67,30 @@
             for (date of dates) {
                 // Initializes the calendar by creating a table row.
                 if (date['date'] === 1) {
-                    html += '<tr class="month-tr">';
+                    html += '<tr class="calendar-tr">';
                 } 
                // Prints empty cells if the starting day of the month and the calendar format do not match.  
                 while (calendarDayIndex != date['day_id']) {
-                    html += '<td class="month-td"></td>';
+                    html += '<td class="calendar-td"></td>';
                     if (calendarDayIndex + 1 < 8) {
                         calendarDayIndex = calendarDayIndex + 1;
                     } else {
                         html += '</tr>';
-                        html += '<tr class="month-tr">';
+                        html += '<tr class="calendar-tr">';
                         calendarDayIndex = 1;
                     }
                 }
                 // Prints the date otherwise.
                 if (calendarDayIndex === date['day_id']) {
                     if (date['date'] === currentDay && month.value == currentMonth && year.value == currentYear) {
-                        html += `<td id="today" class="month-td">${date['date']}</td>`;
+                        html += `<td id="today" class="calendar-td calendar-td-hover">${date['date']}</td>`;
                     } else {
-                        html += `<td class="month-td">${date['date']}</td>`;
+                        html += `<td class="calendar-td calendar-td-hover">${date['date']}</td>`;
                     }
                     if (date['date'] === dates[dates.length - 1]['date']) {
                         let range = 7 - calendarDayIndex
                         for (let i = 0; i < range; i++) {
-                            html += '<td class="month-td"></td>'
+                            html += '<td class="calendar-td"></td>'
                         }
                     }
                 }
@@ -98,11 +98,11 @@
                     calendarDayIndex = calendarDayIndex + 1;
                 } else {
                     html += '</tr>';
-                    html += '<tr class="month-tr">';
+                    html += '<tr class="calendar-tr">';
                     calendarDayIndex = 1;
                 }
             }
-            document.getElementById('month-tbody').innerHTML = html;
+            document.getElementById('calendar-tbody').innerHTML = html;
         }
     </script>
 {% endblock %}

@@ -5,7 +5,7 @@ body {
 } 
 
 /* Calendar */
-.month-table {
+.calendar-table {
     /* width: 1820px;
     height: 800px; */
     border: 2px solid rgb(140, 140, 140);
@@ -14,13 +14,13 @@ body {
     padding: 3px;
 }
 
-.month-th, .month-td {
+.calendar-th, .calendar-td {
     width: 14.2857142857%;
     border: 1px solid #c5c8c6;
     padding: 5px;
 }
 
-.month-td:hover {
+.calendar-td-hover:hover {
     background-color: #454345;
 }
 
