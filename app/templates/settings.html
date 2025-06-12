@@ -15,9 +15,9 @@
       });
     }
 
-    document.getElementById('color-palette').addEventListener('change', () => {
-      let colorPalette = document.body.classList.toggle('dark-mode');
-      let colorPaletteValue = colorPalette ? 2 : 1;
+    colorPalette = document.getElementById('color-palette');
+    colorPalette.addEventListener('change', () => {
+      let colorPaletteValue = localStorage.getItem('dark-mode') === '2' ? '1' : '2';
       localStorage.setItem('dark-mode', colorPaletteValue);
       setUserSettings('1', colorPaletteValue);
     });

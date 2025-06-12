@@ -8,29 +8,20 @@ async function getUserSettings() {
     return option;
 }
 
-function toggleDarkMode(status) {
-    if (status === '2' || status === 'dark mode') {
-        document.getElementById('css-id').setAttribute('href', "../static/style.css");
-    } else if (status === '1' || status === 'light mode') {
-        document.getElementById('css-id').setAttribute('href', "../static/dark-style.css");
-    }
-}
-
-
 // AI Usage Disclaimer: Needed some help from the AI to make the async part of this work.
 document.addEventListener('DOMContentLoaded', async (event) => {
-    darkModeStatus = localStorage.getItem('dark-mode');
-    toggleDarkMode(darkModeStatus)
-    if (darkModeStatus === '2') {
-        let colorPalette = document.getElementById('color-palette')
-        if (colorPalette) {
-            colorPalette.setAttribute('checked', 'checked')
+    if (!(localStorage.getItem('dark-mode'))) {
+        if (getUserSettings()['color palette'] === 'dark mode') {
+            localStorage.setItem('dark-mode', '2');
+        } else {
+            localStorage.setItem('dark-mode', '1');
         }
     }
-    else if (getUserSettings()['color-palette'] === 'dark mode') {
-        let colorPalette = document.getElementById('color-palette')
-        if (colorPalette) {
-            colorPalette.setAttribute('checked', 'checked')
-        }
+    var darkModeStatus = localStorage.getItem('dark-mode');
+    if (darkModeStatus === '2') {
+        document.getElementById('color-palette').setAttribute('checked', 'checked');
+        document.querySelector('link').setAttribute('href', '../static/dark-style.css'); 
+    } else {
+        document.querySelector('link').setAttribute('href', '../static/style.css'); 
     }
 });
