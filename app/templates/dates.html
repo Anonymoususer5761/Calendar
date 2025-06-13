@@ -21,7 +21,7 @@
         </select>
         <br>
         <label>Event Color</label>
-        <select name="add-event-color">
+        <select id="event-color" name="add-event-color">
             <option value="red">Red</option>
             <option value="green">Green</option>
             <option value="purple">Purple</option>
@@ -47,6 +47,14 @@
         for (let i = 0; i < 60; i++) {
             eventTimingsMinutes.innerHTML += `<option value="${i}">${pad(i)}</option>`;
         }
+
+        function setColorMenuColor() {
+            eventColorMenu.setAttribute('style', `background-color: ${eventColorMenu.value}`);
+        }
+
+        eventColorMenu = document.getElementById('event-color');
+        document.addEventListener('DOMContentLoaded', setColorMenuColor)
+        eventColorMenu.addEventListener('change', setColorMenuColor)
 
     </script>
 {% endblock main %}
