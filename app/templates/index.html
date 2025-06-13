@@ -59,6 +59,8 @@
         let emptyCells = '<td class="calendar-td"></td>';
         let presentDayCellStart = `<td id="today" class="calendar-td calendar-td-hover">`;
         let cellStart = `<td class="calendar-td calendar-td-hover">`;
+        let cellDataStart = `<a href="/dates/`
+        let cellDataEnd = `</a>`
         let cellEnd = `</td>`;
 
 
@@ -92,11 +94,15 @@
                 if (calendarDayIndex === date['day_id']) {
                     if (date['date'] === currentDay && month.value == currentMonth && year.value == currentYear) {
                         html += presentDayCellStart;
-                        html += `${date['date']}`;
+                        html += cellDataStart;
+                        html += `${year.value}/${month.value}/${date['date']}">${date['date']}`;
+                        html += cellDataEnd;
                         html += cellEnd;
                     } else {
                         html += cellStart;
-                        html += `${date['date']}`;
+                        html += cellDataStart;
+                        html += `${year.value}/${month.value}/${date['date']}">${date['date']}`;
+                        html += cellDataEnd;
                         html += cellEnd;
                     }
                     if (date['date'] === dates[dates.length - 1]['date']) {
