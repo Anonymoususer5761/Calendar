@@ -3,6 +3,7 @@
 {% block main %}
     <h1>{{ year }}-{{ month }}-{{ day }}</h1>
     <h3>{{ day_name }}</h3>
+
     <form action="", method="post">
         <label>Event</label>
         <input name="add-event-name" autocomplete="off" placeholder="Event">
@@ -11,7 +12,11 @@
         <input name="add-event-description" autocomplete="off" placeholder="Event Description">
         <br>
         <label>Timings</label>
-        <select name="add-event-timings">
+        <select id="event-timings-hours" name="add-event-timings-minutes">
+
+        </select>
+        <span>:</span>
+        <select id="event-timings-minutes" name="add-event-timings-minutes">
 
         </select>
         <br>
@@ -25,4 +30,23 @@
         <br>
         <input value="Add Event" type="submit">
     </form>
+
+    <script>
+        let eventTimingsHours = document.getElementById('event-timings-hours');
+        let eventTimingsMinutes = document.getElementById('event-timings-minutes');
+
+        function pad(singleDigit) {
+            singleDigit = singleDigit.toString().padStart(2, '0');
+            return singleDigit;
+        } 
+
+        for (let i = 0; i < 25; i++) {
+            eventTimingsHours.innerHTML += `<option value="${i}">${pad(i)}</option>`;
+        }
+
+        for (let i = 0; i < 60; i++) {
+            eventTimingsMinutes.innerHTML += `<option value="${i}">${pad(i)}</option>`;
+        }
+
+    </script>
 {% endblock main %}
