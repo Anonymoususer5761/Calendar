@@ -1,5 +1,5 @@
 from app import app
-from app.calendar_db import get_dates, get_months, get_years
+from app.calendar_db import get_dates, get_months, get_years, get_day_name
 from app.error_handler import error
 from app.forms import LoginForm, RegistrationForm
 from app.user import sign_in_user, register_user
@@ -18,7 +18,8 @@ def index():
 
 @app.route("/dates/<year>/<month>/<day>")
 def dates(year, month, day):
-    return render_template("dates.html", year=year, month=month, day=day)
+    day_name = get_day_name(year, month, day)
+    return render_template("dates.html", year=year, month=month, day=day, day_name=day_name)
 
 
 @app.route("/settings", methods=["GET", "POST"])

@@ -25,3 +25,10 @@ def get_dates(month, year):
     for date in dates:
         my_dates.append(Date(date["day_id"], date["date"])._asdict())
     return my_dates
+
+
+def get_day_name(year: str, month: str, day: str) -> str:
+    db = get_db()
+    name: str = db.execute("SELECT day FROM days JOIN calendar ON days.id = calendar.day_id WHERE year = ? AND month_id = ? AND date = ?", (year, month, day,)).fetchone()[0]
+    db.close
+    return name
