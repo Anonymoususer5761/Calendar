@@ -11,12 +11,21 @@
         <label>Description</label>
         <input name="add-event-description" autocomplete="off" placeholder="Event Description">
         <br>
-        <label>Timings</label>
-        <select id="event-timings-hours" name="add-event-timings-minutes">
+        <label>From</label>
+        <select class="event-timings-hours" name="add-event-timings-minutes">
 
         </select>
         <span>:</span>
-        <select id="event-timings-minutes" name="add-event-timings-minutes">
+        <select class="event-timings-minutes" name="add-event-timings-minutes">
+
+        </select>
+        <br>
+        <label>To</label>
+        <select class="event-timings-hours" name="add-event-timings-minutes">
+
+        </select>
+        <span>:</span>
+        <select class="event-timings-minutes" name="add-event-timings-minutes">
 
         </select>
         <br>
@@ -32,20 +41,22 @@
     </form>
 
     <script>
-        let eventTimingsHours = document.getElementById('event-timings-hours');
-        let eventTimingsMinutes = document.getElementById('event-timings-minutes');
+        let eventTimingsHours = document.getElementsByClassName('event-timings-hours');
+        let eventTimingsMinutes = document.getElementsByClassName('event-timings-minutes');
 
         function pad(singleDigit) {
             singleDigit = singleDigit.toString().padStart(2, '0');
             return singleDigit;
         } 
 
-        for (let i = 0; i < 25; i++) {
-            eventTimingsHours.innerHTML += `<option value="${i}">${pad(i)}</option>`;
-        }
+        for (let i = 0; i < 2; i++) {
+            for (let j = 0; j < 24; j++) {
+                eventTimingsHours[i].innerHTML += `<option value="${j}">${pad(j)}</option>`;
+            }
 
-        for (let i = 0; i < 60; i++) {
-            eventTimingsMinutes.innerHTML += `<option value="${i}">${pad(i)}</option>`;
+            for (let j = 0; j < 60; j++) {
+                eventTimingsMinutes[i].innerHTML += `<option value="${j}">${pad(j)}</option>`;
+        }
         }
 
         function setColorMenuColor() {
