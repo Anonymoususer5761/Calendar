@@ -57,10 +57,6 @@
         let tableRowStart = '<tr class="calendar-tr">';
         let tableRowEnd = '</tr>';
         let emptyCells = '<td class="calendar-td"></td>';
-        let presentDayCellStart = `<td id="today" class="calendar-td calendar-td-hover">`;
-        let cellStart = `<td class="calendar-td calendar-td-hover">`;
-        let cellDataStart = `<a href="/dates/`
-        let cellDataEnd = `</a>`
         let cellEnd = `</td>`;
 
 
@@ -93,16 +89,12 @@
                 // Prints the date otherwise.
                 if (calendarDayIndex === date['day_id']) {
                     if (date['date'] === currentDay && month.value == currentMonth && year.value == currentYear) {
-                        html += presentDayCellStart;
-                        html += cellDataStart;
-                        html += `${year.value}/${month.value}/${date['date']}">${date['date']}`;
-                        html += cellDataEnd;
+                        html += `<td id="today" class="calendar-td calendar-td-data" onclick="goToDates(${currentYear}, ${currentMonth}, ${currentDay})">`;
+                        html += date['date'];
                         html += cellEnd;
                     } else {
-                        html += cellStart;
-                        html += cellDataStart;
-                        html += `${year.value}/${month.value}/${date['date']}">${date['date']}`;
-                        html += cellDataEnd;
+                        html += `<td class="calendar-td calendar-td-data" onclick="goToDates(${currentYear}, ${currentMonth}, ${currentDay})">`;
+                        html += date['date'];
                         html += cellEnd;
                     }
                     if (date['date'] === dates[dates.length - 1]['date']) {
@@ -122,5 +114,10 @@
             }
             document.getElementById('calendar-tbody').innerHTML = html;
         }
+
+        dayCells = document.getElementsByClassName('calendar-tbody-data');
+        function goToDates(year, month, day) {
+            document.location.href = `/dates?year=${year}&month=${month}&day=${day}`
+        };
     </script>
 {% endblock %}

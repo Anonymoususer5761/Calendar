@@ -20,7 +20,7 @@ body {
     padding: 5px;
 }
 
-.calendar-td-hover:hover {
+.calendar-td-data:hover {
     background-color: #454345;
 }
 

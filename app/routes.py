@@ -16,9 +16,10 @@ def index():
     return render_template("index.html", menses=menses, years=years)
 
 
-@app.route("/dates/<year>/<month>/<day>", methods=["GET", "POST"])
-def dates(year: str, month: str, day: str) -> str:
-    day_name: str = get_day_name(year, month, day)
+@app.route("/dates", methods=["GET", "POST"])
+def dates():
+    year, month, day = request.args.get("year"), request.args.get("month"), request.args.get("day")
+    day_name = get_day_name(year, month, day)
     return render_template("dates.html", year=year, month=month, day=day, day_name=day_name)
 
 
