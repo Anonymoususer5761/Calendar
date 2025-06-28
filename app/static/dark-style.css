@@ -28,6 +28,12 @@ body {
     color: #05a1e8;
 }
 
+/* Dates page */
+#add-event {
+    border: 2px solid #fff;
+    width: 20%
+}
+
 
 /* Login page */
 #remember-me {
