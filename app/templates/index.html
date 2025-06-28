@@ -46,6 +46,10 @@
         const currentDay = today.getDate();
         const currentMonth = today.getMonth() + 1;
         const currentYear = today.getFullYear();
+        localStorage.setItem('today', today);
+        localStorage.setItem('currentDay', currentDay);
+        localStorage.setItem('currentMonth', currentMonth);
+        localStorage.setItem('currentYear', currentYear);
 
         month.options[currentMonth - 1].setAttribute('selected', 'selected');
         year.options[currentYear - 1971].setAttribute('selected', 'selected');
@@ -64,10 +68,10 @@
             document.querySelector('caption').innerHTML = `${month.options[month.selectedIndex].text} ${year.value}`;
             let datesResponse = await fetch(`/api/index/dates?month=${month.value}&year=${year.value}`, {
                 headers: {
-                    'Request-Source': 'JS-AJAX'
+                    'Request-Source': 'JS-AJAX',
                 }
             });
-            let dates = await datesResponse.json();
+            dates = await datesResponse.json();
             let html = '';
             let calendarDayIndex = 1;
             for (date of dates) {
@@ -89,11 +93,11 @@
                 // Prints the date otherwise.
                 if (calendarDayIndex === date['day_id']) {
                     if (date['date'] === currentDay && month.value == currentMonth && year.value == currentYear) {
-                        html += `<td id="today" class="calendar-td calendar-td-data" onclick="goToDates(${currentYear}, ${currentMonth}, ${currentDay})">`;
+                        html += `<td id="today" class="calendar-td calendar-td-data" onclick="goToDates(${date['id']})">`;
                         html += date['date'];
                         html += cellEnd;
                     } else {
-                        html += `<td class="calendar-td calendar-td-data" onclick="goToDates(${currentYear}, ${currentMonth}, ${currentDay})">`;
+                        html += `<td class="calendar-td calendar-td-data" onclick="goToDates(${date['id']})">`;
                         html += date['date'];
                         html += cellEnd;
                     }
@@ -116,8 +120,8 @@
         }
 
         dayCells = document.getElementsByClassName('calendar-tbody-data');
-        function goToDates(year, month, day) {
-            document.location.href = `/dates?year=${year}&month=${month}&day=${day}`
+        function goToDates(dateId) {
+            document.location.href = `/dates?date-id=${dateId}`
         };
     </script>
 {% endblock %}

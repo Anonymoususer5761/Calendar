@@ -1,10 +1,10 @@
 {% extends 'layout.html' %}
 
 {% block main %}
-    <h1>{{ year }}-{{ month }}-{{ day }}</h1>
+    <h1>{{ date }}</h1>
     <h3>{{ day_name }}</h3>
 
-    <form action="", method="post">
+    <form id="add-event" action="", method="post">
         <label>Event</label>
         <input name="add-event-name" autocomplete="off" placeholder="Event">
         <br>
@@ -14,23 +14,13 @@
         <br>
 
         <label>From</label>
-        <select class="event-timings-hours" name="add-event-timings-minutes">
-
-        </select>
-        <span>:</span>
-        <select class="event-timings-minutes" name="add-event-timings-minutes">
-
-        </select>
+        <input class="event-timings-date" name="event-timings-date" value="{{ date }}" min="1971-01-01" max="2099-12-31" type="date"></input>
+        <input class="event-timings-time" name="event-timings-time" value="00:00" type="time"></input>
         <br>
 
         <label>To</label>
-        <select class="event-timings-hours" name="add-event-timings-minutes">
-
-        </select>
-        <span>:</span>
-        <select class="event-timings-minutes" name="add-event-timings-minutes">
-
-        </select>
+        <input class="event-timings-date" name="event-timings-date" value="{{ date }}" min="1971-01-01" max="2099-12-31" type="date"></input>
+        <input class="event-timings-time" name="event-timings-time" value="00:00" type="time"></input>
         <br>
 
         <label>Event Color</label>
@@ -46,31 +36,23 @@
     </form>
 
     <script>
-        let eventTimingsHours = document.getElementsByClassName('event-timings-hours');
+        let eventTimingsDate = document.getElementsByClassName('event-timings-date');
+        let eventTimingsTime = document.getElementsByClassName('event-timings-time');
         let eventTimingsMinutes = document.getElementsByClassName('event-timings-minutes');
 
         function pad(singleDigit) {
             singleDigit = singleDigit.toString().padStart(2, '0');
             return singleDigit;
-        } 
-
-        for (let i = 0; i < 2; i++) {
-            for (let j = 0; j < 24; j++) {
-                eventTimingsHours[i].innerHTML += `<option value="${j}">${pad(j)}</option>`;
-            }
-
-            for (let j = 0; j < 60; j++) {
-                eventTimingsMinutes[i].innerHTML += `<option value="${j}">${pad(j)}</option>`;
         }
-        }
-
+    
         function setColorMenuColor() {
             eventColorMenu.setAttribute('style', `background-color: ${eventColorMenu.value}`);
         }
 
-        eventColorMenu = document.getElementById('event-color');
-        document.addEventListener('DOMContentLoaded', setColorMenuColor)
-        eventColorMenu.addEventListener('change', setColorMenuColor)
+        let eventColorMenu = document.getElementById('event-color');
+        document.addEventListener('DOMContentLoaded', setColorMenuColor);
+        eventColorMenu.addEventListener('change', setColorMenuColor);
+
 
     </script>
 {% endblock main %}
