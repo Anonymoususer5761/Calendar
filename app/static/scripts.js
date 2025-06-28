@@ -9,7 +9,7 @@ async function getUserSettings() {
 }
 
 // AI Usage Disclaimer: Needed some help from the AI to make the async part of this work.
-document.addEventListener('DOMContentLoaded', async (event) => {
+document.addEventListener('DOMContentLoaded', async () => {
     if (!(localStorage.getItem('dark-mode'))) {
         if (getUserSettings()['color palette'] === 'dark mode') {
             localStorage.setItem('dark-mode', '2');

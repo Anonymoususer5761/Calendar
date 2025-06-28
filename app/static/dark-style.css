@@ -4,6 +4,7 @@ body {
     color: #c5c8c6;
 } 
 
+
 /* Calendar */
 .calendar-table {
     width: 1820px;
@@ -27,6 +28,7 @@ body {
 #today {
     color: #05a1e8;
 }
+
 
 /* Dates page */
 #add-event {

@@ -108,7 +108,6 @@ def sign_in_user(form):
     return  False, "Username not found."
 
 
-
 def register_user(form):
     db = get_db()
 

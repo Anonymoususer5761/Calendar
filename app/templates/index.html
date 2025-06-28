@@ -13,9 +13,7 @@
             {% endfor %}
         </select>
     </div>
-
     <div>
-
         <table class="calendar-table">
 
             <thead>
@@ -37,7 +35,6 @@
             </tbody>
         </table>
     </div>
-
     <script>
         let month = document.getElementById('menses');
         let year = document.getElementById('years');
@@ -62,7 +59,6 @@
         let tableRowEnd = '</tr>';
         let emptyCells = '<td class="calendar-td"></td>';
         let cellEnd = `</td>`;
-
 
         async function getDates() {
             document.querySelector('caption').innerHTML = `${month.options[month.selectedIndex].text} ${year.value}`;
