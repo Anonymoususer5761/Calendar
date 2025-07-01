@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS "calendar" (
     FOREIGN KEY ("day_id") REFERENCES days("id"),
     PRIMARY KEY ("id")
 );
-CREATE INDEX "calendar_index" ON "calendar" (
+CREATE INDEX IF NOT EXISTS "calendar_index" ON "calendar" (
     "id", "date" 
 );
 CREATE TABLE IF NOT EXISTS "users" (
@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS "users" (
     "password_hash" TEXT NOT NULL,
     PRIMARY KEY ("id")
 );
-CREATE INDEX "user_index" ON "users" (
+CREATE INDEX IF NOT EXISTS "user_index" ON "users" (
     "id", "username", "email"
 );
 CREATE TABLE IF NOT EXISTS "settings_name" (
@@ -52,4 +52,16 @@ CREATE TABLE IF NOT EXISTS "settings" (
         FOREIGN KEY("setting_id") REFERENCES "settings_name"("id"),
         FOREIGN KEY("user_id") REFERENCES "users"("id")
 );
+
+CREATE TABLE IF NOT EXISTS "events" (
+        "id" INTEGER,
+        "event_name" TEXT NOT NULL,
+        "event_description" TEXT NOT NULL,
+        "event_timings_start" REAL NOT NULL,
+        "event_timings_end" REAL NOT NULL,
+        "event_color" TEXT NOT NULL,
+        "user_id" INTEGER,
+        PRIMARY KEY("id"),
+        FOREIGN KEY("user_id") REFERENCES "users"("id")
+)
 
