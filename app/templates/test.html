@@ -3,18 +3,12 @@
 {% block main %}
     <input autocomplete="off" autofocus placeholder="Query" type="text">
 
-    <p></p>
+    <p>{{ responses }}</p>
+
+    <ul>
+
+    </ul>
 
     <script>
-        let input = document.querySelector('input');
-        input.addEventListener('input', async function() {
-            let response = await fetch('/api/test?q=' + input.value, {
-                headers: {
-                    'Request-Source': 'JS-AJAX'
-                }
-            });
-            let html = await response.json();
-            document.querySelector('p').innerHTML = html;
-        });
     </script>
 {% endblock %}

@@ -1,9 +1,9 @@
 from app import app
-from app.calendar_db import get_dates, get_months, get_years, get_day_name, get_date
+from app.calendar_db import get_dates, get_months, get_years, get_day_name, get_date, submit_event_form_to_db
 from app.error_handler import error
 from app.forms import LoginForm, RegistrationForm
-from app.user import sign_in_user, register_user
-from app.helpers import verify_request_source
+from app.user import sign_in_user, register_user, User
+from app.helpers import verify_request_source, date_to_id
 
 from flask import render_template, request, redirect, url_for, flash, jsonify
 from flask_login import logout_user, login_required, current_user
@@ -24,6 +24,10 @@ def dates():
     date_id = request.args.get("date-id")
     day_name = get_day_name(date_id)
     date = get_date(date_id)
+    if request.method == "POST":
+        form = request.form
+        submit_event_form_to_db(form, current_user.id)
+        return redirect(url_for("dates", **{"date-id": date_id}))
     return render_template("dates.html", date=date, day_name=day_name)
 
 
@@ -77,16 +81,9 @@ def logout():
 
 
 # This is only supposed to exist during development
-@app.route("/api/test")
+@app.route("/test")
 def api_test():
-    if request.headers.get('Request-Source') != 'JS-AJAX':
-        return redirect(url_for("test"))
-    query = request.args.get("q") 
-    if query:
-        return_value = query
-    else:
-        return_value = ""
-    return jsonify(return_value)
+    return User
 
 # The below routes are APIs
 @app.route("/api/global/")

@@ -41,3 +41,26 @@ def get_date(date_id):
     else:
         date = cell["formatted_date"]
     return date
+
+
+def submit_event_form_to_db(form: dict, user_id: int):
+    event_name = form.get("event-name")
+    event_description = form.get("event-description")
+    event_start_date = form.get("event-timings-date-start")
+    event_start_time = form.get("event-timings-time-start")
+    event_end_date = form.get("event-timings-date-end")
+    event_end_time = form.get("event-timings-time-end")
+    event_color = form.get("event-color")
+
+    event_timings_start = f"{event_start_date} {event_start_time}"
+    event_timings_end = f"{event_end_date} {event_end_time}"
+
+    db = get_db()
+    db.execute("""INSERT INTO events(event_name, event_description, event_timings_start, event_timings_end, event_color, user_id) VALUES (?, ?, julianday(?), julianday(?), ?, ?)""",
+        (event_name, event_description, event_timings_start, event_timings_end, event_color, user_id,)
+    )
+    db.commit()
+    db.close()
+    return
+
+
