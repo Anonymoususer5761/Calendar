@@ -92,6 +92,7 @@ def logout():
 def api_test():
     return User
 
+
 # The below routes are APIs
 @app.route("/api/global")
 def api_global():
