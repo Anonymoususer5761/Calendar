@@ -31,9 +31,23 @@ body {
 
 
 /* Dates page */
-#add-event {
-    border: 2px solid #fff;
-    width: 20%
+#add-event-div {
+    position: absolute;
+    left: 65%
+}
+
+#add-event-form {
+    border: 2px solid #000;
+    /* width: 25%; */
+    padding: 5px;
+}
+
+.event-form-data {
+    padding:10px;
+}
+
+#event-description {
+    width: 95%;
 }
 
 

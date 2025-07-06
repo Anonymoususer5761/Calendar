@@ -22,7 +22,7 @@ body {
 }
 
 .calendar-td-data:hover {
-    background-color: #c5c8c6
+    background-color: #c5c8c6;
 }
 
 #today {
@@ -31,16 +31,29 @@ body {
 
 
 /* Dates page */
-#add-event {
+#add-event-div {
+    position: absolute;
+    left: 65%
+}
+
+#add-event-form {
     border: 2px solid #000;
-    width: 20%;
+    /* width: 25%; */
     padding: 5px;
+}
+
+.event-form-data {
+    padding:10px;
+}
+
+#event-description {
+    width: 95%;
 }
 
 
 /* Login page */
 #remember-me {
-    font-size: 11px
+    font-size: 11px;
 }
 
 

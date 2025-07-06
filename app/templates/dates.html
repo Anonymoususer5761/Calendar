@@ -4,37 +4,42 @@
     <h1>{{ date }}</h1>
     <h2>{{ day_name }}</h2>
 
-    <form id="add-event" action="", method="post">
-        <label>Event</label>
-        <input name="event-name" autocomplete="off" required placeholder="Event">
-        <br>
+    <div id="add-event-div">
+        <form id="add-event-form" action="", method="post">
+            <label class="event-form-data">Event</label>
+            <br>
+            <input id="event-name" class="event-form-data" name="event-name" autocomplete="off" required placeholder="Event Name">
+            <br>
 
-        <label>Description</label>
-        <input name="event-description" autocomplete="off" placeholder="Event Description">
-        <br>
+            <label>Description</label>
+            <br>
+            <input id="event-description" class="event-form-date" name="event-description" autocomplete="off" placeholder="Event Description">
+            <br><br>
 
-        <label>From</label>
-        <input class="event-timings-date" name="event-timings-date-start" value="{{ date }}" min="1971-01-01" max="2099-12-31" required type="date"></input>
-        <input class="event-timings-time" name="event-timings-time-start" value="00:00" type="time"></input>
-        <br>
+            <label class="event-form-data">From</label>
+            <input class="event-form-data" class="event-timings-date" name="event-timings-date-start" value="{{ date }}" min="1971-01-01" max="2099-12-31" required type="date"></input>
+            <input class="event-form-data" class="event-timings-time" name="event-timings-time-start" value="00:00" type="time"></input>
+            <br><br>
 
-        <label>To</label>
-        <input class="event-timings-date" name="event-timings-date-end" value="{{ date }}" min="1971-01-01" max="2099-12-31" required type="date"></input>
-        <input class="event-timings-time" name="event-timings-time-end" value="00:00" type="time"></input>
-        <br>
+            <label class="event-form-data">To</label>
+            <input class="event-form-data" class="event-timings-date" name="event-timings-date-end" value="{{ date }}" min="1971-01-01" max="2099-12-31" required type="date"></input>
+            <input class="event-timings-time" name="event-timings-time-end" value="00:00" type="time"></input>
+            <br><br>
 
-        <label>Event Color</label>
-        <select id="event-color" name="event-color">
-            <option value="red">Red</option>
-            <option value="green">Green</option>
-            <option value="blue">Blue</option>
-            <option value="purple">Purple</option>
-            <option value="yellow">Yellow</option>
-        </select>
-        <br>
-        
-        <input value="Add Event" type="submit">
-    </form>
+            <label class="event-form-data">Event Color</label>
+            <select id="event-color" class="event-form-data" name="event-color">
+                <option value="red">Red</option>
+                <option value="green">Green</option>
+                <option value="blue">Blue</option>
+                <option value="purple">Purple</option>
+                <option value="yellow">Yellow</option>
+            </select>
+            <br>
+            
+            <input class="event-form-data" value="Add Event" type="submit">
+        </form>
+    </div>
+
 
     <script>
         let eventTimingsDate = document.getElementsByClassName('event-timings-date');
