@@ -93,7 +93,7 @@ def api_test():
     return User
 
 # The below routes are APIs
-@app.route("/api/global/")
+@app.route("/api/global")
 def api_global():
     if request.headers.get("Request-Source") != "JS-AJAX":
         return redirect(url_for("index"))
