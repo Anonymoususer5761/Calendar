@@ -42,6 +42,9 @@
                 <option value="purple">Purple</option>
                 <option value="yellow">Yellow</option>
             </select>
+            <svg width="30" height="25">
+                <rect fill="red" x="15" y="15" width="30" height="12.5"></rect>
+            </svg>
             <br>
             
             <input class="event-form-data" value="Add Event" type="submit">
@@ -60,7 +63,7 @@
         }
     
         function setColorMenuColor() {
-            eventColorMenu.setAttribute('style', `background-color: ${eventColorMenu.value}`);
+            document.querySelector('rect').setAttribute('fill', eventColorMenu.value);
         }
 
         let eventColorMenu = document.getElementById('event-color');
