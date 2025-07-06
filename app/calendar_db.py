@@ -1,4 +1,5 @@
 from app.database_manager import get_db
+from app.helpers import get_color_hex
 
 def get_years():
     db = get_db()
@@ -50,7 +51,7 @@ def submit_event_form_to_db(form: dict, user_id: int):
     event_start_time = form.get("event-timings-time-start")
     event_end_date = form.get("event-timings-date-end")
     event_end_time = form.get("event-timings-time-end")
-    event_color = form.get("event-color")
+    event_color = get_color_hex(form.get("event-color"))
 
     event_timings_start = f"{event_start_date} {event_start_time}"
     event_timings_end = f"{event_end_date} {event_end_time}"
