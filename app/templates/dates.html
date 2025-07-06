@@ -6,7 +6,7 @@
 
     <form id="add-event" action="", method="post">
         <label>Event</label>
-        <input name="event-name" autocomplete="off" placeholder="Event">
+        <input name="event-name" autocomplete="off" required placeholder="Event">
         <br>
 
         <label>Description</label>
@@ -14,12 +14,12 @@
         <br>
 
         <label>From</label>
-        <input class="event-timings-date" name="event-timings-date-start" value="{{ date }}" min="1971-01-01" max="2099-12-31" type="date"></input>
+        <input class="event-timings-date" name="event-timings-date-start" value="{{ date }}" min="1971-01-01" max="2099-12-31" required type="date"></input>
         <input class="event-timings-time" name="event-timings-time-start" value="00:00" type="time"></input>
         <br>
 
         <label>To</label>
-        <input class="event-timings-date" name="event-timings-date-end" value="{{ date }}" min="1971-01-01" max="2099-12-31" type="date"></input>
+        <input class="event-timings-date" name="event-timings-date-end" value="{{ date }}" min="1971-01-01" max="2099-12-31" required type="date"></input>
         <input class="event-timings-time" name="event-timings-time-end" value="00:00" type="time"></input>
         <br>
 

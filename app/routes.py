@@ -3,7 +3,7 @@ from app.calendar_db import get_dates, get_months, get_years, get_day_name, get_
 from app.error_handler import error
 from app.forms import LoginForm, RegistrationForm
 from app.user import sign_in_user, register_user, User
-from app.helpers import verify_request_source, date_to_id
+from app.helpers import verify_request_source, validate_form
 
 from flask import render_template, request, redirect, url_for, flash, jsonify
 from flask_login import logout_user, login_required, current_user
@@ -26,8 +26,12 @@ def dates():
     date = get_date(date_id)
     if request.method == "POST":
         form = request.form
-        submit_event_form_to_db(form, current_user.id)
-        return redirect(url_for("dates", **{"date-id": date_id}))
+        if validate_form(form, required_fields=("event-name", "event-timings-date-start", "event-timings-time-start" "event-timings-date-end", "event-timings-time-end", "event-color")):
+            submit_event_form_to_db(form, current_user.id)
+            return redirect(url_for("dates", **{"date-id": date_id}))
+        else:
+            flash("Event name and timings field cannot be empty.")
+            return redirect(url_for("dates", **{"date-id": date_id}))
     return render_template("dates.html", date=date, day_name=day_name)
 
 
