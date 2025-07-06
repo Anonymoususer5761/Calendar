@@ -1,5 +1,5 @@
 from app import app
-from app.calendar_db import get_dates, get_months, get_years, get_day_name, get_date, submit_event_form_to_db
+from app.calendar_db import get_dates, get_months, get_years, get_day_name, get_date, submit_event_form_to_db, get_events
 from app.error_handler import error
 from app.forms import LoginForm, RegistrationForm
 from app.user import sign_in_user, register_user, User
@@ -20,10 +20,10 @@ def index():
 
 
 @app.route("/dates", methods=["GET", "POST"])
+@login_required
 def dates():
     date_id = request.args.get("date-id")
-    day_name = get_day_name(date_id)
-    date = get_date(date_id)
+
     if request.method == "POST":
         if not current_user.is_authenticated:
             flash("You must sign in to add events.")
@@ -35,7 +35,10 @@ def dates():
         else:
             flash("Event name and timings field cannot be empty.")
             return redirect(url_for("dates", **{"date-id": date_id}))
-    return render_template("dates.html", date=date, day_name=day_name)
+    date = get_date(date_id)
+    day_name = get_day_name(date_id)
+    events = get_events(date_id, current_user.id)
+    return render_template("dates.html", date=date, day_name=day_name, events=events)
 
 
 @app.route("/settings")

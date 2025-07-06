@@ -65,3 +65,9 @@ def submit_event_form_to_db(form: dict, user_id: int):
     return
 
 
+def get_events(date_id, user_id):
+    date = get_date(date_id)
+    db = get_db()
+    db.execute("""SELECT event_name, event_description, event_timings_start, event_timings_end, event_color FROM events JOIN users ON users.id = events.user_id WHERE user_id = ? AND event_timings_start >= julianday(?) AND event_timings_end <= julianday(?)""",
+        (user_id, date, date)           
+    ).fetchall()
