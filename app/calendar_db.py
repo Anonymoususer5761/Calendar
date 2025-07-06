@@ -1,22 +1,36 @@
 from app.database_manager import get_db
-from app.helpers import get_color_hex
+from app.helpers import get_color_hex, pad_digit
 
 def get_years():
     db = get_db()
-    years = db.execute("SELECT DISTINCT year FROM calendar").fetchall()
+    years = db.execute("SELECT DISTINCT substr(date(julian_date), 0, 5) AS year FROM calendar").fetchall()
     db.close()
     return years
 
 def get_months():
-    db = get_db()
-    menses = db.execute("SELECT DISTINCT month_id, month FROM calendar JOIN months ON month_id = months.id").fetchall()
-    db.close()
+    menses = {
+        "1": "January",
+        "2": "February",
+        "3": "March",
+        "4": "April",
+        "5": "May",
+        "6": "June",
+        "7": "July",
+        "8": "August",
+        "9": "September",
+        "10": "October",
+        "11": "November",
+        "12": "December"
+    }
     return menses
 
 
-def get_dates(month, year):
+def get_dates(month: int | str, year: int | str):
+    date = f"{pad_digit(year, 4)}-{pad_digit(month, 2)}-01"
     db = get_db()
-    dates = db.execute("SELECT id, day_id, date FROM calendar WHERE year = ? AND month_id = ?", (year, month,)).fetchall()
+    dates = db.execute("SELECT id, day_id, substr(date(julian_date), -2, 2) AS date FROM calendar WHERE julian_date >= julianday(?, 'start of month') AND julian_date <= julianday(?, 'start of month', '+1 month', '-1 day')",
+        (date, date,)
+    ).fetchall()
     db.close()
 
     dict_dates = [{"id": date["id"], "day_id": date["day_id"], "date": date["date"]} for date in dates]
@@ -25,12 +39,7 @@ def get_dates(month, year):
 
 def get_day_name(date_id: int) -> str:
     db = get_db()
-    cell = db.execute("SELECT day FROM days JOIN calendar ON days.id = calendar.day_id WHERE calendar.id = ?", (date_id,)).fetchone()
-    if cell == None:
-        name = "fake-name"
-    else:
-        name = cell["day"]
-    db.close()
+    name = db.execute("SELECT day FROM days JOIN calendar ON days.id = calendar.day_id WHERE calendar.id = ?", (date_id,)).fetchone()["day"]
     return name
 
 

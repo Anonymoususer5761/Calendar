@@ -1,8 +1,3 @@
-CREATE TABLE IF NOT EXISTS "months" (
-    "id" INTEGER,
-    month TEXT NOT NULL,
-    PRIMARY KEY (id)
-);
 CREATE TABLE IF NOT EXISTS "days" (
     "id" INTEGER,
     "day" TEXT NOT NULL,
@@ -11,10 +6,7 @@ CREATE TABLE IF NOT EXISTS "days" (
 CREATE TABLE IF NOT EXISTS "calendar" ( 
     "id" INTEGER,
     "day_id" INTEGER NOT NULL,
-    "date" INTEGER NOT NULL,
-    "month_id" INTEGER NOT NULL,
-    "year" INTEGER NOT NULL,
-    FOREIGN KEY ("month_id") REFERENCES "months"("id"),
+    "julian_date" REAL NOT NULL,
     FOREIGN KEY ("day_id") REFERENCES days("id"),
     PRIMARY KEY ("id")
 );

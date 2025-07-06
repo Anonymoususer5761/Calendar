@@ -8,8 +8,8 @@
             {% endfor %}
         </select>
         <select id="menses" name="menses">
-            {% for mensis in menses %}
-                <option name="{{ mensis.month }}" value="{{ mensis.month_id }}">{{ mensis.month }}</option>
+            {% for (month_id, month) in menses.items() %}
+                <option name="{{ month }}" value="{{ month_id }}">{{ month }}</option>
             {% endfor %}
         </select>
     </div>
@@ -72,7 +72,7 @@
             let calendarDayIndex = 1;
             for (date of dates) {
                 // Initializes the calendar by creating a table row.
-                if (date['date'] === 1) {
+                if (date['date'] === "01") {
                     html += tableRowStart;
                 } 
                // Prints empty cells if the starting day of the month and the calendar format do not match.  
@@ -88,7 +88,7 @@
                 }
                 // Prints the date otherwise.
                 if (calendarDayIndex === date['day_id']) {
-                    if (date['date'] === currentDay && month.value == currentMonth && year.value == currentYear) {
+                    if (parseInt(date['date']) === currentDay && month.value == currentMonth && year.value == currentYear) {
                         html += `<td id="today" class="calendar-td calendar-td-data" onclick="goToDates(${date['id']})">`;
                         html += date['date'];
                         html += cellEnd;

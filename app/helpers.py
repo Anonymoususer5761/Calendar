@@ -30,3 +30,9 @@ def get_color_hex(color: str) -> str:
     }
     color_hex = color_dict.get(color, "#%02x%02x%02x" % (random.randrange(0, 256), random.randrange(0, 256), random.randrange(0, 256)))
     return color_hex
+
+
+def pad_digit(digit: int | str, pad_length: int) -> str:
+    digit = str(digit)
+    padded_digit = f"{"0" * (pad_length - len(digit))}{digit}"
+    return padded_digit
