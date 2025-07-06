@@ -22,7 +22,7 @@ def index():
 @app.route("/dates", methods=["GET", "POST"])
 @login_required
 def dates():
-    date_id = request.args.get("date-id")
+    date_id = request.args.get("id")
 
     if request.method == "POST":
         if not current_user.is_authenticated:
@@ -31,10 +31,10 @@ def dates():
         form = request.form
         if validate_form(form, required_fields=("event-name", "event-timings-date-start", "event-timings-time-start", "event-timings-date-end", "event-timings-time-end", "event-color")):
             submit_event_form_to_db(form, current_user.id)
-            return redirect(url_for("dates", **{"date-id": date_id}))
+            return redirect(url_for("dates", id=date_id))
         else:
             flash("Event name and timings field cannot be empty.")
-            return redirect(url_for("dates", **{"date-id": date_id}))
+            return redirect(url_for("dates", id=date_id))
     date = get_date(date_id)
     day_name = get_day_name(date_id)
     events = get_events(date_id, current_user.id)

@@ -39,17 +39,13 @@ def get_dates(month: int | str, year: int | str):
 
 def get_day_name(date_id: int) -> str:
     db = get_db()
-    name = db.execute("SELECT day FROM days JOIN calendar ON days.id = calendar.day_id WHERE calendar.id = ?", (date_id,)).fetchone()["day"]
+    name:str = db.execute("SELECT day FROM days JOIN calendar ON days.id = calendar.day_id WHERE calendar.id = ?", (date_id,)).fetchone()["day"]
     return name
 
 
-def get_date(date_id):
+def get_date(date_id: int) -> str:
     db = get_db()
-    cell = db.execute("SELECT printf('%04d-%02d-%02d', year, month_id, date) as formatted_date FROM calendar WHERE calendar.id = ?", (date_id,)).fetchone()
-    if cell == None:
-        date = "fake-date"
-    else:
-        date = cell["formatted_date"]
+    date:str = db.execute("SELECT date(julian_date) AS date FROM calendar WHERE calendar.id = ?", (date_id,)).fetchone()["date"]
     return date
 
 
@@ -75,8 +71,8 @@ def submit_event_form_to_db(form: dict, user_id: int):
 
 
 def get_events(date_id, user_id):
-    date = get_date(date_id)
     db = get_db()
-    db.execute("""SELECT event_name, event_description, event_timings_start, event_timings_end, event_color FROM events JOIN users ON users.id = events.user_id WHERE user_id = ? AND event_timings_start >= julianday(?) AND event_timings_end <= julianday(?)""",
-        (user_id, date, date)           
+    events = db.execute("""SELECT * FROM events JOIN users ON user_id = users.id WHERE user_id = ? AND (SELECT julian_date FROM calendar WHERE id = ?) BETWEEN event_timings_start AND event_timings_end""",
+        (user_id, date_id,)           
     ).fetchall()
+    return events
