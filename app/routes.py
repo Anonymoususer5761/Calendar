@@ -3,7 +3,7 @@ from app.calendar_db import get_dates, get_months, get_years, get_day_name, get_
 from app.error_handler import error
 from app.forms import LoginForm, RegistrationForm
 from app.user import sign_in_user, register_user, User
-from app.helpers import verify_request_source, validate_form
+from app.helpers import validate_form
 
 from flask import render_template, request, redirect, url_for, flash, jsonify
 from flask_login import logout_user, login_required, current_user
