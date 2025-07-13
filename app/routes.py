@@ -93,8 +93,7 @@ def logout():
 # This is only supposed to exist during development
 @app.route("/test")
 def api_test():
-    dates = get_dates(6, 2025)
-    return dates
+    return render_template("test.html")
 
 
 # The below routes are APIs

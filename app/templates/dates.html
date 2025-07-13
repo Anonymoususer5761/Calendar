@@ -2,15 +2,35 @@
 
 {% block main %}
     <h1>{{ date }}</h1>
-    <h2>{{ day_name }}</h2>
 
-    <div id="event-div">
+
+    <!-- <div id="event-div">
         <ul>
             {% for event in events %}
                 <li>{{ event }}</li>
             {% endfor %}
         </ul>
+    </div> -->
+
+    <div id="day-timeline">
+        <svg width="1500" height="1000" viewBox="0 0 2000 1000">
+            <text x="1000" y="0" dominant-baseline="top" text-anchor="middle" font-size="40" fill="black">
+                {{ day_name }}
+            </text>
+            <defs>
+                <linearGradient id="day-fill" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="35%" style="stop-color: rgb(0, 0, 100); stop-opacity: 0.05"></stop>
+                    <stop offset="100%" style="stop-color: rgb(255, 255, 255); stop-opacity: 0.15"></stop>
+                </linearGradient>
+                <linearGradient id="day-stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="35%" style="stop-color: rgb(12, 25, 100); stop-opacity: 0.65"></stop>
+                    <stop offset="100%" style="stop-color: rgb(0, 0, 0); stop-opacity: 0.85"></stop>
+                </linearGradient>
+            </defs>
+            <polyline class="day" points="100,0 100,500 1900,500 1900,0"/>
+        </svg>
     </div>
+
 
     <div id="add-event-div">
         <form id="add-event-form" action="", method="post">

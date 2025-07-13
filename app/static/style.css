@@ -46,6 +46,13 @@ body {
     padding:10px;
 }
 
+.day {
+
+    fill: url(#day-fill);
+    stroke: url(#day-stroke);
+    stroke-width: 2px;
+}
+
 #event-description {
     width: 95%;
 }
