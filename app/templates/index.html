@@ -39,14 +39,9 @@
         let month = document.getElementById('menses');
         let year = document.getElementById('years');
 
-        const today = new Date();
-        const currentDay = today.getDate();
-        const currentMonth = today.getMonth() + 1;
-        const currentYear = today.getFullYear();
-        localStorage.setItem('today', today);
-        localStorage.setItem('currentDay', currentDay);
-        localStorage.setItem('currentMonth', currentMonth);
-        localStorage.setItem('currentYear', currentYear);
+        let currentDay = parseInt(localStorage.getItem('today').split("T")[0].split("-")[2]);
+        let currentMonth = parseInt(localStorage.getItem('today').split("T")[0].split("-")[1]);
+        let currentYear = parseInt(localStorage.getItem('today').split("T")[0].split("-")[0]);
 
         month.options[currentMonth - 1].setAttribute('selected', 'selected');
         year.options[currentYear - 1971].setAttribute('selected', 'selected');
@@ -88,7 +83,7 @@
                 }
                 // Prints the date otherwise.
                 if (calendarDayIndex === date['day_id']) {
-                    if (parseInt(date['date']) === currentDay && month.value == currentMonth && year.value == currentYear) {
+                    if (date['date'] == currentDay && month.value == currentMonth && year.value == currentYear) {
                         html += `<td id="today" class="calendar-td calendar-td-data" onclick="goToDates(${date['id']})">`;
                         html += date['date'];
                         html += cellEnd;

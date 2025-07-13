@@ -72,7 +72,7 @@ def submit_event_form_to_db(form: dict, user_id: int):
 
 def get_events(date_id, user_id):
     db = get_db()
-    events = db.execute("""SELECT * FROM events JOIN users ON user_id = users.id WHERE user_id = ? AND (SELECT julian_date FROM calendar WHERE id = ?) BETWEEN event_timings_start AND event_timings_end""",
+    events = db.execute("""SELECT events.id, event_name, event_description, event_timings_start, event_timings_end, event_color, user_id FROM events JOIN users ON user_id = users.id WHERE user_id = ? AND (SELECT julian_date FROM calendar WHERE id = ?) BETWEEN event_timings_start AND event_timings_end""",
         (user_id, date_id,)           
     ).fetchall()
     return events

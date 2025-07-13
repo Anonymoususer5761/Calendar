@@ -4,30 +4,55 @@
     <h1>{{ date }}</h1>
 
 
-    <!-- <div id="event-div">
+    <div id="event-div">
         <ul>
-            {% for event in events %}
-                <li>{{ event }}</li>
-            {% endfor %}
         </ul>
-    </div> -->
+    </div>
 
     <div id="day-timeline">
-        <svg width="1500" height="1000" viewBox="0 0 2000 1000">
-            <text x="1000" y="0" dominant-baseline="top" text-anchor="middle" font-size="40" fill="black">
+        <svg width="1500" height="600" viewBox="0 0 2500 600">
+            <text x="1250" y="0" dominant-baseline="top" text-anchor="middle" font-size="40" fill="black">
                 {{ day_name }}
             </text>
             <defs>
                 <linearGradient id="day-fill" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="10%" style="stop-color: rgb(236, 236, 236); stop-opacity: 0.1"></stop>
                     <stop offset="35%" style="stop-color: rgb(0, 0, 100); stop-opacity: 0.05"></stop>
                     <stop offset="100%" style="stop-color: rgb(255, 255, 255); stop-opacity: 0.15"></stop>
+
                 </linearGradient>
                 <linearGradient id="day-stroke" x1="0%" y1="0%" x2="100%" y2="100%">
                     <stop offset="35%" style="stop-color: rgb(12, 25, 100); stop-opacity: 0.65"></stop>
                     <stop offset="100%" style="stop-color: rgb(0, 0, 0); stop-opacity: 0.85"></stop>
                 </linearGradient>
             </defs>
-            <polyline class="day" points="100,0 100,500 1900,500 1900,0"/>
+            <polyline class="day" points="100,10 100,510 2500,510 2500,10"/>
+            <line class="hours" x1="100" y1="20" x2="100" y2="510"/>
+            <line class="hours" x1="200" y1="20" x2="200" y2="510"/>
+            <line class="hours" x1="300" y1="20" x2="300" y2="510"/>
+            <line class="hours" x1="400" y1="20" x2="400" y2="510"/>
+            <line class="hours" x1="500" y1="20" x2="500" y2="510"/>
+            <line class="hours" x1="600" y1="20" x2="600" y2="510"/>
+            <line class="hours" x1="700" y1="20" x2="700" y2="510"/>
+            <line class="hours" x1="800" y1="20" x2="800" y2="510"/>
+            <line class="hours" x1="900" y1="20" x2="900" y2="510"/>
+            <line class="hours" x1="1000" y1="20" x2="1000" y2="510"/>
+            <line class="hours" x1="1100" y1="20" x2="1100" y2="510"/>
+            <line class="hours" x1="1200" y1="20" x2="1200" y2="510"/>
+            <line class="hours" x1="1300" y1="20" x2="1300" y2="510"/>
+            <line class="hours" x1="1400" y1="20" x2="1400" y2="510"/>
+            <line class="hours" x1="1500" y1="20" x2="1500" y2="510"/>
+            <line class="hours" x1="1600" y1="20" x2="1600" y2="510"/>
+            <line class="hours" x1="1700" y1="20" x2="1700" y2="510"/>
+            <line class="hours" x1="1800" y1="20" x2="1800" y2="510"/>
+            <line class="hours" x1="1900" y1="20" x2="1900" y2="510"/>
+            <line class="hours" x1="2000" y1="20" x2="2000" y2="510"/>
+            <line class="hours" x1="2100" y1="20" x2="2100" y2="510"/>
+            <line class="hours" x1="2200" y1="20" x2="2200" y2="510"/>
+            <line class="hours" x1="2300" y1="20" x2="2300" y2="510"/>
+            <line class="hours" x1="2400" y1="20" x2="2400" y2="510"/>
+            <line class="hours" x1="2500" y1="20" x2="2500" y2="510"/>
+            <line id="now" y1="20" y2="510"/>
         </svg>
     </div>
 
@@ -113,5 +138,29 @@
                 endTime.setAttribute('min', startTime.value);
             }
         });
+
+        // Below is the JavaScript for the Day Timeline.
+        selectedDate = document.querySelector('h1').innerHTML;
+        function moveDayLine() {
+            let svg = document.getElementById('now');
+            let now = new Date();;
+            let dayStart = new Date();
+            dayStart.setHours(0, 0, 0, 0);
+            let time = now.getTime() - dayStart.getTime();
+            let x_axis = (time / 36000) + 100;
+            svg.setAttribute("x1", x_axis);
+            svg.setAttribute("x2", x_axis);
+        }
+
+        document.addEventListener('DOMContentLoaded', moveDayLine())
+        if (localStorage.getItem('today').split("T")[0] === selectedDate) {
+            let interval = setInterval(moveDayLine, 1000);
+        }
+
+        // Events imported from Fetch API.
+        async function getEvents() {
+            let apiLink = ``
+            let events = fetch(apiLink)
+        }
     </script>
 {% endblock main %}

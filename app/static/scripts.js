@@ -28,3 +28,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.querySelector('link').setAttribute('href', '../static/style.css'); 
     }
 });
+
+let today = new Date()
+today = today.toISOString()
+localStorage.setItem('today', today);

@@ -53,6 +53,22 @@ body {
     stroke-width: 2px;
 }
 
+.hours {
+    stroke: rgb(66, 33, 66);
+    stroke-width: 2px;
+    opacity: 0.1;
+}
+
+#now {
+    stroke: blue;
+    stroke-width: 2px;
+}
+
+#now:hover {
+    stroke: #666fd3;
+    stroke-width: 5px;
+}
+
 #event-description {
     width: 95%;
 }
