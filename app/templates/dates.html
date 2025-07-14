@@ -15,8 +15,8 @@
         </ul>
     </div>
 
-    <div id="day-timeline">
-        <svg width="1500" height="600" viewBox="0 0 2500 600">
+    <div id="day-timeline-div">
+        <svg id="day-timeline-svg" width="1500" height="600" viewBox="0 0 2500 600">
             <text x="1250" y="0" dominant-baseline="top" text-anchor="middle" font-size="40" fill="black">
                 {{ day_name }}
             </text>
@@ -72,7 +72,7 @@
 
             <label>Description</label>
             <br>
-            <input id="event-description" class="event-form-date" name="event-description" autocomplete="off" placeholder="Event Description">
+            <textarea id="event-description" class="event-form-date" name="event-description" autocomplete="off" placeholder="Event Description"></textarea>
             <br><br>
 
             <label class="event-form-data">From</label>

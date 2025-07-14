@@ -77,10 +77,28 @@ body {
     display: none;
     align-items: center;
     justify-content: center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    background-color: #c5c8c6;
+    color: #1e1e22;
+}
+
+#event-form-close {
+    position: absolute;
+    top: 10px;
+    right: 5px;
 }
 
 #event-description {
     width: 95%;
+    height: 30px;
+}
+
+#day-timeline-svg {
+    height: auto;
+    max-width: 100%;
 }
 
 
