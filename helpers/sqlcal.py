@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 
 import sqlite3
 
-year, month, day, hour, minutes, seconds = 1971, 1, 1, 0, 0, 0
+year, month, day, hour, minutes, seconds = 1970, 1, 1, 0, 0, 0
 date_var = datetime(year, month, day, hour, minutes, seconds)
 
 db = sqlite3.connect("calendar.db")
@@ -10,9 +10,9 @@ db = sqlite3.connect("calendar.db")
 db.execute("DELETE FROM calendar")
 
 id = 1
-day_id = 5
+day_id = 4
 while date_var.year != 2100:
-    db.execute("INSERT INTO calendar(id, day_id, julian_date) VALUES (?, ?, julianday(?))",
+    db.execute("INSERT INTO calendar(id, day_id, unix_time) VALUES (?, ?, unixepoch(?))",
         (id, day_id, date_var.strftime("%Y-%m-%d"))       
     )
 

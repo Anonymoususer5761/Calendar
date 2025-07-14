@@ -44,7 +44,7 @@
         let currentYear = parseInt(localStorage.getItem('today').split("T")[0].split("-")[0]);
 
         month.options[currentMonth - 1].setAttribute('selected', 'selected');
-        year.options[currentYear - 1971].setAttribute('selected', 'selected');
+        year.options[currentYear - 1970].setAttribute('selected', 'selected');
 
         document.addEventListener("DOMContentLoaded", getDates);
         month.addEventListener('change', getDates);
@@ -62,10 +62,10 @@
                     'Request-Source': 'JS-AJAX',
                 }
             });
-            dates = await datesResponse.json();
+            let dates = await datesResponse.json();
             let html = '';
             let calendarDayIndex = 1;
-            for (date of dates) {
+            for (let date of dates) {
                 // Initializes the calendar by creating a table row.
                 if (date['date'] === "01") {
                     html += tableRowStart;

@@ -3,7 +3,7 @@ from app.helpers import get_color_hex, pad_digit
 
 def get_years():
     db = get_db()
-    years = db.execute("SELECT DISTINCT substr(date(julian_date), 0, 5) AS year FROM calendar").fetchall()
+    years = db.execute("SELECT DISTINCT substr(date(unix_time, 'unixepoch'), 0, 5) AS year FROM calendar").fetchall()
     db.close()
     return years
 
@@ -28,7 +28,7 @@ def get_months():
 def get_dates(month: int | str, year: int | str):
     date = f"{pad_digit(year, 4)}-{pad_digit(month, 2)}-01"
     db = get_db()
-    dates = db.execute("SELECT id, day_id, substr(date(julian_date), -2, 2) AS date FROM calendar WHERE julian_date >= julianday(?, 'start of month') AND julian_date <= julianday(?, 'start of month', '+1 month', '-1 day')",
+    dates = db.execute("SELECT id, day_id, substr(date(unix_time, 'unixepoch'), -2, 2) AS date FROM calendar WHERE unix_time >= unixepoch(?, 'start of month') AND unix_time <= unixepoch(?, 'start of month', '+1 month', '-1 day')",
         (date, date,)
     ).fetchall()
     db.close()
@@ -45,7 +45,7 @@ def get_day_name(date_id: int) -> str:
 
 def get_date(date_id: int) -> str:
     db = get_db()
-    date:str = db.execute("SELECT date(julian_date) AS date FROM calendar WHERE calendar.id = ?", (date_id,)).fetchone()["date"]
+    date:str = db.execute("SELECT date(unix_time, 'unixepoch') AS date FROM calendar WHERE calendar.id = ?", (date_id,)).fetchone()["date"]
     return date
 
 
@@ -62,7 +62,7 @@ def submit_event_form_to_db(form: dict, user_id: int):
     event_timings_end = f"{event_end_date} {event_end_time}"
 
     db = get_db()
-    db.execute("""INSERT INTO events(event_name, event_description, event_timings_start, event_timings_end, event_color, user_id) VALUES (?, ?, julianday(?), julianday(?), ?, ?)""",
+    db.execute("""INSERT INTO events(event_name, event_description, event_timings_start, event_timings_end, event_color, user_id) VALUES (?, ?, unixepoch(?), unixepoch(?), ?, ?)""",
         (event_name, event_description, event_timings_start, event_timings_end, event_color, user_id,)
     )
     db.commit()
@@ -72,7 +72,18 @@ def submit_event_form_to_db(form: dict, user_id: int):
 
 def get_events(date_id, user_id):
     db = get_db()
-    events = db.execute("""SELECT events.id, event_name, event_description, event_timings_start, event_timings_end, event_color, user_id FROM events JOIN users ON user_id = users.id WHERE user_id = ? AND (SELECT julian_date FROM calendar WHERE id = ?) BETWEEN event_timings_start AND event_timings_end""",
-        (user_id, date_id,)           
+    events = db.execute("""
+                        SELECT (events.id) AS event_id, event_name, event_description, event_timings_start, event_timings_end, event_color
+                        FROM events JOIN users ON user_id = users.id 
+                        WHERE user_id = ? 
+                        AND (event_timings_start <= (SELECT (unix_time -1) AS unix_time FROM calendar WHERE id = (? + 1))
+                        AND event_timings_end >= (SELECT (unix_time) AS unix_time FROM calendar WHERE id = ?))
+""",
+        (user_id, date_id, date_id)
     ).fetchall()
-    return events
+
+    if events:
+        dict_events = [{"id": event["event_id"], "name": event["event_name"], "desc": event["event_description"], "timings_start": event["event_timings_start"], "timings_end": event["event_timings_end"], "color": event["event_color"]} for event in events]
+        return dict_events
+
+    return None

@@ -2,10 +2,16 @@
 
 {% block main %}
     <h1>{{ date }}</h1>
+    <button id="add-event-button">Add Event</button>
 
 
     <div id="event-div">
         <ul>
+            {% if events %}
+                {% for event in events %}
+                    <li>{{ event }}</li>
+                {% endfor %}
+            {% endif %}
         </ul>
     </div>
 
@@ -52,7 +58,7 @@
             <line class="hours" x1="2300" y1="20" x2="2300" y2="510"/>
             <line class="hours" x1="2400" y1="20" x2="2400" y2="510"/>
             <line class="hours" x1="2500" y1="20" x2="2500" y2="510"/>
-            <line id="now" y1="20" y2="510"/>
+            <line id="now" y1="20" y2="510" display="none"/>
         </svg>
     </div>
 
@@ -93,6 +99,7 @@
             <br>
             
             <input class="event-form-data" value="Add Event" type="submit">
+            <button id="event-form-close">Close</button>
         </form>
     </div>
 
@@ -141,6 +148,7 @@
 
         // Below is the JavaScript for the Day Timeline.
         selectedDate = document.querySelector('h1').innerHTML;
+        // Used ChatGPT to fix a bug where time wouldn't not update dynamically.
         function moveDayLine() {
             let svg = document.getElementById('now');
             let now = new Date();;
@@ -150,17 +158,59 @@
             let x_axis = (time / 36000) + 100;
             svg.setAttribute("x1", x_axis);
             svg.setAttribute("x2", x_axis);
+            svg.removeAttribute("display");
         }
 
-        document.addEventListener('DOMContentLoaded', moveDayLine())
+
         if (localStorage.getItem('today').split("T")[0] === selectedDate) {
+            document.addEventListener('DOMContentLoaded', moveDayLine())
             let interval = setInterval(moveDayLine, 1000);
         }
 
         // Events imported from Fetch API.
+        let dayId = document.location.href.split('?')[1].split('=')[1];
         async function getEvents() {
-            let apiLink = ``
-            let events = fetch(apiLink)
+            let response = await fetch(`/api/events?date_id=${dayId}`, {
+                headers: {
+                    'Request-Source': 'JS-AJAX',
+                }
+            });
+            let events = await response.json();
+            let svg = ``;
+            for (let event of events) {
+                let start = event["timings_start"];
+                let end = event["timings_end"];
+                let secondsInDay = 86400;
+                let secondsInDayByScaleOfTimeline = 36 // 86400 / 2400 = 36. The difference in pixels between 00:00 and 24:00 is exactly 2400px (2500 - 100). 
+                let offset = 100 // The timeline starts at 100px.
+                let x1 = 0;
+                let x2 = 0;
+                if (Math.trunc(start / secondsInDay) + 1 === parseInt(dayId)) {
+                    x1 = start % secondsInDay / secondsInDayByScaleOfTimeline + offset;
+                } else {
+                    x1 = 100;
+                }
+                if (Math.trunc(end / secondsInDay) + 1 === parseInt(dayId)) {
+                    x2 = end % secondsInDay / secondsInDayByScaleOfTimeline + offset;
+                } else {
+                    x2 = 2499;
+                }
+                svg += `<polyline class="custom-lines" name="${event["name"]}" points="${x1},30 ${x1},510 ${x2},510 ${x2},30" fill=${event["color"]} stroke=${event["color"]} opacity="0.25"></polyline>`;
+            }
+            document.querySelector('svg').innerHTML += svg;
         }
+
+        getEvents()
+
+        let addFormButton = document.getElementById('add-event-button');
+        addFormButton.addEventListener('click', () => {
+            document.getElementById('add-event-div').style.display = 'flex';
+        });
+        let removeFormButton = document.getElementById('event-form-close');
+        removeFormButton.addEventListener('click', () => {
+            document.getElementById('add-event-div').style.display = 'none';
+        })
+
+
     </script>
 {% endblock main %}

@@ -38,7 +38,7 @@ def dates():
     date = get_date(date_id)
     day_name = get_day_name(date_id)
     events = get_events(date_id, current_user.id)
-    return render_template("dates.html", date=date, day_name=day_name)
+    return render_template("dates.html", date=date, day_name=day_name, events=events)
 
 
 @app.route("/settings")
@@ -119,6 +119,16 @@ def api_dates():
     year = request.args.get("year") 
     dates = get_dates(int(month), int(year))
     return jsonify(dates)
+
+
+@app.route("/api/events")
+def api_events():
+    # if request.headers.get("Request-Source") != "JS-AJAX":
+    #     return redirect(url_for("index"))
+    date_id = request.args.get("date_id")
+    events = get_events(date_id, current_user.id)
+    return jsonify(events)
+
 
 
 @app.route("/api/settings/set-settings")

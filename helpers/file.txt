@@ -1,25 +1,8 @@
-<line class="hours" x1="100" y1="20" x2="100" y2="510"/>
-<line class="hours" x1="200" y1="20" x2="200" y2="510"/>
-<line class="hours" x1="300" y1="20" x2="300" y2="510"/>
-<line class="hours" x1="400" y1="20" x2="400" y2="510"/>
-<line class="hours" x1="500" y1="20" x2="500" y2="510"/>
-<line class="hours" x1="600" y1="20" x2="600" y2="510"/>
-<line class="hours" x1="700" y1="20" x2="700" y2="510"/>
-<line class="hours" x1="800" y1="20" x2="800" y2="510"/>
-<line class="hours" x1="900" y1="20" x2="900" y2="510"/>
-<line class="hours" x1="1000" y1="20" x2="1000" y2="510"/>
-<line class="hours" x1="1100" y1="20" x2="1100" y2="510"/>
-<line class="hours" x1="1200" y1="20" x2="1200" y2="510"/>
-<line class="hours" x1="1300" y1="20" x2="1300" y2="510"/>
-<line class="hours" x1="1400" y1="20" x2="1400" y2="510"/>
-<line class="hours" x1="1500" y1="20" x2="1500" y2="510"/>
-<line class="hours" x1="1600" y1="20" x2="1600" y2="510"/>
-<line class="hours" x1="1700" y1="20" x2="1700" y2="510"/>
-<line class="hours" x1="1800" y1="20" x2="1800" y2="510"/>
-<line class="hours" x1="1900" y1="20" x2="1900" y2="510"/>
-<line class="hours" x1="2000" y1="20" x2="2000" y2="510"/>
-<line class="hours" x1="2100" y1="20" x2="2100" y2="510"/>
-<line class="hours" x1="2200" y1="20" x2="2200" y2="510"/>
-<line class="hours" x1="2300" y1="20" x2="2300" y2="510"/>
-<line class="hours" x1="2400" y1="20" x2="2400" y2="510"/>
-<line class="hours" x1="2500" y1="20" x2="2500" y2="510"/>
+SELECT (events.id) AS event_id, event_name, event_description, event_timings_start, event_timings_end, event_color FROM events JOIN users ON user_id = users.id WHERE user_id = 3 AND (event_timings_start <= (SELECT (unix_time - 1) AS unix_time from calendar WHERE id = 20276) AND event_timings_end >= (SELECT unix_time FROM calendar WHERE id = 20275))
+
+AND (event_timings_start BETWEEN // 200
+(SELECT unix_time FROM calendar WHERE id = 20276) 400
+AND (SELECT unix_time FROM calendar WHERE id = 20277) 600
+OR event_timings_end BETWEEN 700
+(SELECT unix_time FROM calendar WHERE id = 20276) 400
+AND (SELECT unix_time FROM calendar WHERE id = 20277)) 600

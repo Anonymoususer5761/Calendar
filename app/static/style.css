@@ -69,6 +69,16 @@ body {
     stroke-width: 5px;
 }
 
+.custom-lines:hover {
+    opacity: 0.75;
+}
+
+#add-event-div {
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
 #event-description {
     width: 95%;
 }

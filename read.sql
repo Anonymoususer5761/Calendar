@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS "days" (
 CREATE TABLE IF NOT EXISTS "calendar" ( 
     "id" INTEGER,
     "day_id" INTEGER NOT NULL,
-    "julian_date" REAL NOT NULL,
+    "unix_time" INTEGER NOT NULL,
     FOREIGN KEY ("day_id") REFERENCES days("id"),
     PRIMARY KEY ("id")
 );
@@ -49,8 +49,8 @@ CREATE TABLE IF NOT EXISTS "events" (
         "id" INTEGER,
         "event_name" TEXT NOT NULL,
         "event_description" TEXT NOT NULL,
-        "event_timings_start" REAL NOT NULL,
-        "event_timings_end" REAL NOT NULL,
+        "event_timings_start" INTEGER NOT NULL,
+        "event_timings_end" INTEGER NOT NULL,
         "event_color" TEXT NOT NULL,
         "user_id" INTEGER,
         PRIMARY KEY("id"),
