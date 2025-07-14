@@ -22,6 +22,8 @@ def index():
 @app.route("/dates", methods=["GET", "POST"])
 def dates():
     date_id = request.args.get("id")
+    if not date_id:
+        return redirect(url_for("index"))
 
     if request.method == "POST":
         if not current_user.is_authenticated:
@@ -125,7 +127,7 @@ def api_dates():
     return jsonify(dates)
 
 
-@app.route("/api/events")
+@app.route("/api/dates/events")
 def api_events():
     # if request.headers.get("Request-Source") != "JS-AJAX":
     #     return redirect(url_for("index"))
