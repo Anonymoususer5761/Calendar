@@ -29,6 +29,24 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 });
 
+async function isAuthenticated() {
+    let response = await fetch('api/global?auth');
+    let auth = response.json();
+    if (auth) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    if (isAuthenticated()) {
+        localStorage.setItem('auth', 1);
+    } else {
+        localStorage.setItem('auth', 0);
+    }
+});
+
+
 let today = new Date()
-today = today.toISOString()
-localStorage.setItem('today', today);
+localStorage.setItem('today', today.toISOString());

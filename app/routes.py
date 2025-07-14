@@ -20,7 +20,6 @@ def index():
 
 
 @app.route("/dates", methods=["GET", "POST"])
-@login_required
 def dates():
     date_id = request.args.get("id")
 
@@ -30,15 +29,22 @@ def dates():
             return redirect(url_for("login"))
         form = request.form
         if validate_form(form, required_fields=("event-name", "event-timings-date-start", "event-timings-time-start", "event-timings-date-end", "event-timings-time-end", "event-color")):
-            submit_event_form_to_db(form, current_user.id)
-            return redirect(url_for("dates", id=date_id))
+            if submit_event_form_to_db(form, current_user.id):
+                flash("Event has been successfully added to calendar.")
+                return redirect(url_for("dates", id=date_id))
+            else:
+                flash("User entered invalid datetime. Event not submitted.")
+                return redirect(url_for("dates", id=date_id))
         else:
             flash("Event name and timings field cannot be empty.")
             return redirect(url_for("dates", id=date_id))
     date = get_date(date_id)
     day_name = get_day_name(date_id)
-    events = get_events(date_id, current_user.id)
-    return render_template("dates.html", date=date, day_name=day_name, events=events)
+    if current_user.is_authenticated:
+        events = get_events(date_id, current_user.id)
+        return render_template("dates.html", date=date, day_name=day_name, events=events)
+    else:
+        return render_template("dates.html", date=date, day_name=day_name)
 
 
 @app.route("/settings")
@@ -102,13 +108,11 @@ def api_global():
     if request.headers.get("Request-Source") != "JS-AJAX":
         return redirect(url_for("index"))
     
-    now = datetime.today()
-
-    date_of_today = now.strftime('%d-%m-%Y')
-
-    query = request.args.get("query")
-    if query == "today":
-        return date_of_today
+    if request.args.get("auth"):
+        if current_user.is_authenticated:
+            return True
+        else:
+            return False
 
 
 @app.route('/api/index/dates')

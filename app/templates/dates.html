@@ -200,17 +200,23 @@
             document.querySelector('svg').innerHTML += svg;
         }
 
-        getEvents()
+        auth = localStorage.getItem('auth') === '1';
+        if (auth) {
+            getEvents()
+        }
+
 
         let addFormButton = document.getElementById('add-event-button');
         addFormButton.addEventListener('click', () => {
-            document.getElementById('add-event-div').style.display = 'flex';
+            if (auth) {
+                document.getElementById('add-event-div').style.display = 'flex';
+            } else {
+                alert("User not authenticated. You must sign in to acces this feature.")
+            }
         });
         let removeFormButton = document.getElementById('event-form-close');
         removeFormButton.addEventListener('click', () => {
             document.getElementById('add-event-div').style.display = 'none';
         })
-
-
     </script>
 {% endblock main %}

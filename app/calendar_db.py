@@ -1,6 +1,8 @@
 from app.database_manager import get_db
 from app.helpers import get_color_hex, pad_digit
 
+from datetime import datetime
+
 def get_years():
     db = get_db()
     years = db.execute("SELECT DISTINCT substr(date(unix_time, 'unixepoch'), 0, 5) AS year FROM calendar").fetchall()
@@ -61,13 +63,18 @@ def submit_event_form_to_db(form: dict, user_id: int):
     event_timings_start = f"{event_start_date} {event_start_time}"
     event_timings_end = f"{event_end_date} {event_end_time}"
 
+    if datetime.fromisoformat(event_timings_start) < datetime.fromisoformat(event_timings_end):
+        return False
+
+
+
     db = get_db()
     db.execute("""INSERT INTO events(event_name, event_description, event_timings_start, event_timings_end, event_color, user_id) VALUES (?, ?, unixepoch(?), unixepoch(?), ?, ?)""",
         (event_name, event_description, event_timings_start, event_timings_end, event_color, user_id,)
     )
     db.commit()
     db.close()
-    return
+    return True
 
 
 def get_events(date_id, user_id):
