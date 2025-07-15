@@ -39,7 +39,7 @@ async function isAuthenticated() {
     }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     if (isAuthenticated()) {
         localStorage.setItem('auth', 1);
     } else {

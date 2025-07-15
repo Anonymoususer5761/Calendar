@@ -92,23 +92,25 @@
         </form>
     </div>
 
-    <div id="event-table-div">
-        <table id="event-table">
-            <thead>
-                <tr class="event-table-row">
-                    <th class="event-table-data">Index</th>
-                    <th class="event-table-data">Event</th>
-                    <th class="event-table-data">Description</th>
-                    <th class="event-table-data">Start</th>
-                    <th class="event-table-data">End</th>
-                    <th class="event-table-data">Color</th>
-                </tr>
-            </thead>
-            <tbody id="event-table-body">
+    {% if current_user.is_authenticated %}
+        <div id="event-table-div">
+            <table id="event-table">
+                <thead>
+                    <tr class="event-table-row">
+                        <th class="event-table-data">Index</th>
+                        <th class="event-table-data">Event</th>
+                        <th class="event-table-data">Description</th>
+                        <th class="event-table-data">Start</th>
+                        <th class="event-table-data">End</th>
+                        <th class="event-table-data">Color</th>
+                    </tr>
+                </thead>
+                <tbody id="event-table-body">
 
-            </tbody>
-        </table>
-    </div>
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
 
 
     <script>
@@ -228,7 +230,8 @@
             document.getElementById('event-table-body').innerHTML += html;
         }
 
-        auth = localStorage.getItem('auth') === '1';
+        let auth = false;
+        auth = localStorage.getItem('auth') === '1';  
         // Used ChatGPT to better understand how promises work and how to work with .then method.
         if (auth) {
             getEvents().then(events => {

@@ -118,6 +118,10 @@ body {
     overflow-wrap: max-content;
 }
 
+.event-table-data:nth-child {
+    background-color: #d5d8d6 
+}
+
 #event-table-index {
     text-align: center;
 }
