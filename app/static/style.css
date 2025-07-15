@@ -31,9 +31,19 @@ body {
 
 
 /* Dates page */
+
+
+/* Add Event Form */
 #add-event-div {
-    position: absolute;
-    left: 65%
+    display: none;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    background-color: #c5c8c6;
+    color: #1e1e22;
 }
 
 #add-event-form {
@@ -44,6 +54,23 @@ body {
 
 .event-form-data {
     padding:10px;
+}
+
+#event-form-close {
+    position: absolute;
+    top: 10px;
+    right: 5px;
+}
+
+#event-description {
+    width: 95%;
+    height: 30px;
+}
+
+/* SVG */
+#day-timeline-svg {
+    height: auto;
+    max-width: 100%;
 }
 
 .day {
@@ -73,46 +100,28 @@ body {
     opacity: 0.75;
 }
 
-#add-event-div {
-    display: none;
-    align-items: center;
-    justify-content: center;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    translate: -50% -50%;
-    background-color: #c5c8c6;
-    color: #1e1e22;
-}
-
-#event-form-close {
-    position: absolute;
-    top: 10px;
-    right: 5px;
-}
-
-#event-description {
-    width: 95%;
-    height: 30px;
-}
-
-#day-timeline-svg {
-    height: auto;
-    max-width: 100%;
-}
-
+/* Event Table */
 #event-table {
-    border: 2px solid rgb(140, 140, 140);
+    table-layout: fixed;
+    border-collapse: collapse;
+    border: 1px solid rgb(140, 140, 140);
     font-family: sans-serif;
     letter-spacing: 1px;
     padding: 3px;
+    width: 90%
+
 }
 
-.event-table-row, .event-table-body {
-    width: 14.2857142857%;
-    border: 2px solid black;
+.event-table-data {
+    white-space: pre-wrap;
+    border: 1px solid black;
     padding: 5px;
+    width: max-content;
+    max-width: 65%;
+    overflow-wrap: max-content;
 }
+
+
 
 
 /* Login page */
