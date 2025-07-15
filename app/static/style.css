@@ -68,7 +68,7 @@ body {
 /* SVG */
 #day-timeline-svg {
     height: auto;
-    max-width: 100%;
+    max-width: 95%;
 }
 
 .day {
@@ -104,8 +104,8 @@ body {
     border: 1px solid rgb(140, 140, 140);
     font-family: sans-serif;
     letter-spacing: 1px;
-    padding: 3px;
-    width: 100%
+    padding: 6px;
+    width: 98%
 
 }
 
@@ -118,8 +118,8 @@ body {
     overflow-wrap: max-content;
 }
 
-.event-table-data:nth-child {
-    background-color: #d5d8d6 
+.event-table-row:nth-child(even) {
+    background-color: #fafafa 
 }
 
 #event-table-index {
