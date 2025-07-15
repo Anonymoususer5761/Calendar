@@ -4,17 +4,6 @@
     <h1>{{ date }}</h1>
     <button id="add-event-button">Add Event</button>
 
-
-    <div id="event-div">
-        <ul>
-            {% if events %}
-                {% for event in events %}
-                    <li>{{ event }}</li>
-                {% endfor %}
-            {% endif %}
-        </ul>
-    </div>
-
     <div id="day-timeline-div">
         <svg id="day-timeline-svg" width="1500" height="600" viewBox="0 0 2500 600">
             <text x="1250" y="0" dominant-baseline="top" text-anchor="middle" font-size="40" fill="black">

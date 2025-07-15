@@ -42,11 +42,7 @@ def dates():
             return redirect(url_for("dates", id=date_id))
     date = get_date(date_id)
     day_name = get_day_name(date_id)
-    if current_user.is_authenticated:
-        events = get_events(date_id, current_user.id)
-        return render_template("dates.html", date=date, day_name=day_name, events=events)
-    else:
-        return render_template("dates.html", date=date, day_name=day_name)
+    return render_template("dates.html", date=date, day_name=day_name)
 
 
 @app.route("/settings")
