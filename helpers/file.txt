@@ -1,8 +1,25 @@
-SELECT (events.id) AS event_id, event_name, event_description, event_timings_start, event_timings_end, event_color FROM events JOIN users ON user_id = users.id WHERE user_id = 3 AND (event_timings_start <= (SELECT (unix_time - 1) AS unix_time from calendar WHERE id = 20276) AND event_timings_end >= (SELECT unix_time FROM calendar WHERE id = 20275))
-
-AND (event_timings_start BETWEEN // 200
-(SELECT unix_time FROM calendar WHERE id = 20276) 400
-AND (SELECT unix_time FROM calendar WHERE id = 20277) 600
-OR event_timings_end BETWEEN 700
-(SELECT unix_time FROM calendar WHERE id = 20276) 400
-AND (SELECT unix_time FROM calendar WHERE id = 20277)) 600
+<line class="hours" x1="50" y1=100 x2="1475" y2=100></line>
+<line class="hours" x1="50" y1=300 x2="1475" y2=300></line>
+<line class="hours" x1="50" y1=500 x2="1475" y2=500></line>
+<line class="hours" x1="50" y1=700 x2="1475" y2=700></line>
+<line class="hours" x1="50" y1=900 x2="1475" y2=900></line>
+<line class="hours" x1="50" y1=1100 x2="1475" y2=1100></line>
+<line class="hours" x1="50" y1=1300 x2="1475" y2=1300></line>
+<line class="hours" x1="50" y1=1500 x2="1475" y2=1500></line>
+<line class="hours" x1="50" y1=1700 x2="1475" y2=1700></line>
+<line class="hours" x1="50" y1=1900 x2="1475" y2=1900></line>
+<line class="hours" x1="50" y1=2100 x2="1475" y2=2100></line>
+<line class="hours" x1="50" y1=2300 x2="1475" y2=2300></line>
+<line class="hours" x1="50" y1=2500 x2="1475" y2=2500></line>
+<line class="hours" x1="50" y1=2700 x2="1475" y2=2700></line>
+<line class="hours" x1="50" y1=2900 x2="1475" y2=2900></line>
+<line class="hours" x1="50" y1=3100 x2="1475" y2=3100></line>
+<line class="hours" x1="50" y1=3300 x2="1475" y2=3300></line>
+<line class="hours" x1="50" y1=3500 x2="1475" y2=3500></line>
+<line class="hours" x1="50" y1=3700 x2="1475" y2=3700></line>
+<line class="hours" x1="50" y1=3900 x2="1475" y2=3900></line>
+<line class="hours" x1="50" y1=4100 x2="1475" y2=4100></line>
+<line class="hours" x1="50" y1=4300 x2="1475" y2=4300></line>
+<line class="hours" x1="50" y1=4500 x2="1475" y2=4500></line>
+<line class="hours" x1="50" y1=4700 x2="1475" y2=4700></line>
+<line class="hours" x1="50" y1=4900 x2="1475" y2=4900></line>
