@@ -5,10 +5,8 @@
     <button id="add-event-button">Add Event</button>
 
     <div id="day-timeline-div">
-        <svg id="day-timeline-svg" width="1500" height="520" viewBox="0 0 2500 520">
-            <text x="1250" y="0" dominant-baseline="top" text-anchor="middle" font-size="40" fill="black">
-                {{ day_name }}
-            </text>
+        <svg id="day-timeline-svg" width="1500" height="2800" viewBox="0 0 1500 2600">
+
             <defs>
                 <linearGradient id="day-fill" x1="0%" y1="0%" x2="100%" y2="100%">
                     <stop offset="10%" style="stop-color: rgb(236, 236, 236); stop-opacity: 0.1"></stop>
@@ -21,33 +19,39 @@
                     <stop offset="100%" style="stop-color: rgb(0, 0, 0); stop-opacity: 0.85"></stop>
                 </linearGradient>
             </defs>
-            <polyline class="day" points="100,10 100,510 2500,510 2500,10"/>
-            <line class="hours" x1="100" y1="20" x2="100" y2="510"/>
-            <line class="hours" x1="200" y1="20" x2="200" y2="510"/>
-            <line class="hours" x1="300" y1="20" x2="300" y2="510"/>
-            <line class="hours" x1="400" y1="20" x2="400" y2="510"/>
-            <line class="hours" x1="500" y1="20" x2="500" y2="510"/>
-            <line class="hours" x1="600" y1="20" x2="600" y2="510"/>
-            <line class="hours" x1="700" y1="20" x2="700" y2="510"/>
-            <line class="hours" x1="800" y1="20" x2="800" y2="510"/>
-            <line class="hours" x1="900" y1="20" x2="900" y2="510"/>
-            <line class="hours" x1="1000" y1="20" x2="1000" y2="510"/>
-            <line class="hours" x1="1100" y1="20" x2="1100" y2="510"/>
-            <line class="hours" x1="1200" y1="20" x2="1200" y2="510"/>
-            <line class="hours" x1="1300" y1="20" x2="1300" y2="510"/>
-            <line class="hours" x1="1400" y1="20" x2="1400" y2="510"/>
-            <line class="hours" x1="1500" y1="20" x2="1500" y2="510"/>
-            <line class="hours" x1="1600" y1="20" x2="1600" y2="510"/>
-            <line class="hours" x1="1700" y1="20" x2="1700" y2="510"/>
-            <line class="hours" x1="1800" y1="20" x2="1800" y2="510"/>
-            <line class="hours" x1="1900" y1="20" x2="1900" y2="510"/>
-            <line class="hours" x1="2000" y1="20" x2="2000" y2="510"/>
-            <line class="hours" x1="2100" y1="20" x2="2100" y2="510"/>
-            <line class="hours" x1="2200" y1="20" x2="2200" y2="510"/>
-            <line class="hours" x1="2300" y1="20" x2="2300" y2="510"/>
-            <line class="hours" x1="2400" y1="20" x2="2400" y2="510"/>
-            <line class="hours" x1="2500" y1="20" x2="2500" y2="510"/>
-            <line id="now" y1="20" y2="510" display="none"/>
+            <text x="1250" y="0" dominant-baseline="top" text-anchor="middle" font-size="40" fill="black">
+                {{ day_name }}
+            </text>
+
+            <polyline class="day" points="1500,100 50,100 50,2500 1500,2500"/>
+
+            <line class="hours" x1="50" y1=100 x2="1475" y2=100></line>
+            <line class="hours" x1="50" y1=300 x2="1475" y2=300></line>
+            <line class="hours" x1="50" y1=500 x2="1475" y2=500></line>
+            <line class="hours" x1="50" y1=700 x2="1475" y2=700></line>
+            <line class="hours" x1="50" y1=900 x2="1475" y2=900></line>
+            <line class="hours" x1="50" y1=1100 x2="1475" y2=1100></line>
+            <line class="hours" x1="50" y1=1300 x2="1475" y2=1300></line>
+            <line class="hours" x1="50" y1=1500 x2="1475" y2=1500></line>
+            <line class="hours" x1="50" y1=1700 x2="1475" y2=1700></line>
+            <line class="hours" x1="50" y1=1900 x2="1475" y2=1900></line>
+            <line class="hours" x1="50" y1=2100 x2="1475" y2=2100></line>
+            <line class="hours" x1="50" y1=2300 x2="1475" y2=2300></line>
+            <line class="hours" x1="50" y1=2500 x2="1475" y2=2500></line>
+            <line class="hours" x1="50" y1=2700 x2="1475" y2=2700></line>
+            <line class="hours" x1="50" y1=2900 x2="1475" y2=2900></line>
+            <line class="hours" x1="50" y1=3100 x2="1475" y2=3100></line>
+            <line class="hours" x1="50" y1=3300 x2="1475" y2=3300></line>
+            <line class="hours" x1="50" y1=3500 x2="1475" y2=3500></line>
+            <line class="hours" x1="50" y1=3700 x2="1475" y2=3700></line>
+            <line class="hours" x1="50" y1=3900 x2="1475" y2=3900></line>
+            <line class="hours" x1="50" y1=4100 x2="1475" y2=4100></line>
+            <line class="hours" x1="50" y1=4300 x2="1475" y2=4300></line>
+            <line class="hours" x1="50" y1=4500 x2="1475" y2=4500></line>
+            <line class="hours" x1="50" y1=4700 x2="1475" y2=4700></line>
+            <line class="hours" x1="50" y1=4900 x2="1475" y2=4900></line>
+
+            <line id="now" x1="50" x2="1475" display="none"/>
         </svg>
     </div>
 
@@ -160,13 +164,11 @@
         // Used ChatGPT to fix a bug where time wouldn't not update dynamically.
         function moveDayLine() {
             let svg = document.getElementById('now');
-            let now = new Date();;
-            let dayStart = new Date();
-            dayStart.setHours(0, 0, 0, 0);
-            let time = now.getTime() - dayStart.getTime();
-            let x_axis = (time / 36000) + 100;
-            svg.setAttribute("x1", x_axis);
-            svg.setAttribute("x2", x_axis);
+            let now = new Date();
+            let time = now.getTime() % 864000000 // 86400 times 1000 (seconds into milliseconds) = 86.4M.
+            let y_axis = (time / 360000) + 100;
+            svg.setAttribute("y1", y_axis);
+            svg.setAttribute("y2", y_axis);
             svg.removeAttribute("display");
         }
 
