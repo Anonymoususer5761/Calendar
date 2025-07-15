@@ -101,6 +101,19 @@ body {
     max-width: 100%;
 }
 
+#event-table {
+    border: 2px solid rgb(140, 140, 140);
+    font-family: sans-serif;
+    letter-spacing: 1px;
+    padding: 3px;
+}
+
+.event-table-row, .event-table-body {
+    width: 14.2857142857%;
+    border: 2px solid black;
+    padding: 5px;
+}
+
 
 /* Login page */
 #remember-me {

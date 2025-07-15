@@ -103,6 +103,24 @@
         </form>
     </div>
 
+    <div id="event-table-div">
+        <table id="event-table">
+            <thead>
+                <tr>
+                    <th>Index</th>
+                    <th>Event</th>
+                    <th>Description</th>
+                    <th>Start</th>
+                    <th>End</th>
+                    <th>Color</th>
+                </tr>
+            </thead>
+            <tbody id="event-table-body">
+
+            </tbody>
+        </table>
+    </div>
+
 
     <script>
         let eventTimingsDate = document.getElementsByClassName('event-timings-date');
@@ -170,12 +188,16 @@
         // Events imported from Fetch API.
         let dayId = document.location.href.split('?')[1].split('=')[1];
         async function getEvents() {
-            let response = await fetch(`/api/events?date_id=${dayId}`, {
+            let response = await fetch(`/api/dates/events?date_id=${dayId}`, {
                 headers: {
                     'Request-Source': 'JS-AJAX',
                 }
             });
             let events = await response.json();
+            return events;
+        }
+
+        function dispEventsSVG(events) {
             let svg = ``;
             for (let event of events) {
                 let start = event["timings_start"];
@@ -200,9 +222,30 @@
             document.querySelector('svg').innerHTML += svg;
         }
 
+        function dispEventsTable(events) {
+            html = '';
+            let i = 1;
+            for (event of events) {
+                html += '<tr class=event-table-row>';
+                html += `<td class=event-table-data>${i}</td>`;
+                html += `<td class=event-table-data>${event["name"]}</td>`;
+                html += `<td class=event-table-data>${event["desc"]}</td>`;
+                html += `<td class=event-table-data>${event["timings_start"]}</td>`;
+                html += `<td class=event-table-data>${event["timings_end"]}</td>`;
+                html += `<td class=event-table-data>${event["color"]}</td>`;
+                html += '</tr>';
+                i++;
+            }
+            document.getElementById('event-table-body').innerHTML += html;
+        }
+
         auth = localStorage.getItem('auth') === '1';
+        // Used ChatGPT to better understand how promises work and how to work with .then method.
         if (auth) {
-            getEvents()
+            getEvents().then(events => {
+                dispEventsTable(events);
+                dispEventsSVG(events);
+            });
         }
 
 
