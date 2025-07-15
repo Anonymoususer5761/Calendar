@@ -108,20 +108,22 @@ body {
     font-family: sans-serif;
     letter-spacing: 1px;
     padding: 3px;
-    width: 90%
+    width: 100%
 
 }
 
+/* Used ChatGPT to make new lines in table cells */
 .event-table-data {
     white-space: pre-wrap;
     border: 1px solid black;
     padding: 5px;
     width: max-content;
-    max-width: 65%;
     overflow-wrap: max-content;
 }
 
-
+#event-table-index {
+    text-align: center;
+}
 
 
 /* Login page */

@@ -227,7 +227,7 @@
             let i = 1;
             for (event of events) {
                 html += '<tr class=event-table-row>';
-                html += `<td class=event-table-data>${i}</td>`;
+                html += `<td class=event-table-data id="event-table-index">${i}</td>`;
                 html += `<td class=event-table-data>${event["name"]}</td>`;
                 html += `<td class=event-table-data>${event["desc"]}</td>`;
                 html += `<td class=event-table-data>${event["timings_start"]}</td>`;
