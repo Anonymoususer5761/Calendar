@@ -134,7 +134,6 @@
                         <th class="event-table-data">Description</th>
                         <th class="event-table-data">Start</th>
                         <th class="event-table-data">End</th>
-                        <th class="event-table-data">Color</th>
                     </tr>
                 </thead>
                 <tbody id="event-table-body">
@@ -267,7 +266,6 @@
                 html += `<td class=event-table-data>${event["desc"]}, ${event["timings_start"]}</td>`;
                 html += `<td class=event-table-data>${formatDateTime(event["timings_start"] * 1000)}</td>`;
                 html += `<td class=event-table-data>${formatDateTime(event["timings_end"] * 1000)}</td>`;
-                html += `<td class=event-table-data>${event["color"]}</td>`;
                 html += '</tr>';
                 i++;
             }
