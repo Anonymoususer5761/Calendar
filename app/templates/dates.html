@@ -77,7 +77,7 @@
             <line class="hours" x1="75" y1=2500 x2="1475" y2=2500></line>
             <text x="20" y="2509" font-size="18" font="sans-serif" fill="black">23:00</text>
             <line class="hours" x1="75" y1=2600 x2="1475" y2=2600></line>
-            <text x="20" y="2609" font-size="18" font="sans-serif" fill="black">24:00</text>
+            <text x="20" y="2609" font-size="18" font="sans-serif" fill="black">00:00</text>
 
             <line id="now" x1="75" x2="1475" display="none"/>
         </svg>
@@ -234,9 +234,9 @@
                 if (Math.trunc(start / secondsInDay) + 1 === parseInt(dayId)) { // Checks if event starts today.
                     y1 = possible_y1;
                 } else if (possible_y1 > 2400) {
-                    y1 = possible_y1;
+                    y1 = possible_y1 - 2400;
                 } else {
-                    y1 = 0;
+                    y1 = 100;
                 }
                 if (Math.trunc(end / secondsInDay) + 1 === parseInt(dayId)) { // Checks if event ends today.
                     y2 = end % secondsInDay / secondsInDayByScaleOfTimeline + offset;

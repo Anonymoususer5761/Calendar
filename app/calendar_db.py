@@ -63,7 +63,7 @@ def submit_event_form_to_db(form: dict, user_id: int):
     event_timings_start = f"{event_start_date} {event_start_time}"
     event_timings_end = f"{event_end_date} {event_end_time}"
 
-    if datetime.fromisoformat(event_timings_start) < datetime.fromisoformat(event_timings_end):
+    if datetime.fromisoformat(event_timings_start) > datetime.fromisoformat(event_timings_end):
         return False
 
 
