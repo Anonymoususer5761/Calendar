@@ -108,9 +108,8 @@ def api_global():
     
     if request.args.get("auth"):
         if current_user.is_authenticated:
-            return True
-        else:
-            return False
+            return jsonify(True)
+    return jsonify(False)
 
 
 @app.route('/api/index/dates')
