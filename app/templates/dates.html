@@ -249,6 +249,14 @@
             document.querySelector('svg').innerHTML += svg;
         }
 
+        // Used ChatGPT because I couldn't figure out that I had to convert the timestamp into milliseconds.
+        function formatDateTime(timestamp) {
+            let date = new Date(timestamp);
+            let datetime = date.toISOString();
+            datetime = datetime.replace('T', ' ').split('.')[0];
+            return datetime;
+        }
+
         function dispEventsTable(events) {
             html = '';
             let i = 1;
@@ -256,9 +264,9 @@
                 html += '<tr class=event-table-row>';
                 html += `<td class=event-table-data id="event-table-index">${i}</td>`;
                 html += `<td class=event-table-data>${event["name"]}</td>`;
-                html += `<td class=event-table-data>${event["desc"]}</td>`;
-                html += `<td class=event-table-data>${event["timings_start"]}</td>`;
-                html += `<td class=event-table-data>${event["timings_end"]}</td>`;
+                html += `<td class=event-table-data>${event["desc"]}, ${event["timings_start"]}</td>`;
+                html += `<td class=event-table-data>${formatDateTime(event["timings_start"] * 1000)}</td>`;
+                html += `<td class=event-table-data>${formatDateTime(event["timings_end"] * 1000)}</td>`;
                 html += `<td class=event-table-data>${event["color"]}</td>`;
                 html += '</tr>';
                 i++;

@@ -50,8 +50,5 @@ isAuthenticated().then(auth => {
     }
 });
 
-    
-
-
 let today = new Date()
 localStorage.setItem('today', today.toISOString());
