@@ -78,6 +78,8 @@
             <text x="20" y="2609" font-size="18" font="sans-serif" fill="black">00:00</text>
 
             <line id="now" x1="75" x2="975" display="none"/>
+
+            {{ html|safe }}
         </svg>
     </div>
 
@@ -302,7 +304,7 @@
         if (auth) {
             getEvents().then(events => {
                 dispEventsTable(events);
-                dispEventsSVG(events);
+                // dispEventsSVG(events);
                 hoverEventListeners();
             });
         }
