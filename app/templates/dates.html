@@ -290,8 +290,8 @@
                 eventTableInstance.addEventListener('click', () => {
                     correspondingSVGInstance.scrollIntoView();
                 });
-                eventTableInstance.addEventListener('mouseleave', () => {
-                    correspondingSVGInstance.scrollIntoView();
+                correspondingSVGInstance.addEventListener('click', () => {
+                    eventTableInstance.scrollIntoView();
                 });
             }
         }
