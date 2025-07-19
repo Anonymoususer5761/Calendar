@@ -268,24 +268,30 @@
         }
 
         function hoverEventListeners() {
-            let eventInstances = document.getElementsByClassName('event-table-row');
-            for (let eventInstance of eventInstances) {
-                let corresponsingTableInstance = document.getElementById(`event-${eventInstance.getAttribute('value')}`);
-                eventInstance.addEventListener('mouseenter', () => {
-                    corresponsingTableInstance.classList.add('custom-lines-hover');
-                    eventInstance.classList.add('event-table-row-hover');
+            let eventTableInstances = document.getElementsByClassName('event-table-row');
+            for (let eventTableInstance of eventTableInstances) {
+                let correspondingSVGInstance = document.getElementById(`event-${eventTableInstance.getAttribute('value')}`);
+                eventTableInstance.addEventListener('mouseenter', () => {
+                    correspondingSVGInstance.classList.add('custom-lines-hover');
+                    eventTableInstance.classList.add('event-table-row-hover');
                 });
-                eventInstance.addEventListener('mouseleave', () => {
-                    corresponsingTableInstance.classList.remove('custom-lines-hover')
-                    eventInstance.classList.remove('event-table-row-hover');
+                eventTableInstance.addEventListener('mouseleave', () => {
+                    correspondingSVGInstance.classList.remove('custom-lines-hover')
+                    eventTableInstance.classList.remove('event-table-row-hover');
                 });
-               corresponsingTableInstance.addEventListener('mouseenter', () => {
-                    corresponsingTableInstance.classList.add('custom-lines-hover');
-                    eventInstance.classList.add('event-table-row-hover');
+               correspondingSVGInstance.addEventListener('mouseenter', () => {
+                    correspondingSVGInstance.classList.add('custom-lines-hover');
+                    eventTableInstance.classList.add('event-table-row-hover');
                 });
-                corresponsingTableInstance.addEventListener('mouseleave', () => {
-                    corresponsingTableInstance.classList.remove('custom-lines-hover')
-                    eventInstance.classList.remove('event-table-row-hover');
+                correspondingSVGInstance.addEventListener('mouseleave', () => {
+                    correspondingSVGInstance.classList.remove('custom-lines-hover')
+                    eventTableInstance.classList.remove('event-table-row-hover');
+                });
+                eventTableInstance.addEventListener('click', () => {
+                    correspondingSVGInstance.scrollIntoView();
+                });
+                eventTableInstance.addEventListener('mouseleave', () => {
+                    correspondingSVGInstance.scrollIntoView();
                 });
             }
         }
