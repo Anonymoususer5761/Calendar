@@ -128,12 +128,12 @@
         <div id="event-table-div">
             <table id="event-table">
                 <thead>
-                    <tr class="event-table-row">
-                        <th class="event-table-data">Index</th>
-                        <th class="event-table-data">Event</th>
-                        <th class="event-table-data">Description</th>
-                        <th class="event-table-data">Start</th>
-                        <th class="event-table-data">End</th>
+                    <tr class="event-table-row-all">
+                        <th class="event-table-data-all">Index</th>
+                        <th class="event-table-data-all">Event</th>
+                        <th class="event-table-data-all">Description</th>
+                        <th class="event-table-data-all">Start</th>
+                        <th class="event-table-data-all">End</th>
                     </tr>
                 </thead>
                 <tbody id="event-table-body">
@@ -142,7 +142,6 @@
             </table>
         </div>
     {% endif %}
-
 
     <script>
         let eventTimingsDate = document.getElementsByClassName('event-timings-date');
@@ -243,7 +242,7 @@
                 } else {
                     y2 = 2599;
                 }
-                svg += `<polyline class="custom-lines" name="${event["name"]}" points="1475,${y1} 75,${y1} 75,${y2} 1475,${y2}" fill=${event["color"]} stroke=${event["color"]} opacity="0.25"></polyline>`;
+                svg += `<polyline id="event-${event["id"]}" class="custom-lines" name="${event["name"]}" points="1475,${y1} 75,${y1} 75,${y2} 1475,${y2}" fill=${event["color"]} stroke=${event["color"]} opacity="0.25"></polyline>`;
             }
             document.querySelector('svg').innerHTML += svg;
         }
@@ -257,20 +256,36 @@
         }
 
         function dispEventsTable(events) {
-            html = '';
+            let html = '';
             let i = 1;
-            for (event of events) {
-                html += '<tr class=event-table-row>';
-                html += `<td class=event-table-data id="event-table-index">${i}</td>`;
-                html += `<td class=event-table-data>${event["name"]}</td>`;
-                html += `<td class=event-table-data>${event["desc"]}, ${event["timings_start"]}</td>`;
-                html += `<td class=event-table-data>${formatDateTime(event["timings_start"] * 1000)}</td>`;
-                html += `<td class=event-table-data>${formatDateTime(event["timings_end"] * 1000)}</td>`;
+            for (let event of events) {
+                html += `<tr value="${event["id"]}" class="event-table-row">`;
+                html += `<td class="event-table-data" class="event-table-index">${i}</td>`;
+                html += `<td class="event-table-data">${event["name"]}</td>`;
+                html += `<td class="event-table-data">${event["desc"]}, ${event["timings_start"]}</td>`;
+                html += `<td class="event-table-data">${formatDateTime(event["timings_start"] * 1000)}</td>`;
+                html += `<td class="event-table-data">${formatDateTime(event["timings_end"] * 1000)}</td>`;
                 html += '</tr>';
                 i++;
             }
             document.getElementById('event-table-body').innerHTML += html;
         }
+
+        function hoverEventListeners() {
+            let eventInstances = document.getElementsByClassName('event-table-row');
+            for (let eventInstance of eventInstances) {
+                eventInstance.addEventListener('mouseenter', () => {
+                    document.getElementById(`event-${eventInstance.getAttribute('value')}`).classList.add('custom-lines-hover')
+                    console.log("Mouse here")
+                    // console.log(eventInstance.getAttribute('value'))
+                });
+                eventInstance.addEventListener('mouseleave', () => {
+                    document.getElementById(`event-${eventInstance.getAttribute('value')}`).classList.remove('custom-lines-hover')
+                    console.log("Mouse leave")
+                    // console.log(eventInstance.getAttribute('value'))
+                });
+            }
+        };
 
         let auth = false;
         auth = localStorage.getItem('auth') === '1';  
@@ -279,6 +294,7 @@
             getEvents().then(events => {
                 dispEventsTable(events);
                 dispEventsSVG(events);
+                hoverEventListeners();
             });
         }
 
@@ -307,5 +323,5 @@
         }
 
         document.getElementById('yesterday').innerHTML = previousDay[document.getElementById('day-name').innerHTML.trim()]
-            </script>
+        </script>
 {% endblock main %}

@@ -97,6 +97,10 @@ body {
     opacity: 0.75;
 }
 
+.custom-lines-hover {
+    opacity: 0.75;
+}
+
 /* Event Table */
 #event-table {
     table-layout: fixed;
@@ -106,7 +110,10 @@ body {
     letter-spacing: 1px;
     padding: 6px;
     width: 98%
+}
 
+.event-table-row-hover{
+    background-color: #999;
 }
 
 /* Used ChatGPT to make new lines in table cells */
@@ -116,10 +123,6 @@ body {
     padding: 5px;
     width: max-content;
     overflow-wrap: max-content;
-}
-
-.event-table-row:nth-child(even) {
-    background-color: #fafafa 
 }
 
 #event-table-index {
