@@ -94,7 +94,8 @@ body {
 }
 
 .custom-lines-hover {
-    opacity: 0.3;
+    opacity: 0.8;
+    stroke-width: 3px
 }
 
 /* Event Table */

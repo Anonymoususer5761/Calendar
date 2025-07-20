@@ -11,11 +11,16 @@ OFFSET = 200 # The timeline starts at y=200px.
 def events_svg(date_id: int | str, user_id: int | str) -> str:
     date_id = int(date_id)
     events = get_events(date_id, user_id)
-    date = date_id - 1
-    html = []
-    x1 = 175
-    x2 = 75
+
     if events:
+        date = date_id - 1
+        html = []
+        x2 = 75
+        if len(events) <= 9:
+            increment = 100
+        else:
+            increment = 925 / len(events)
+        x1 = x2 + increment
         for event in events:
             start = event["timings_start"]
             end = event["timings_end"]
@@ -28,10 +33,10 @@ def events_svg(date_id: int | str, user_id: int | str) -> str:
             elif start_date_difference <= Fraction(1, 24):
                 y1 = possible_y1 - 2400
             if trunc(end / SECONDS_IN_DAY) + 1 == date_id: # Checks if event starts today.
-                y2 = end % SECONDS_IN_DAY / SCALE + OFFSET
-            html.append(f'<polyline id="event-{event["id"]}" class="custom-lines" name="{event["name"]}" points="{x1},{y1} {x2},{y1} {x2},{y2} {x1},{y2}" fill={event["color"]} stroke={event["color"]} opacity="0.25" stroke-linecap="round"></polyline>')
-            x1 += 100
-            x2 += 100
+                y2 = Fraction(end % SECONDS_IN_DAY, SCALE) + OFFSET
+            html.append(f'<polyline id="event-{event["id"]}" class="custom-lines" name="{event["name"]}" points="{x1},{y1} {x2},{y1} {x2},{y2} {x1},{y2}" fill={event["color"]} stroke={event["color"]} opacity="0.35" stroke-width="2px"></polyline>')
+            x1 += increment
+            x2 += increment
         return ''.join(html)
     else:
         return "No Events Today"
