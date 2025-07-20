@@ -178,6 +178,7 @@
             }
         });
         startTime.addEventListener('change', () => {
+            endTime.removeAttribute('min');
             endDate.setAttribute('min', startDate.value);
             if (startDate.value === endDate.value) {
                 endTime.setAttribute('min', startTime.value);
