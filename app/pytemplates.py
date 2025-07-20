@@ -1,5 +1,7 @@
 from app.calendar_db import get_events
 
+from fractions import Fraction
+
 from math import trunc
 
 SECONDS_IN_DAY = 86400
@@ -9,6 +11,7 @@ OFFSET = 200 # The timeline starts at y=200px.
 def events_svg(date_id: int | str, user_id: int | str) -> str:
     date_id = int(date_id)
     events = get_events(date_id, user_id)
+    date = date_id - 1
     html = []
     x1 = 175
     x2 = 75
@@ -16,17 +19,14 @@ def events_svg(date_id: int | str, user_id: int | str) -> str:
         for event in events:
             start = event["timings_start"]
             end = event["timings_end"]
-            y1 = 200
-            possible_y1 = start % SECONDS_IN_DAY / SCALE + OFFSET
+            start_date_difference = date - Fraction(start, SECONDS_IN_DAY)
+            y1 = 100
+            possible_y1 = Fraction(start % SECONDS_IN_DAY, SCALE) + OFFSET
             y2 = 2599
-            if trunc(start / SECONDS_IN_DAY) + 1 == date_id: # Checks if event starts today.
+            if start_date_difference <= 0: # Checks if event starts today.
                 y1 = possible_y1
-            elif possible_y1 == 200:
-                y1 = possible_y1 - 100
-            elif possible_y1 > 2400:
+            elif start_date_difference <= Fraction(1, 24):
                 y1 = possible_y1 - 2400
-            elif possible_y1 > 200:
-                y1 = 100
             if trunc(end / SECONDS_IN_DAY) + 1 == date_id: # Checks if event starts today.
                 y2 = end % SECONDS_IN_DAY / SCALE + OFFSET
             html.append(f'<polyline id="event-{event["id"]}" class="custom-lines" name="{event["name"]}" points="{x1},{y1} {x2},{y1} {x2},{y2} {x1},{y2}" fill={event["color"]} stroke={event["color"]} opacity="0.25" stroke-linecap="round"></polyline>')

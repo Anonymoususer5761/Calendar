@@ -55,5 +55,9 @@ CREATE TABLE IF NOT EXISTS "events" (
         "user_id" INTEGER,
         PRIMARY KEY("id"),
         FOREIGN KEY("user_id") REFERENCES "users"("id")
-)
+);
+
+CREATE INDEX IF NOT EXISTS "events_index" ON "events" (
+    "id", "event_timings_start", "event_timings_end", "user_id"
+);
 
