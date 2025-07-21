@@ -65,6 +65,18 @@ body {
     height: 30px;
 }
 
+.event-popup {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    background-color: #c5c8c6;
+    color: #1e1e22;
+}
+
 /* SVG */
 #day-timeline-svg {
     height: auto;

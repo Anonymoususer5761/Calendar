@@ -44,7 +44,8 @@ def dates():
     date = get_date(date_id)
     day_name = get_day_name(date_id)
     html = events_svg(date_id, current_user.id)
-    return render_template("dates.html", date=date, day_name=day_name, html=html)
+    events = get_events(date_id, current_user.id)
+    return render_template("dates.html", date=date, day_name=day_name, html=html, events=events)
 
 
 @app.route("/settings")

@@ -142,6 +142,15 @@
         </div>
     {% endif %}
 
+    {% for event in events %}
+        <div id="event-popup-{{ event.id }}" class="event-popup">
+            <h1 class="event-popup-name">{{ event.name }}</h1>
+            <p class="event-popup-desc">{{ event.desc }}</p>
+            <p class="event-popup-start">{{ event.timings_start }}</p>
+            <p class="event-popup-end">{{ event.timings_end }}</p>
+        </div>
+    {% endfor %}
+
     <script>
         let eventTimingsDate = document.getElementsByClassName('event-timings-date');
         let eventTimingsTime = document.getElementsByClassName('event-timings-time');
@@ -270,30 +279,39 @@
             document.getElementById('event-table-body').innerHTML += html;
         }
 
+        function eventPopupToggle(eventId) {
+            document.getElementById(`event-popup-${eventId}`).style.display = 'flex';
+        }
+
         function hoverEventListeners() {
-            let eventTableInstances = document.getElementsByClassName('event-table-row');
+            let customLines = document.getElementsByClassName('custom-lines');
+            for (let customLine of customLines) {
+                
+            }
             for (let eventTableInstance of eventTableInstances) {
-                let correspondingSVGInstance = document.getElementById(`event-${eventTableInstance.getAttribute('value')}`);
+                let eventSVGInstance = document.getElementById(`event-${eventTableInstance.getAttribute('value')}`);
                 eventTableInstance.addEventListener('mouseenter', () => {
-                    correspondingSVGInstance.classList.add('custom-lines-hover');
+                    eventSVGInstance.classList.add('custom-lines-hover');
                     eventTableInstance.classList.add('event-table-row-hover');
                 });
                 eventTableInstance.addEventListener('mouseleave', () => {
-                    correspondingSVGInstance.classList.remove('custom-lines-hover')
+                    eventSVGInstance.classList.remove('custom-lines-hover')
                     eventTableInstance.classList.remove('event-table-row-hover');
                 });
-               correspondingSVGInstance.addEventListener('mouseenter', () => {
-                    correspondingSVGInstance.classList.add('custom-lines-hover');
+               eventSVGInstance.addEventListener('mouseenter', () => {
+                    eventSVGInstance.classList.add('custom-lines-hover');
                     eventTableInstance.classList.add('event-table-row-hover');
+                    eventPopupToggle(eventSVGInstance.getAttribute('id').split('-')[1]);
                 });
-                correspondingSVGInstance.addEventListener('mouseleave', () => {
-                    correspondingSVGInstance.classList.remove('custom-lines-hover')
+                eventSVGInstance.addEventListener('mouseleave', () => {
+                    eventSVGInstance.classList.remove('custom-lines-hover')
                     eventTableInstance.classList.remove('event-table-row-hover');
+                    eventPopupToggle(eventSVGInstance.getAttribute('value'));
                 });
                 eventTableInstance.addEventListener('click', () => {
-                    correspondingSVGInstance.scrollIntoView();
+                    eventSVGInstance.scrollIntoView();
                 });
-                correspondingSVGInstance.addEventListener('click', () => {
+                eventSVGInstance.addEventListener('click', () => {
                     eventTableInstance.scrollIntoView();
                 });
             }
