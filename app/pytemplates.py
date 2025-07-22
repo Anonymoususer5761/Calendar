@@ -34,7 +34,7 @@ def events_svg(date_id: int | str, user_id: int | str) -> str:
                 y1 = possible_y1 - 2400
             if trunc(end / SECONDS_IN_DAY) + 1 == date_id: # Checks if event starts today.
                 y2 = Fraction(end % SECONDS_IN_DAY, SCALE) + OFFSET
-            html.append(f'<polyline id="event-{event["id"]}" class="custom-lines" points="{x1},{y1} {x2},{y1} {x2},{y2} {x1},{y2}" fill={event["color"]} stroke={event["color"]} opacity="0.35" stroke-width="2px"></polyline>')
+            html.append(f'<polyline value="{event["id"]}" class="custom-lines" points="{x1},{y1} {x2},{y1} {x2},{y2} {x1},{y2}" fill={event["color"]} stroke={event["color"]} opacity="0.35" stroke-width="2px"></polyline>')
             x1 += increment
             x2 += increment
         return ''.join(html)

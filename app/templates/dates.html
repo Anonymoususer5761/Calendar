@@ -143,13 +143,15 @@
     {% endif %}
 
     {% for event in events %}
-        <div id="event-popup-{{ event.id }}" class="event-popup">
+        <div id="event-popup-{{ event.id }}" class="event-popup" color="{{ event.color }};">
             <h1 class="event-popup-name">{{ event.name }}</h1>
+            <hr>
             <p class="event-popup-desc">{{ event.desc }}</p>
             <p class="event-popup-start">{{ event.timings_start }}</p>
             <p class="event-popup-end">{{ event.timings_end }}</p>
         </div>
     {% endfor %}
+
 
     <script>
         let eventTimingsDate = document.getElementsByClassName('event-timings-date');
@@ -194,7 +196,6 @@
             }
         });
 
-        // Below is the JavaScript for the Day Timeline.
         selectedDate = document.querySelector('h1').innerHTML;
         // Used ChatGPT to fix a bug where time wouldn't not update dynamically.
         function moveDayLine() {
@@ -258,11 +259,20 @@
 
         // Used ChatGPT because I couldn't figure out that I had to convert the timestamp into milliseconds.
         function formatDateTime(timestamp) {
+            timestamp = parseInt(timestamp);
             let date = new Date(timestamp);
             let datetime = date.toISOString();
-            datetime = datetime.replace('T', ' ').split('.')[0];
+            datetime = datetime.replace('T', ' ').split('.')[0].slice(0, 16);
             return datetime;
         }
+
+        let eventPopupStarts = document.getElementsByClassName('event-popup-start');
+        let eventPopupEnds = document.getElementsByClassName('event-popup-end');
+        for (let i = 0; i < eventPopupStarts.length; i++) {
+            eventPopupStarts[i].innerHTML = formatDateTime(eventPopupStarts[i].innerHTML * 1000);
+            eventPopupEnds[i].innerHTML = formatDateTime(eventPopupEnds[i].innerHTML * 1000);
+        }
+        // eventPopupStart.innerHTML = formatDateTime(eventPopupStart.innerHTML)
 
         function dispEventsTable(events) {
             let html = '';
@@ -279,40 +289,28 @@
             document.getElementById('event-table-body').innerHTML += html;
         }
 
-        function eventPopupToggle(eventId) {
-            document.getElementById(`event-popup-${eventId}`).style.display = 'flex';
+        let customLines = document.getElementsByClassName('custom-lines');
+        function svgHoverEffect(eventId, active=false) {
+            if (active === true) {
+                console.log(eventId)
+                popup = document.getElementById(`event-popup-${eventId}`);
+                popup.classList.add('event-popup-hover');
+                popup.setAttribute('style', `background-color: ${popup.getAttribute('color')}`)
+            }
+            else {
+                document.getElementById(`event-popup-${eventId}`).classList.remove('event-popup-hover');
+            }
         }
 
         function hoverEventListeners() {
-            let customLines = document.getElementsByClassName('custom-lines');
             for (let customLine of customLines) {
-                
-            }
-            for (let eventTableInstance of eventTableInstances) {
-                let eventSVGInstance = document.getElementById(`event-${eventTableInstance.getAttribute('value')}`);
-                eventTableInstance.addEventListener('mouseenter', () => {
-                    eventSVGInstance.classList.add('custom-lines-hover');
-                    eventTableInstance.classList.add('event-table-row-hover');
+                customLine.addEventListener('mouseenter', () => {
+                    svgHoverEffect(customLine.getAttribute('value'), active=true)
+                    customLine.classList.add('custom-lines-hover');
                 });
-                eventTableInstance.addEventListener('mouseleave', () => {
-                    eventSVGInstance.classList.remove('custom-lines-hover')
-                    eventTableInstance.classList.remove('event-table-row-hover');
-                });
-               eventSVGInstance.addEventListener('mouseenter', () => {
-                    eventSVGInstance.classList.add('custom-lines-hover');
-                    eventTableInstance.classList.add('event-table-row-hover');
-                    eventPopupToggle(eventSVGInstance.getAttribute('id').split('-')[1]);
-                });
-                eventSVGInstance.addEventListener('mouseleave', () => {
-                    eventSVGInstance.classList.remove('custom-lines-hover')
-                    eventTableInstance.classList.remove('event-table-row-hover');
-                    eventPopupToggle(eventSVGInstance.getAttribute('value'));
-                });
-                eventTableInstance.addEventListener('click', () => {
-                    eventSVGInstance.scrollIntoView();
-                });
-                eventSVGInstance.addEventListener('click', () => {
-                    eventTableInstance.scrollIntoView();
+                customLine.addEventListener('mouseleave', () => {
+                    svgHoverEffect(customLine.getAttribute('value'), active=false)
+                    customLine.classList.remove('custom-lines-hover');
                 });
             }
         }

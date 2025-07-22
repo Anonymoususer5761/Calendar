@@ -67,14 +67,20 @@ body {
 
 .event-popup {
     display: none;
+    width: 20%;
+    height: 20%;
     align-items: center;
     justify-content: center;
     position: fixed;
     top: 50%;
-    left: 50%;
+    left: 90%;
     translate: -50% -50%;
     background-color: #c5c8c6;
     color: #1e1e22;
+}
+
+.event-popup-hover {
+    display: inline-block;
 }
 
 /* SVG */
@@ -121,11 +127,11 @@ body {
     width: 60%
 }
 
-.event-table-data-all{
+.event-table-data-all {
     border: 2px solid black;
 }
 
-.event-table-row-hover{
+.event-table-row-hover {
     background-color: #eee;
 }
 
