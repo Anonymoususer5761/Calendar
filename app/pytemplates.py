@@ -2,6 +2,7 @@ from app.calendar_db import get_events
 from app.helpers import modulate_color, format_datetime
 
 from fractions import Fraction
+from decimal import Decimal
 
 from math import trunc
 
@@ -27,14 +28,14 @@ def get_events_and_format_events_svg(date_id: int | str, user_id: int | str) -> 
             end = event["timings_end"]
             start_date_difference = date - Fraction(start, SECONDS_IN_DAY)
             y1 = 100
-            possible_y1 = Fraction(start % SECONDS_IN_DAY, SCALE) + OFFSET
+            possible_y1 = Decimal(start % SECONDS_IN_DAY) / Decimal(SCALE) + OFFSET
             y2 = 2599
             if start_date_difference <= 0: # Checks if event starts today.
                 y1 = possible_y1
             elif start_date_difference <= Fraction(1, 24):
                 y1 = possible_y1 - 2400
             if trunc(end / SECONDS_IN_DAY) + 1 == date_id: # Checks if event starts today.
-                y2 = Fraction(end % SECONDS_IN_DAY, SCALE) + OFFSET
+                y2 = Decimal(end % SECONDS_IN_DAY) / Decimal(SCALE) + OFFSET
             html.append(f'<polyline value="{event["id"]}" class="custom-lines" points="{x1},{y1} {x2},{y1} {x2},{y2} {x1},{y2}" fill={event["color"]} stroke={event["color"]} opacity="0.35" stroke-width="2px"></polyline>')
             x1 += increment
             x2 += increment
