@@ -88,12 +88,12 @@
         <form id="add-event-form" action="", method="post">
             <label class="event-form-data">Event</label>
             <br>
-            <input id="event-name" class="event-form-data" name="event-name" autocomplete="off" required placeholder="Event Name">
+            <input id="event-name" class="event-form-data" name="event-name" autocomplete="off" required placeholder="Event Name" maxlength="32">
             <br>
 
             <label>Description</label>
             <br>
-            <textarea id="event-description" class="event-form-date" name="event-description" autocomplete="off" placeholder="Event Description"></textarea>
+            <textarea id="event-description" class="event-form-date" name="event-description" autocomplete="off" placeholder="Event Description" maxlength="255"></textarea>
             <br><br>
 
             <label class="event-form-data">From</label>
@@ -125,9 +125,8 @@
     </div>
 
     {% for event in events %}
-        <div id="event-popup-{{ event.id }}" class="event-popup" style="--var-color: {{ event.color }};">
+        <div id="event-popup-{{ event.id }}" class="event-popup" style="--var-color: {{ event.color }}">
             <h1 class="event-popup-name">{{ event.name }}</h1>
-            <hr>
             <p class="event-popup-desc">{{ event.desc }}</p>
             <p class="event-popup-start">{{ event.timings_start }}</p>
             <p class="event-popup-end">{{ event.timings_end }}</p>
@@ -216,17 +215,13 @@
 
         let customLines = document.getElementsByClassName('custom-lines');
         function svgHoverEffect(eventId, event, active=false) {
-            // if (active === true) {
-            //     // popup = document.getElementById(`event-popup-${eventId}`);
-            //     // popup.classList.add('event-popup-hover');
-            //     // popup.setAttribute('style', `background-color: ${popup.getAttribute('color')}`)
-            //     // popup.setAttribute('style', `left: ${event.clientX}`);
-            //     // popup.setAttribute('style', `top: ${event.clientY}`);
-
-            // }
-            // else {
-            //     // document.getElementById(`event-popup-${eventId}`).classList.remove('event-popup-hover');
-            // }
+            if (active === true) {
+                popup = document.getElementById(`event-popup-${eventId}`);
+                popup.classList.add('event-popup-hover');
+            }
+            else {
+                document.getElementById(`event-popup-${eventId}`).classList.remove('event-popup-hover');
+            }
             return
         }
 

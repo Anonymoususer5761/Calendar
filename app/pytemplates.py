@@ -1,5 +1,5 @@
 from app.calendar_db import get_events
-from app.helpers import color_modulator, format_datetime
+from app.helpers import modulate_color, format_datetime
 
 from fractions import Fraction
 

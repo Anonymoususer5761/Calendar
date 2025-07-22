@@ -1,6 +1,6 @@
 /* Webpage */
 body {
-    background-color: white;
+    background-color: #fff;
     color: #1e1e22;
 } 
 
@@ -129,6 +129,47 @@ body {
 
 .event-table-row-hover {
     background-color: #eee;
+}
+
+/* Popups */
+.event-popup {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    min-width: 30%;
+    width: fit-content;
+    max-width: 30%;
+    top: 50%;
+    left: 80%;
+    /* margin-left: 20px; */
+    padding: 15px;
+    translate: -50% -50%;
+    color: #f2ece6;
+    background-color: #333;
+    border-radius: 10px;
+    hyphens: auto;
+    overflow-wrap: break-word;
+    overflow: hidden;
+}
+
+.event-popup-hover {
+    display: inline-block;
+}
+
+.event-popup-name {
+    position: relative;
+}
+
+.event-popup-name::before {
+    content: '';
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    width: 90%;
+    height: 1px;
+    border-radius: 3px;
+    background-image: linear-gradient(to right, blue, red);
 }
 
 /* Used ChatGPT to make new lines in table cells */

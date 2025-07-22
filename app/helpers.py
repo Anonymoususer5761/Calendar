@@ -45,7 +45,7 @@ def format_datetime(timestamp: str | int) -> str:
     return datetime.fromtimestamp(timestamp).strftime("%Y-%m-%d %H:%M")
 
 
-def color_modulator(hex_code: str, factor: float =0.2) -> str:
+def modulate_color(hex_code: str, factor: float =0.2) -> str:
     rgb = [int(hex_code[1:3], 16), int(hex_code[3:5], 16), int(hex_code[5:7], 16)]
     rgb[0] += round(255 * factor)
     rgb[1] += round(255 * factor)
