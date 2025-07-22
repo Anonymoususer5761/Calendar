@@ -169,7 +169,7 @@ body {
     width: 90%;
     height: 1px;
     border-radius: 3px;
-    background-image: linear-gradient(to right, blue, red);
+    background-image: linear-gradient(to right, var(--popup-color, #fff), #000);
 }
 
 /* Used ChatGPT to make new lines in table cells */

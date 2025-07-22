@@ -125,7 +125,7 @@
     </div>
 
     {% for event in events %}
-        <div id="event-popup-{{ event.id }}" class="event-popup" style="--var-color: {{ event.color }}">
+        <div id="event-popup-{{ event.id }}" class="event-popup" style="--popup-color: {{ event.color }}">
             <h1 class="event-popup-name">{{ event.name }}</h1>
             <p class="event-popup-desc">{{ event.desc }}</p>
             <p class="event-popup-start">{{ event.timings_start }}</p>
