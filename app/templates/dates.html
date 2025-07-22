@@ -154,10 +154,6 @@
 
 
     <script>
-        let eventTimingsDate = document.getElementsByClassName('event-timings-date');
-        let eventTimingsTime = document.getElementsByClassName('event-timings-time');
-        let eventTimingsMinutes = document.getElementsByClassName('event-timings-minutes');
-
         function pad(singleDigit) {
             singleDigit = singleDigit.toString().padStart(2, '0');
             return singleDigit;
@@ -219,43 +215,6 @@
 
         // Events imported from Fetch API.
         let dayId = document.location.href.split('?')[1].split('=')[1];
-        async function getEvents() {
-            let response = await fetch(`/api/dates/events?date_id=${dayId}`, {
-                headers: {
-                    'Request-Source': 'JS-AJAX',
-                }
-            });
-            let events = await response.json();
-            return events;
-        }
-
-        function dispEventsSVG(events) {
-            let svg = ``;
-            for (let event of events) {
-                let start = event["timings_start"];
-                let end = event["timings_end"];
-                let secondsInDay = 86400;
-                let secondsInDayByScaleOfTimeline = 36 // 36 = 86400 (number of seconds in a day) / 2400 (the difference in pixels between 00:00 and 24:00 is exactly 2400px, i.e., 2600 - 200).           
-                let offset = 200 // The timeline starts at y=200px.
-                let y1 = 0;
-                let possible_y1 = start % secondsInDay / secondsInDayByScaleOfTimeline + offset;
-                let y2 = 0;
-                if (Math.trunc(start / secondsInDay) + 1 === parseInt(dayId)) { // Checks if event starts today.
-                    y1 = possible_y1;
-                } else if (possible_y1 > 2400) {
-                    y1 = possible_y1 - 2400;
-                } else {
-                    y1 = 100;
-                }
-                if (Math.trunc(end / secondsInDay) + 1 === parseInt(dayId)) { // Checks if event ends today.
-                    y2 = end % secondsInDay / secondsInDayByScaleOfTimeline + offset;
-                } else {
-                    y2 = 2599;
-                }
-                svg += `<polyline id="event-${event["id"]}" class="custom-lines" name="${event["name"]}" points="975,${y1} 75,${y1} 75,${y2} 975,${y2}" fill=${event["color"]} stroke=${event["color"]} opacity="0.25"></polyline>`;
-            }
-            document.querySelector('svg').innerHTML += svg;
-        }
 
         // Used ChatGPT because I couldn't figure out that I had to convert the timestamp into milliseconds.
         function formatDateTime(timestamp) {
@@ -271,22 +230,6 @@
         for (let i = 0; i < eventPopupStarts.length; i++) {
             eventPopupStarts[i].innerHTML = formatDateTime(eventPopupStarts[i].innerHTML * 1000);
             eventPopupEnds[i].innerHTML = formatDateTime(eventPopupEnds[i].innerHTML * 1000);
-        }
-        // eventPopupStart.innerHTML = formatDateTime(eventPopupStart.innerHTML)
-
-        function dispEventsTable(events) {
-            let html = '';
-            let i = 1;
-            for (let event of events) {
-                html += `<tr value="${event["id"]}" class="event-table-row">`;
-                html += `<td class="event-table-data">${event["name"]}</td>`;
-                html += `<td class="event-table-data">${event["desc"]}</td>`;
-                html += `<td value="${event["timings_start"]}" class="event-table-data">${formatDateTime(event["timings_start"] * 1000)}</td>`;
-                html += `<td value="${event["timings_end"]}" class="event-table-data">${formatDateTime(event["timings_end"] * 1000)}</td>`;
-                html += '</tr>';
-                i++;
-            }
-            document.getElementById('event-table-body').innerHTML += html;
         }
 
         let customLines = document.getElementsByClassName('custom-lines');
@@ -315,17 +258,7 @@
             }
         }
 
-        let auth = false;
-        auth = localStorage.getItem('auth') === '1';  
-        // Used ChatGPT to better understand how promises work and how to work with .then method.
-        if (auth) {
-            getEvents().then(events => {
-                dispEventsTable(events);
-                // dispEventsSVG(events);
-                hoverEventListeners();
-            });
-        }
-
+        hoverEventListeners();
 
         let addFormButton = document.getElementById('add-event-button');
         addFormButton.addEventListener('click', () => {
