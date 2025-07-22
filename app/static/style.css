@@ -65,24 +65,6 @@ body {
     height: 30px;
 }
 
-.event-popup {
-    display: none;
-    width: 33%;
-    height: 33%;
-    align-items: center;
-    justify-content: center;
-    position: fixed;
-    top: 50%;
-    left: 90%;
-    translate: -50% -50%;
-    background-color: #c5c8c6;
-    color: #1e1e22;
-}
-
-.event-popup-hover {
-    display: inline-block;
-}
-
 /* SVG */
 #day-timeline-svg {
     height: auto;
@@ -104,6 +86,7 @@ body {
 #now {
     stroke: blue;
     stroke-width: 2px;
+    position: relative;
 }
 
 #now:hover {
@@ -111,9 +94,22 @@ body {
     stroke-width: 5px;
 }
 
-.custom-lines-hover {
+.custom-lines:hover {
     opacity: 0.8;
-    stroke-width: 3px
+    stroke-width: 3px;
+    position: relative;
+}
+
+.custom-lines::before, .custom-lines::after {
+    content: "hello";
+    color: white;
+    width: 100%;
+    height: 100%;
+    top: 0.25rem;
+    left: 50%;
+    position: absolute;
+    transform: translateX(-50%) translateY(-50%);
+    background-color: black;
 }
 
 /* Event Table */

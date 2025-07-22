@@ -10,7 +10,7 @@
             <defs>
                 <linearGradient id="day-fill" x1="0%" y1="0%" x2="100%" y2="100%">
                     <stop offset="10%" style="stop-color: rgb(236, 236, 236); stop-opacity: 0.1"></stop>
-                    <stop offset="35%" style="stop-color: rgb(0, 0, 100); stop-opacity: 0.05"></stop>
+                    <stop offset="35%" style="stop-color: rgb(0, 0, 150); stop-opacity: 0.05"></stop>
                     <stop offset="100%" style="stop-color: rgb(255, 255, 255); stop-opacity: 0.15"></stop>
 
                 </linearGradient>
@@ -115,7 +115,7 @@
                 <option value="yellow">Yellow</option>
             </select>
             <svg width="30" height="25">
-                <rect fill="red" x="15" y="15" width="30" height="12.5"></rect>
+                <rect id="event-form-color-picker" fill="red" x="15" y="15" width="30" height="12.5"></rect>
             </svg>
             <br>
             
@@ -125,7 +125,7 @@
     </div>
 
     {% for event in events %}
-        <div id="event-popup-{{ event.id }}" class="event-popup" color="{{ event.color }};">
+        <div id="event-popup-{{ event.id }}" class="event-popup" style="--var-color: {{ event.color }};">
             <h1 class="event-popup-name">{{ event.name }}</h1>
             <hr>
             <p class="event-popup-desc">{{ event.desc }}</p>
@@ -142,7 +142,7 @@
         }
     
         function setColorMenuColor() {
-            document.querySelector('rect').setAttribute('fill', eventColorMenu.value);
+            document.getElementById('event-form-color-picker').setAttribute('fill', eventColorMenu.value);
         }
 
         let eventColorMenu = document.getElementById('event-color');
@@ -215,31 +215,37 @@
         }
 
         let customLines = document.getElementsByClassName('custom-lines');
-        function svgHoverEffect(eventId, active=false) {
-            if (active === true) {
-                popup = document.getElementById(`event-popup-${eventId}`);
-                popup.classList.add('event-popup-hover');
-                popup.setAttribute('style', `background-color: ${popup.getAttribute('color')}`)
-            }
-            else {
-                document.getElementById(`event-popup-${eventId}`).classList.remove('event-popup-hover');
-            }
+        function svgHoverEffect(eventId, event, active=false) {
+            // if (active === true) {
+            //     // popup = document.getElementById(`event-popup-${eventId}`);
+            //     // popup.classList.add('event-popup-hover');
+            //     // popup.setAttribute('style', `background-color: ${popup.getAttribute('color')}`)
+            //     // popup.setAttribute('style', `left: ${event.clientX}`);
+            //     // popup.setAttribute('style', `top: ${event.clientY}`);
+
+            // }
+            // else {
+            //     // document.getElementById(`event-popup-${eventId}`).classList.remove('event-popup-hover');
+            // }
+            return
         }
 
         function hoverEventListeners() {
             for (let customLine of customLines) {
-                customLine.addEventListener('mouseenter', () => {
-                    svgHoverEffect(customLine.getAttribute('value'), active=true)
+                customLine.addEventListener('mouseenter', (event) => {
+                    svgHoverEffect(customLine.getAttribute('value'), event, active=true)
                     customLine.classList.add('custom-lines-hover');
                 });
                 customLine.addEventListener('mouseleave', () => {
-                    svgHoverEffect(customLine.getAttribute('value'), active=false)
+                    svgHoverEffect(customLine.getAttribute('value'), event, active=false)
                     customLine.classList.remove('custom-lines-hover');
                 });
             }
         }
 
         hoverEventListeners();
+
+        let auth = localStorage.getItem('auth');
 
         let addFormButton = document.getElementById('add-event-button');
         addFormButton.addEventListener('click', () => {

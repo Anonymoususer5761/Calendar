@@ -1,4 +1,5 @@
 from app.calendar_db import get_events
+from app.helpers import color_modulator, format_datetime
 
 from fractions import Fraction
 
@@ -39,4 +40,4 @@ def get_events_and_format_events_svg(date_id: int | str, user_id: int | str) -> 
             x2 += increment
         return events, ''.join(html)
     else:
-        return "No Events Today"
+        return "No Events Today", ""

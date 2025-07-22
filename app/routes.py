@@ -2,14 +2,12 @@ from app import app
 from app.calendar_db import get_dates, get_months, get_years, get_day_name, get_date, submit_event_form_to_db, get_events
 from app.error_handler import error
 from app.forms import LoginForm, RegistrationForm
-from app.user import sign_in_user, register_user, User
+from app.user import sign_in_user, register_user
 from app.helpers import validate_form
 from app.pytemplates import get_events_and_format_events_svg
 
 from flask import render_template, request, redirect, url_for, flash, jsonify
 from flask_login import logout_user, login_required, current_user
-
-from datetime import datetime
 
 @app.route('/')
 @app.route('/index')
