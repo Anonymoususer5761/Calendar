@@ -79,7 +79,7 @@
 
             <line id="now" x1="75" x2="975" display="none"/>
 
-            {{ html|safe }}
+            {{ event_polylines | safe }}
         </svg>
     </div>
 
@@ -217,7 +217,6 @@
         let customLines = document.getElementsByClassName('custom-lines');
         function svgHoverEffect(eventId, active=false) {
             if (active === true) {
-                console.log(eventId)
                 popup = document.getElementById(`event-popup-${eventId}`);
                 popup.classList.add('event-popup-hover');
                 popup.setAttribute('style', `background-color: ${popup.getAttribute('color')}`)

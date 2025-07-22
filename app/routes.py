@@ -4,7 +4,7 @@ from app.error_handler import error
 from app.forms import LoginForm, RegistrationForm
 from app.user import sign_in_user, register_user, User
 from app.helpers import validate_form
-from app.pytemplates import events_svg
+from app.pytemplates import get_events_and_format_events_svg
 
 from flask import render_template, request, redirect, url_for, flash, jsonify
 from flask_login import logout_user, login_required, current_user
@@ -43,9 +43,8 @@ def dates():
             return redirect(url_for("dates", id=date_id))
     date = get_date(date_id)
     day_name = get_day_name(date_id)
-    html = events_svg(date_id, current_user.id)
-    events = get_events(date_id, current_user.id)
-    return render_template("dates.html", date=date, day_name=day_name, html=html, events=events)
+    events, event_polylines = get_events_and_format_events_svg(date_id, current_user.id)
+    return render_template("dates.html", date=date, day_name=day_name, event_polylines=event_polylines, events=events)
 
 
 @app.route("/settings")
