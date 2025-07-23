@@ -1,14 +1,10 @@
 from app.calendar_db import get_events
 
-from decimal import Decimal, getcontext
 from datetime import timedelta
-
-getcontext().prec = 10
 
 SECONDS_IN_DAY = 86400
 SCALE = 36 # 36 = 86400 (number of seconds in a day) / 2400 (the difference in pixels between 00:00 and 24:00 is exactly 2400px, i.e., 2600 - 200).
 OFFSET = 200 # The timeline starts at y=200px.
-ONE_TWENTY_FOURTH = Decimal(1) / Decimal(24)
 
 def get_events_and_format_events_svg(date_id: int | str, user_id: int | str) -> str:
     date_id = int(date_id)
