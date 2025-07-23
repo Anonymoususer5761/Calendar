@@ -84,7 +84,7 @@ def get_events(date_id, user_id):
                         FROM events JOIN users ON user_id = users.id 
                         WHERE user_id = ? 
                         AND (event_timings_start <= (SELECT (unix_time -1) AS unix_time FROM calendar WHERE id = (? + 1))
-                        AND event_timings_end >= (SELECT (unix_time) AS unix_time FROM calendar WHERE id = ?))
+                        AND event_timings_end >= (SELECT (unix_time - 3600) AS unix_time FROM calendar WHERE id = ?))
 """,
         (user_id, date_id, date_id)
     ).fetchall()
