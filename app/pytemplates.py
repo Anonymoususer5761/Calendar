@@ -37,7 +37,7 @@ def get_events_and_format_events_svg(date_id: int | str, user_id: int | str) -> 
                 y1 = possible_y1 - 2400
             if end_date_difference >= 0:
                 y2 = possible_y2 if end_date_difference < 1 else 2599
-            elif end_date_difference >= -ONE_TWENTY_FOURTH:
+            elif float(end_date_difference) >= float(-ONE_TWENTY_FOURTH):
                 y2 = possible_y2 - 2400
             html.append(f'<polyline value="{event["id"]}" class="custom-lines" points="{x1},{y1} {x2},{y1} {x2},{y2} {x1},{y2}" fill={event["color"]} stroke={event["color"]} opacity="0.35" stroke-width="2px"></polyline>')
             x1 += increment
