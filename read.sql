@@ -47,17 +47,17 @@ CREATE TABLE IF NOT EXISTS "settings" (
 
 CREATE TABLE IF NOT EXISTS "events" (
         "id" INTEGER,
-        "event_name" TEXT NOT NULL,
-        "event_description" TEXT NOT NULL,
-        "event_timings_start" INTEGER NOT NULL,
-        "event_timings_end" INTEGER NOT NULL,
-        "event_color" TEXT NOT NULL,
+        "name" TEXT NOT NULL,
+        "description" TEXT NOT NULL,
+        "timings_start" INTEGER NOT NULL,
+        "timings_end" INTEGER NOT NULL,
+        "color" TEXT NOT NULL,
         "user_id" INTEGER,
         PRIMARY KEY("id"),
         FOREIGN KEY("user_id") REFERENCES "users"("id")
 );
 
 CREATE INDEX IF NOT EXISTS "events_index" ON "events" (
-    "id", "event_timings_start", "event_timings_end", "user_id"
+    "id", "timings_start", "timings_end", "user_id"
 );
 
