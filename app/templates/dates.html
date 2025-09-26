@@ -85,6 +85,32 @@
 
 
     <div id="add-event-div">
+        <form id="add-event-form" action="" methods="post" novalidate>
+            {{ add_event_form.hidden_tag() }}
+            <p>
+                {{ add_event_form.name.label }}<br>
+                {{ add_event_form.name(size=32) }}<br>
+            </p>
+            
+            <p>
+                {{ add_event_form.description.label }}<br>
+                {{ add_event_form.description(size=32) }}
+            </p>
+            <br>
+            {{ add_event_form.start_time.label }}
+            {{ add_event_form.start_time(value=add_event_form.start_time.default) }}
+            <br>
+            {{ add_event_form.end_time.label }}
+            {{ add_event_form.end_time(value=add_event_form.start_time.default) }}
+            <br>
+            {{ add_event_form.event_color.label }}
+            {{ add_event_form.event_color() }}
+            <br>
+            {{ add_event_form.submit()}}
+        </form>
+    </div>
+
+    <!-- <div id="add-event-div">
         <form id="add-event-form" action="", method="post">
             <label class="event-form-data">Event</label>
             <br>
@@ -122,7 +148,7 @@
             <input class="event-form-data" value="Add Event" type="submit">
             <button id="event-form-close">Close</button>
         </form>
-    </div>
+    </div> -->
 
     {% for event in events %}
         <div id="event-popup-{{ event.id }}" class="event-popup" style="--popup-color: {{ event.color }}">

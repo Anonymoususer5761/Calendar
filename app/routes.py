@@ -23,14 +23,15 @@ def dates():
     date_id = request.args.get("id")
     if not date_id:
         return redirect(url_for("index"))
+    
+    add_event_form = AddEventForm()
 
     if request.method == "POST":
         if not current_user.is_authenticated:
             flash("You must sign in to add events.")
             return redirect(url_for("login"))
-        form = AddEventForm()
-        if form.validate_on_submit():
-            if submit_event_form_to_db(form, current_user.id):
+        if add_event_form.validate_on_submit():
+            if submit_event_form_to_db(add_event_form, current_user.id):
                 flash("Event has been successfully added to the calendar.")
                 return redirect(url_for("dates", id=date_id))
             else:
@@ -40,9 +41,10 @@ def dates():
             flash("Event name and timings field cannot be empty.")
             return redirect(url_for("dates", id=date_id))
     date = get_date(date_id)
+    add_event_form.start_time.default = f"{date} 00:00"
     day_name = get_day_name(date_id)
     events, event_polylines = get_events_and_format_events_svg(date_id, current_user.id)
-    return render_template("dates.html", date=date, day_name=day_name, event_polylines=event_polylines, events=events)
+    return render_template("dates.html", date=date, day_name=day_name, event_polylines=event_polylines, events=events, add_event_form=add_event_form)
 
 
 @app.route("/settings")

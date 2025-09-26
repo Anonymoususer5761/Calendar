@@ -73,17 +73,17 @@ def submit_event_form_to_db(form: dict, user_id: int):
 def get_events(date_id, user_id):
     db = get_db()
     events = db.execute("""
-                        SELECT (events.id) AS event_id, event_name, event_description, event_timings_start, event_timings_end, event_color
+                        SELECT (events.id) AS event_id, (events.name) AS event_name, (events.description) AS description, start_time, end_time, (events.color) AS color
                         FROM events JOIN users ON user_id = users.id 
                         WHERE user_id = ? 
-                        AND (event_timings_start <= (SELECT (unix_time -1) AS unix_time FROM calendar WHERE id = (? + 1))
-                        AND event_timings_end >= (SELECT (unix_time - 3600) AS unix_time FROM calendar WHERE id = ?))
+                        AND (start_time <= (SELECT (unix_time -1) AS unix_time FROM calendar WHERE id = (? + 1))
+                        AND end_time >= (SELECT (unix_time - 3600) AS unix_time FROM calendar WHERE id = ?))
 """,
         (user_id, date_id, date_id)
     ).fetchall()
 
     if events:
-        dict_events = [{"id": event["event_id"], "name": event["event_name"], "desc": event["event_description"], "timings_start": event["event_timings_start"], "timings_end": event["event_timings_end"], "color": event["event_color"]} for event in events]
+        dict_events = [{"id": event["event_id"], "name": event["event_name"], "desc": event["event_description"], "start_time": event["start_time"], "end_time": event["end_time"], "color": event["event_color"]} for event in events]
         return dict_events
 
     return None
