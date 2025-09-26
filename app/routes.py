@@ -1,7 +1,7 @@
 from app import app
 from app.calendar_db import get_dates, get_months, get_years, get_day_name, get_date, submit_event_form_to_db, get_events
 from app.error_handler import error
-from app.forms import LoginForm, RegistrationForm
+from app.forms import LoginForm, RegistrationForm, AddEventForm
 from app.user import sign_in_user, register_user
 from app.helpers import validate_form
 from app.pytemplates import get_events_and_format_events_svg
@@ -28,13 +28,13 @@ def dates():
         if not current_user.is_authenticated:
             flash("You must sign in to add events.")
             return redirect(url_for("login"))
-        form = request.form
-        if validate_form(form, required_fields=("event-name", "event-timings-date-start", "event-timings-time-start", "event-timings-date-end", "event-timings-time-end", "event-color")):
+        form = AddEventForm()
+        if form.validate_on_submit():
             if submit_event_form_to_db(form, current_user.id):
-                flash("Event has been successfully added to calendar.")
+                flash("Event has been successfully added to the calendar.")
                 return redirect(url_for("dates", id=date_id))
             else:
-                flash("User entered invalid datetime. Event not submitted.")
+                flash("User entered invalid datetime. Event not submitted")
                 return redirect(url_for("dates", id=date_id))
         else:
             flash("Event name and timings field cannot be empty.")

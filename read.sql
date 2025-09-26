@@ -49,8 +49,8 @@ CREATE TABLE IF NOT EXISTS "events" (
         "id" INTEGER,
         "name" TEXT NOT NULL,
         "description" TEXT NOT NULL,
-        "timings_start" INTEGER NOT NULL,
-        "timings_end" INTEGER NOT NULL,
+        "start_time" INTEGER NOT NULL,
+        "end_time" INTEGER NOT NULL,
         "color" TEXT NOT NULL,
         "user_id" INTEGER,
         PRIMARY KEY("id"),
@@ -58,6 +58,6 @@ CREATE TABLE IF NOT EXISTS "events" (
 );
 
 CREATE INDEX IF NOT EXISTS "events_index" ON "events" (
-    "id", "timings_start", "timings_end", "user_id"
+    "id", "start_time", "end_time", "user_id"
 );
 
