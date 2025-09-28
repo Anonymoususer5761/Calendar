@@ -6,7 +6,7 @@
             "request": "launch",
             "module": "flask",
             "env": {
-                "FLASK_APP": "app\\__init__.py",
+                "FLASK_APP": "app/__init__.py",
                 "FLASK_DEBUG": "1"
             },
             "args": [

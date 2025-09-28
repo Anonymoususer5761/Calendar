@@ -20,8 +20,8 @@ def get_events_and_format_events_svg(date_id: int | str, user_id: int | str) -> 
             increment = 925 / len(events)
         x1 = x2 + increment
         for event in events:
-            start = timedelta(seconds=event["timings_start"])
-            end = timedelta(seconds=event["timings_end"])
+            start = timedelta(seconds=event["start_time"])
+            end = timedelta(seconds=event["end_time"])
             y1 = 100
             possible_y1 = start.seconds / SCALE + OFFSET
             y2 = 2599

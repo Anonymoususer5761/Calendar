@@ -52,11 +52,11 @@ def get_date(date_id: int) -> str:
 
 
 def submit_event_form_to_db(form: dict, user_id: int):
-    name = form.get("name")
-    description = form.get("description")
-    start_time = form.get("start_time")
-    end_time = form.get("end_time")
-    color = get_color_hex(form.get("color"))
+    name = form.name.data
+    description = form.description.data
+    start_time = form.start_time.data
+    end_time = form.end_time.data
+    color = get_color_hex(form.event_color.data)
 
     if start_time > end_time:
         return False
@@ -83,7 +83,7 @@ def get_events(date_id, user_id):
     ).fetchall()
 
     if events:
-        dict_events = [{"id": event["event_id"], "name": event["event_name"], "desc": event["event_description"], "start_time": event["start_time"], "end_time": event["end_time"], "color": event["event_color"]} for event in events]
+        dict_events = [{"id": event["event_id"], "name": event["event_name"], "desc": event["description"], "start_time": event["start_time"], "end_time": event["end_time"], "color": event["color"]} for event in events]
         return dict_events
 
     return None

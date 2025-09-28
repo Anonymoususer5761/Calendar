@@ -20,26 +20,20 @@ def index():
 
 @app.route("/dates", methods=["GET", "POST"])
 def dates():
+    add_event_form = AddEventForm()
+
     date_id = request.args.get("id")
+
+    if add_event_form.validate_on_submit():
+        if submit_event_form_to_db(add_event_form, current_user.id):
+            flash("Event has been successfully added to the calendar.")
+            return
+        else:
+            flash("User entered invalid datetime. Event not submitted")
+            return
     if not date_id:
         return redirect(url_for("index"))
     
-    add_event_form = AddEventForm()
-
-    if request.method == "POST":
-        if not current_user.is_authenticated:
-            flash("You must sign in to add events.")
-            return redirect(url_for("login"))
-        if add_event_form.validate_on_submit():
-            if submit_event_form_to_db(add_event_form, current_user.id):
-                flash("Event has been successfully added to the calendar.")
-                return redirect(url_for("dates", id=date_id))
-            else:
-                flash("User entered invalid datetime. Event not submitted")
-                return redirect(url_for("dates", id=date_id))
-        else:
-            flash("Event name and timings field cannot be empty.")
-            return redirect(url_for("dates", id=date_id))
     date = get_date(date_id)
     add_event_form.start_time.default = f"{date} 00:00"
     day_name = get_day_name(date_id)

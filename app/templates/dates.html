@@ -85,28 +85,30 @@
 
 
     <div id="add-event-div">
-        <form id="add-event-form" action="" methods="post" novalidate>
+        <form action="" method="post" novalidate>
+            <button class="close-add-event-form">X</button>
             {{ add_event_form.hidden_tag() }}
             <p>
                 {{ add_event_form.name.label }}<br>
                 {{ add_event_form.name(size=32) }}<br>
             </p>
-            
             <p>
                 {{ add_event_form.description.label }}<br>
-                {{ add_event_form.description(size=32) }}
+                {{ add_event_form.description(size=64) }}
             </p>
-            <br>
-            {{ add_event_form.start_time.label }}
-            {{ add_event_form.start_time(value=add_event_form.start_time.default) }}
-            <br>
-            {{ add_event_form.end_time.label }}
-            {{ add_event_form.end_time(value=add_event_form.start_time.default) }}
-            <br>
-            {{ add_event_form.event_color.label }}
-            {{ add_event_form.event_color() }}
-            <br>
-            {{ add_event_form.submit()}}
+            <p>
+                {{ add_event_form.start_time.label }}
+                {{ add_event_form.start_time(value=add_event_form.start_time.default) }}
+            </p>
+                {{ add_event_form.end_time.label }}
+                {{ add_event_form.end_time(value=add_event_form.start_time.default) }}
+            <p>
+                {{ add_event_form.event_color.label }}
+                {{ add_event_form.event_color() }}
+            </p>
+            <p>
+                {{ add_event_form.submit() }}
+            </p>
         </form>
     </div>
 
@@ -166,38 +168,38 @@
             return singleDigit;
         }
     
-        function setColorMenuColor() {
-            document.getElementById('event-form-color-picker').setAttribute('fill', eventColorMenu.value);
-        }
+        // function setColorMenuColor() {
+        //     document.getElementById('event-form-color-picker').setAttribute('fill', eventColorMenu.value);
+        // }
 
-        let eventColorMenu = document.getElementById('event-color');
-        document.addEventListener('DOMContentLoaded', setColorMenuColor);
-        eventColorMenu.addEventListener('change', setColorMenuColor);
+        // let eventColorMenu = document.getElementById('event-color');
+        // document.addEventListener('DOMContentLoaded', setColorMenuColor);
+        // eventColorMenu.addEventListener('change', setColorMenuColor);
 
-        let startDate = document.getElementById('event-timings-date-start');
-        let endDate = document.getElementById('event-timings-date-end');
-        let startTime = document.getElementById('event-timings-time-start');
-        let endTime = document.getElementById('event-timings-time-end');
+        // let startDate = document.getElementById('event-timings-date-start');
+        // let endDate = document.getElementById('event-timings-date-end');
+        // let startTime = document.getElementById('event-timings-time-start');
+        // let endTime = document.getElementById('event-timings-time-end');
 
-        document.addEventListener('DOMContentLoaded', () => {
-            endDate.setAttribute('min', startDate.value);
-            if (startDate.value === endDate.value) {
-                endTime.setAttribute('min', startTime.value);
-            }
-        });
-        startDate.addEventListener('change', () => {
-            endDate.setAttribute('min', startDate.value);
-            if (startDate.value === endDate.value) {
-                endTime.setAttribute('min', startTime.value);
-            }
-        });
-        startTime.addEventListener('change', () => {
-            endTime.removeAttribute('min');
-            endDate.setAttribute('min', startDate.value);
-            if (startDate.value === endDate.value) {
-                endTime.setAttribute('min', startTime.value);
-            }
-        });
+        // document.addEventListener('DOMContentLoaded', () => {
+        //     endDate.setAttribute('min', startDate.value);
+        //     if (startDate.value === endDate.value) {
+        //         endTime.setAttribute('min', startTime.value);
+        //     }
+        // });
+        // startDate.addEventListener('change', () => {
+        //     endDate.setAttribute('min', startDate.value);
+        //     if (startDate.value === endDate.value) {
+        //         endTime.setAttribute('min', startTime.value);
+        //     }
+        // });
+        // startTime.addEventListener('change', () => {
+        //     endTime.removeAttribute('min');
+        //     endDate.setAttribute('min', startDate.value);
+        //     if (startDate.value === endDate.value) {
+        //         endTime.setAttribute('min', startTime.value);
+        //     }
+        // });
 
         selectedDate = document.querySelector('h1').innerHTML;
         // Used ChatGPT to fix a bug where time wouldn't not update dynamically.
@@ -213,7 +215,6 @@
             svg.setAttribute("y2", y_axis);
             svg.removeAttribute("display");
         }
-
 
         if (localStorage.getItem('today').split("T")[0] === selectedDate) {
             document.addEventListener('DOMContentLoaded', moveDayLine())
@@ -272,14 +273,31 @@
         addFormButton.addEventListener('click', () => {
             if (auth) {
                 document.getElementById('add-event-div').style.display = 'flex';
+                // addFormButton.classList.add('close-add-event-form');
             } else {
-                alert("User not authenticated. You must sign in to acces this feature.")
+                alert("User not authenticated. You must sign in to acces this feature.");
             }
         });
-        let removeFormButton = document.getElementById('event-form-close');
-        removeFormButton.addEventListener('click', () => {
-            document.getElementById('add-event-div').style.display = 'none';
-        })
+        let removeFormButtons = document.getElementsByClassName('close-add-event-form');
+        for (let removeFormButton of removeFormButtons) {
+            removeFormButton.addEventListener('click', () => {
+                document.getElementById('add-event-div').style.display = 'none';
+                // addFormButton.classList.remove('close-add-event-form');
+            });
+        }
+
+        // let addFormButton = document.getElementById('add-event-button');
+        // addFormButton.addEventListener('click', () => {
+        //     if (auth) {
+        //         document.getElementById('add-event-div').style.display = 'flex';
+        //     } else {
+        //         alert("User not authenticated. You must sign in to acces this feature.")
+        //     }
+        // });
+        // let removeFormButton = document.getElementById('event-form-close');
+        // removeFormButton.addEventListener('click', () => {
+        //     document.getElementById('add-event-div').style.display = 'none';
+        // })
 
         let previousDay = {
             "Monday": "Sunday",

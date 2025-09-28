@@ -42,6 +42,8 @@ body {
     translate: -50% -50%;
     background-color: #c5c8c6;
     color: #1e1e22;
+    border-radius: 5px;
+    padding: 6px;
 }
 
 #add-event-form {
