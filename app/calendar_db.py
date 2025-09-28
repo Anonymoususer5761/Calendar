@@ -56,7 +56,7 @@ def submit_event_form_to_db(form: dict, user_id: int):
     description = form.description.data
     start_time = form.start_time.data
     end_time = form.end_time.data
-    color = get_color_hex(form.event_color.data)
+    color = form.event_color.data
 
     if start_time > end_time:
         return False
