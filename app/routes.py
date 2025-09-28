@@ -27,10 +27,10 @@ def dates():
     if add_event_form.validate_on_submit():
         if submit_event_form_to_db(add_event_form, current_user.id):
             flash("Event has been successfully added to the calendar.")
-            return
+            return redirect(url_for("dates", id=date_id))
         else:
             flash("User entered invalid datetime. Event not submitted")
-            return
+            return redirect(url_for("dates", id=date_id))
     if not date_id:
         return redirect(url_for("index"))
     
