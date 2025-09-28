@@ -2,6 +2,8 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, DateTimeLocalField, SelectField
 from wtforms.validators import DataRequired, EqualTo, Email
 
+from app.helpers import color_choices
+
 class LoginForm(FlaskForm):
     username = StringField("Username", validators=[DataRequired()])
     password = PasswordField("Password", validators=[DataRequired()])
@@ -20,5 +22,5 @@ class AddEventForm(FlaskForm):
     description = TextAreaField("Description", render_kw={"placeholder": "Event Description"})
     start_time = DateTimeLocalField("From", validators=[DataRequired()])
     end_time = DateTimeLocalField("To", validators=[DataRequired()])
-    event_color = SelectField("Color", choices=[("#ff0000", "Red"), ("#00ff00", "Green"), ("#0000ff", "Blue")])
+    event_color = SelectField("Color", choices=color_choices)
     submit = SubmitField("Add Event")

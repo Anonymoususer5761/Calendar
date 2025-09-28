@@ -5,6 +5,8 @@ from app.database_manager import get_db
 from datetime import datetime
 import random
 
+color_choices = (("#ff0000", "Red"), ("#0000ff", "Blue"), ("#00ff00", "Green"), ("#ffff00", "Yellow"), ("#800080", "Purple"))
+
 def date_to_id(date: str) -> int:
     """Expects a date string in YYYY-MM-DD format"""
     db = get_db()

@@ -86,7 +86,7 @@
 
     <div id="add-event-div">
         <form action="" method="post" novalidate>
-            <button class="close-add-event-form">X</button>
+            <button type="button" class="close-add-event-form">X</button>
             {{ add_event_form.hidden_tag() }}
             <p>
                 {{ add_event_form.name.label }}<br>
@@ -104,7 +104,10 @@
                 {{ add_event_form.end_time(value=add_event_form.start_time.default) }}
             <p>
                 {{ add_event_form.event_color.label }}
-                {{ add_event_form.event_color() }}
+                {{ add_event_form.event_color(id="event-color") }}
+                <svg width="30" height="25">
+                    <rect id="event-form-color-picker" fill="red" x="15" y="15" width="30" height="12.5"></rect>
+                </svg>
             </p>
             <p>
                 {{ add_event_form.submit() }}
@@ -168,13 +171,13 @@
             return singleDigit;
         }
     
-        // function setColorMenuColor() {
-        //     document.getElementById('event-form-color-picker').setAttribute('fill', eventColorMenu.value);
-        // }
+         function setColorMenuColor() {
+            document.getElementById('event-form-color-picker').setAttribute('fill', eventColorMenu.value);
+        }
 
-        // let eventColorMenu = document.getElementById('event-color');
-        // document.addEventListener('DOMContentLoaded', setColorMenuColor);
-        // eventColorMenu.addEventListener('change', setColorMenuColor);
+        let eventColorMenu = document.getElementById('event-color');
+        document.addEventListener('DOMContentLoaded', setColorMenuColor);
+        eventColorMenu.addEventListener('change', setColorMenuColor);
 
         // let startDate = document.getElementById('event-timings-date-start');
         // let endDate = document.getElementById('event-timings-date-end');
