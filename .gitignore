@@ -1,4 +1,4 @@
-herlpers/
+helpers/
 *.db
 cq
 *.flaskenv
