@@ -61,3 +61,12 @@ CREATE INDEX IF NOT EXISTS "events_index" ON "events" (
     "id", "start_time", "end_time", "user_id"
 );
 
+CREATE TABLE IF NOT EXISTS "indian_holidays" (
+        "id" INTEGER,
+        "holiday" TEXT NOT NULL,
+        "category" TEXT NOT NULL,
+        "date_id" INTEGER,
+        PRIMARY KEY("id"),
+        FOREIGN KEY("date_id") REFERENCES "calendar"("id")
+);
+
