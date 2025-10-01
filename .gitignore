@@ -5,3 +5,4 @@ cq
 flask_session/
 *__pycache__/
 *.vscode
+venv/
