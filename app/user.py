@@ -8,6 +8,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 class User(UserMixin):
     default_settings = {
         "color-palette": 1,
+        "region": "None",
     }
 
     def __init__(self, id, username, email, password_hash, settings=default_settings):
@@ -128,6 +129,10 @@ def register_user(form):
                 email,
                 generate_password_hash(form.password.data),
             )
+        )
+
+        db.execute(
+            "INSERT INTO settings "
         )
 
         db.commit()

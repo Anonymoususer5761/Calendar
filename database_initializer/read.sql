@@ -25,14 +25,15 @@ CREATE INDEX IF NOT EXISTS "user_index" ON "users" (
 );
 CREATE TABLE IF NOT EXISTS "settings_name" (
         "id"            INTEGER,
-        "setting"       TEXT NOT NULL,
+        "setting"       TEXT NOT NULL UNIQUE,
         PRIMARY KEY("id")
 );
 CREATE TABLE IF NOT EXISTS "settings_options" (
         "id"            INTEGER,
-        "setting_id"    INTEGER,
+        "setting_id"    INTEGER NOT NULL,
         "option"        TEXT NOT NULL,
-        PRIMARY KEY("id","setting_id"),
+        PRIMARY KEY("id")
+        UNIQUE("setting_id", "option"),
         FOREIGN KEY("setting_id") REFERENCES "settings_name"("id")
 );
 CREATE TABLE IF NOT EXISTS "settings" (
@@ -69,4 +70,3 @@ CREATE TABLE IF NOT EXISTS "indian_holidays" (
         PRIMARY KEY("id"),
         FOREIGN KEY("date_id") REFERENCES "calendar"("id")
 );
-
