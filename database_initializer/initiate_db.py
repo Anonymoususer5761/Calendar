@@ -1,3 +1,4 @@
+import csv
 import sqlite3
 import os
 import sys
@@ -31,6 +32,7 @@ def main() -> int:
     fill_calendar_table(db)
     fill_settings_table(db)
     fill_days_table(db)
+    import_csv_data(db)
 
     db.close()
 
@@ -84,6 +86,18 @@ def fill_days_table(db: sqlite3.Connection | sqlite3.Cursor) -> None:
     for day in days:
         db.execute("INSERT INTO days (day) VALUES (?)", (day,))
     
+    db.commit()
+
+def import_csv_data(db: sqlite3.Connection | sqlite3.Cursor) -> None:
+    csv_path = os.path.abspath("datasets/indian_holidays.csv")
+    with open(csv_path, "r") as csv_file:
+        csv_reader = csv.DictReader(csv_file)
+        for line in csv_reader:
+            db.execute(
+                "INSERT INTO indian_holidays (id, holiday, category, date_id) VALUES (?, ?, ?, ?)",
+                (line["id"], line["holiday"], line["category"], line["date_id"])           
+            )
+
     db.commit()
 
 if __name__ == "__main__":

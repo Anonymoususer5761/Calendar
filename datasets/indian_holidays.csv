@@ -1,0 +1,53 @@
+id,holiday,category,date_id
+1,New Year's Day,(R),20090
+2,Guru Gobind Singh's Birthday,(R),20095
+3,Makar Sankranti/ Magha Bihu/ Pongal/ Hazarat Ali's Birthday,(R),20103
+4,Republic Day,(G),20115
+5,Basant Panchami / Sri Panchami,(R),20122
+6,Guru Ravidas's Birthday,(R),20132
+7,Shivaji Jayanti,(R),20139
+8,Swami Dayananda Saraswati Jayanti,(R),20143
+9,Maha Shivaratri,(G),20146
+10,Holika Dahan,(R),20161
+11,Holi,(G),20162
+12,Dolyatra,(R),20162
+13,Jamat-Ul-Vida,(R),20176
+14,Chaitra Sukladi/ Gudi Padava/ Ugadi/ Cheti Chand,(R),20178
+15,Id-ul-Fitr,(G),20179
+16,Ram Navami,(R),20185
+17,Mahavir Jayanti,(G),20189
+18,Vaisakhi/ Vishu,(R),20192
+19,Meshadi (Tamil New Year's Day),(R),20193
+20,Birthday of Dr. B. R. Ambedkar,(G),20193
+21,Vaisakhadi (Bengal)/ Bahag Bihu (Assam),(R),20194
+22,Good Friday,(G),20197
+23,Easter Sunday,(R),20199
+24,Guru Rabindranath's Birthday,(R),20218
+25,Buddha Purnima,(G),20221
+26,Id-ul-Zuha (Bakrid),(G),20247
+27,Rath Yatra,(R),20267
+28,Muharram,(G),20276
+29,Raksha Bandhan,(R),20310
+30,Independence day,(G),20316
+31,Parsi New Year's day/ Nauraj,(R),20316
+32,Janmashtami (Smarta),(R),20316
+33,Janmashtami,(G),20317
+34,Ganesh Chaturthi / Vinayaka Chaturthi,(R),20328
+35,Milad-un-Nabi or Id-e-Milad (Birthday of Prophet Mohammad),(G),20337
+36,Onam or Thiru Onam Day,(R),20337
+37,Dussehra (Maha Saptami),(R),20361
+38,Dussehra (Maha Ashtami),(R),20362
+39,Dussehra (Maha Navmi),(R),20363
+40,Mahatma Gandhi's Birthday,(G),20364
+41,Dussehra,(G),20364
+42,Maharishi Valmiki's Birthday,(R),20369
+43,Karaka Chaturthi (Karva Chouth),(R),20372
+44,Diwali (Deepawali),(G),20382
+45,Naraka Chaturdasi,(R),20382
+46,Govardhan Puja,(R),20384
+47,Bhai Duj,(R),20385
+48,Pratihar Sashthi or Surya Sashthi (Chhat Puja),(R),20390
+49,Guru Nanak's Birthday,(G),20398
+50,Guru Teg Bahadur's Martyrdom Day,(R),20417
+51,Christmas Eve,(R),20447
+52,Christmas Day,(G),20448
