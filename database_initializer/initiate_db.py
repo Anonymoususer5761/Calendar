@@ -88,6 +88,7 @@ def fill_days_table(db: sqlite3.Connection | sqlite3.Cursor) -> None:
     
     db.commit()
 
+
 def import_csv_data(db: sqlite3.Connection | sqlite3.Cursor) -> None:
     csv_path = os.path.abspath("datasets/indian_holidays.csv")
     with open(csv_path, "r") as csv_file:

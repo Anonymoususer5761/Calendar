@@ -4,12 +4,12 @@ from app import login_manager
 from flask_login import UserMixin, login_user
 from werkzeug.security import generate_password_hash, check_password_hash
 
+default_settings = {
+    "color-palette": 1,
+    "region": "None",
+}
 
 class User(UserMixin):
-    default_settings = {
-        "color-palette": 1,
-        "region": "None",
-    }
 
     def __init__(self, id, username, email, password_hash, settings=default_settings):
         self.id = id
@@ -131,9 +131,12 @@ def register_user(form):
             )
         )
 
-        db.execute(
-            "INSERT INTO settings "
-        )
+        user_id = db.lastrowid
+        for setting_id in range(1, default_settings + 1):
+            db.execute(
+                "INSERT INTO settings (setting_id, user_id) VALUES (?, ?)",
+                (setting_id, user_id)
+            )
 
         db.commit()
 
