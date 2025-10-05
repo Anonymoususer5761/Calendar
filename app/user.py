@@ -1,6 +1,5 @@
 from app.database_manager import get_db
 from app import login_manager
-from app.forms import LoginForm
 
 from flask_login import UserMixin, login_user
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -114,7 +113,8 @@ def register_user(form):
         ).fetchone()
 
         if not exists:
-            db.execute(
+            cursor = db.cursor()
+            cursor.execute(
                 "INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)", (
                     username,
                     email,
@@ -122,8 +122,8 @@ def register_user(form):
                 )
             )
 
-            user_id = db.lastrowid
-            for setting_id in range(1, default_settings + 1):
+            user_id = cursor.lastrowid
+            for setting_id in range(1, len(default_settings) + 1):
                 db.execute(
                     "INSERT INTO settings (setting_id, user_id) VALUES (?, ?)", (
                         setting_id,
