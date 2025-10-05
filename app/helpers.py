@@ -17,13 +17,6 @@ def date_to_id(date: str) -> int:
     return date_id
 
 
-def validate_form(form: type[ImmutableMultiDict[str, str]], required_fields: tuple[str, ...]) -> bool:
-    for fields in required_fields:
-        if form[fields] == None or form[fields] == "":
-            return False
-    return True
-
-
 def get_color_hex(color: str) -> str:
     color_dict = {
         "red": "#ff0000",
