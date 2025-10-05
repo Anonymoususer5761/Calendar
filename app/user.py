@@ -41,22 +41,26 @@ class User(UserMixin):
             
         return None
     
-    def set_user_settings(self, setting_id, option_id):
+    def set_user_settings(self, settings):
         db = get_db()
 
         try:
-            db.execute("""
-                UPDATE settings
-                SET option_id = ?
-                WHERE setting_id = ?
-                AND user_id = ?
-                """, (
-                    option_id,
-                    setting_id,
-                    self.id,
+            settings.color_mode.data = 1 if settings.color_mode.data else 2
+            for setting_id, setting in enumerate(settings, 1):
+                if setting.id != "submit" and setting.id != "csrf_token":
+                    db.execute("""
+                        UPDATE settings
+                        SET option_id = ?
+                        WHERE setting_id = ?
+                            AND
+                        user_id = ?
+                        """, (
+                            int(setting.data),
+                            setting_id,
+                            self.id
+                        )
                     )
-                )
-            db.commit()
+                db.commit()
         finally:
             db.close()
 

@@ -1,8 +1,8 @@
 {
     "settings": {
         "color_mode": [
-            "light_mode",
-            "dark_mode"
+            "dark_mode",
+            "light_mode"
         ],
         "region": [
             "None",

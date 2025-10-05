@@ -27,5 +27,5 @@ class AddEventForm(FlaskForm):
 
 class SettingsForm(FlaskForm):
     color_mode = BooleanField("Dark Mode")
-    region = SelectField("Region", choices=["None", "India"])
+    region = SelectField("Region", choices=((1, "None"), (2, "India")))
     submit = SubmitField("Save Changes")

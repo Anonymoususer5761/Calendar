@@ -39,18 +39,12 @@ def dates():
     return render_template("dates.html", date=date, day_name=day_name, event_polylines=event_polylines, events=events, add_event_form=add_event_form)
 
 
-@app.route("/settings")
+@app.route("/settings", methods=["POST", "GET"])
 def settings():
     settings = SettingsForm()
-    # if request.method == "POST":
-    #     if request.form:
-    #         for setting, option in request.form.items():
-    #             if setting != "settings":
-    #                 if current_user.set_user_settings(setting, int(option)):
-    #                     return redirect(url_for("settings"))
-    #                 flash("Form doesn't work.")
-    #     else:
-    #         flash("Something went wrong!")
+
+    if settings.validate_on_submit():
+        current_user.set_user_settings(settings)
 
     return render_template("settings.html", settings=settings)
 
