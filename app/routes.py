@@ -1,6 +1,6 @@
 from app import app
 from app.calendar_db import get_dates, get_months, get_years, get_day_name, get_date, submit_event_form_to_db, get_events
-from app.forms import LoginForm, RegistrationForm, AddEventForm
+from app.forms import LoginForm, RegistrationForm, AddEventForm, SettingsForm
 from app.user import sign_in_user, register_user
 from app.pytemplates import get_events_and_format_events_svg
 
@@ -41,17 +41,18 @@ def dates():
 
 @app.route("/settings")
 def settings():
-    if request.method == "POST":
-        if request.form:
-            for setting, option in request.form.items():
-                if setting != "settings":
-                    if current_user.set_user_settings(setting, int(option)):
-                        return redirect(url_for("settings"))
-                    flash("Form doesn't work.")
-        else:
-            flash("Something went wrong!")
+    settings = SettingsForm()
+    # if request.method == "POST":
+    #     if request.form:
+    #         for setting, option in request.form.items():
+    #             if setting != "settings":
+    #                 if current_user.set_user_settings(setting, int(option)):
+    #                     return redirect(url_for("settings"))
+    #                 flash("Form doesn't work.")
+    #     else:
+    #         flash("Something went wrong!")
 
-    return render_template("settings.html")
+    return render_template("settings.html", settings=settings)
 
 
 @app.route("/register", methods=["GET", "POST"])

@@ -24,3 +24,8 @@ class AddEventForm(FlaskForm):
     end_time = DateTimeLocalField("To", validators=[DataRequired()])
     event_color = SelectField("Color", choices=color_choices)
     submit = SubmitField("Add Event")
+
+class SettingsForm(FlaskForm):
+    color_mode = BooleanField("Dark Mode")
+    region = SelectField("Region", choices=["None", "India"])
+    submit = SubmitField("Save Changes")
