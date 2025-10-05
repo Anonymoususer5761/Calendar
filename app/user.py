@@ -3,6 +3,7 @@ from app import login_manager
 
 from flask_login import UserMixin, login_user
 from werkzeug.security import generate_password_hash, check_password_hash
+import sqlite3
 
 default_settings = {
     "color-palette": 1,
@@ -11,7 +12,7 @@ default_settings = {
 
 class User(UserMixin):
 
-    def __init__(self, id, username, email, password_hash, settings=default_settings):
+    def __init__(self, id, username, email, password_hash, settings):
         self.id = id
         self.username = username
         self.email = email
@@ -115,34 +116,39 @@ def register_user(form):
     username = form.username.data
     email = form.email.data
 
-    exists = db.execute(
-        "SELECT * FROM users WHERE username = ? OR email = ?", (
-            username,
-            email,
-        )
-    ).fetchone()
-
-    if not exists:
-        db.execute(
-            "INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)", (
+    try:
+        exists = db.execute(
+            "SELECT * FROM users WHERE username = ? OR email = ?", (
                 username,
                 email,
-                generate_password_hash(form.password.data),
             )
-        )
+        ).fetchone()
 
-        user_id = db.lastrowid
-        for setting_id in range(1, default_settings + 1):
+        if not exists:
             db.execute(
-                "INSERT INTO settings (setting_id, user_id) VALUES (?, ?)",
-                (setting_id, user_id)
+                "INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)", (
+                    username,
+                    email,
+                    generate_password_hash(form.password.data),
+                )
             )
 
-        db.commit()
+            user_id = db.lastrowid
+            for setting_id in range(1, default_settings + 1):
+                db.execute(
+                    "INSERT INTO settings (setting_id, user_id) VALUES (?, ?)", (
+                        setting_id,
+                        user_id,
+                    )
+                )
 
-        return True, f"User {username} has been successfully registered."
-    
-    return False, "Registration Failed: Username or email already exists."
+            db.commit()
+
+            return True, f"User {username} has been successfully registered."
+        
+        return False, "Registration Failed: Username or email already exists."
+    finally:
+        db.close()
 
 
 def get_user_settings(id):
