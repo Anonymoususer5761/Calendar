@@ -116,7 +116,6 @@
     </div>
     {% endif %}
 
-    {% if current_user.is_authenticated %}
     {% for event in events %}
         <div id="event-popup-{{ event.id }}" class="event-popup" style="--popup-color: {{ event.color }}">
             <h1 class="event-popup-name">{{ event.name }}</h1>
@@ -125,7 +124,6 @@
             <p class="event-popup-end">{{ event.end_time }}</p>
         </div>
     {% endfor %}
-    {% endif %}
 
 
     <script>
@@ -136,7 +134,7 @@
         
 
          function setColorMenuColor() {
-            document.getElementById('event-form-color-picker').setAttribute('fill', eventColorMenu.value);
+            document.getElementById('event-form-color-picker').setAttribute('fill', document.getElementById('event-color').value);
         }
 
         if (document.getElementById('event-form-color-picker')) {

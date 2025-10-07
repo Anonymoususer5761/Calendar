@@ -36,7 +36,7 @@ def dates():
     date = get_date(date_id)
     add_event_form.start_time.default = f"{date} 00:00"
     day_name = get_day_name(date_id)
-    events, event_polylines = get_events_and_format_events_svg(date_id, current_user.id) if current_user.is_authenticated else None, None
+    events, event_polylines = get_events_and_format_events_svg(date_id, current_user.id) if current_user.is_authenticated else [None, None]
     return render_template("dates.html", date=date, day_name=day_name, event_polylines=event_polylines, events=events, add_event_form=add_event_form)
 
 
