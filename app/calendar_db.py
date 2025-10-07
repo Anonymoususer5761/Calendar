@@ -10,7 +10,7 @@ def get_years():
     return years
 
 def get_months():
-    menses = {
+    months = {
         "1": "January",
         "2": "February",
         "3": "March",
@@ -24,19 +24,39 @@ def get_months():
         "11": "November",
         "12": "December"
     }
-    return menses
+    return months
+
+def get_holidays():
+    db = get_db()
+
+    db.execute(
+        "SELECT * FROM indian_holidays"
+    ).fetchall()
 
 
-def get_dates(month: int | str, year: int | str):
+def get_calendar(month: int | str, year: int | str):
     date = f"{pad_digit(year, 4)}-{pad_digit(month, 2)}-01"
     db = get_db()
-    dates = db.execute("SELECT id, day_id, substr(date(unix_time, 'unixepoch'), -2, 2) AS date FROM calendar WHERE unix_time >= unixepoch(?, 'start of month') AND unix_time <= unixepoch(?, 'start of month', '+1 month', '-1 day')",
-        (date, date,)
-    ).fetchall()
-    db.close()
+    try:
+        calendar = db.execute("""
+            SELECT (calendar.id) AS id, day_id, substr(date(unix_time, 'unixepoch'), -2, 2) AS date, holiday, category, date_id
+            FROM calendar
+            LEFT JOIN indian_holidays
+            ON calendar.id = indian_holidays.date_id
+            WHERE
+                unix_time >= unixepoch(?, 'start of month')
+                AND
+                unix_time < unixepoch(?, 'start of month', '+1 month')
+            """, (
+                date,
+                date,
+            )
+        ).fetchall()
+    finally:
+        db.close()
 
-    dict_dates = [{"id": date["id"], "day_id": date["day_id"], "date": date["date"]} for date in dates]
-    return dict_dates
+    dict_calendar = [{"id": date["id"], "day_id": date["day_id"], "date": date["date"], "holiday": date["holiday"], "category": date["category"], "date_id": date["date_id"]} for date in calendar]
+    return dict_calendar
 
 
 def get_day_name(date_id: int) -> str:

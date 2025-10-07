@@ -29,6 +29,13 @@ body {
     color: #05a1e8;
 }
 
+.restricted {
+    background-color: #4acc4a;
+}
+.gazetted {
+    background-color: #cc4a4a;
+}
+
 
 /* Dates page */
 /* Add Event Form */

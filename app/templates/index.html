@@ -46,16 +46,26 @@
         month.options[currentMonth - 1].setAttribute('selected', 'selected');
         year.options[currentYear - 1970].setAttribute('selected', 'selected');
 
-        document.addEventListener("DOMContentLoaded", getDates);
-        month.addEventListener('change', getDates);
-        year.addEventListener('change', getDates);
 
-        let tableRowStart = '<tr class="calendar-tr">';
-        let tableRowEnd = '</tr>';
-        let emptyCells = '<td class="calendar-td"></td>';
-        let cellEnd = `</td>`;
 
-        async function getDates() {
+        // function printCalendar() {
+        //     noOfDays = dates.length
+        //     weekdays = 7
+        //     for (let date of dates) {
+                
+        //     }
+        // }
+        function convertToCSSFormat(category) {
+            if (category === "(G)") {
+                category = 'gazetted';
+            } else if (category === "(R)") {
+                category = 'restricted';
+            }
+            return category
+        }
+
+        async function getCalendar() {
+            const additionalClasses = new Map()
             document.querySelector('caption').innerHTML = `${month.options[month.selectedIndex].text} ${year.value}`;
             let datesResponse = await fetch(`/api/index/dates?month=${month.value}&year=${year.value}`, {
                 headers: {
@@ -63,52 +73,74 @@
                 }
             });
             let dates = await datesResponse.json();
+            let tableRowStart = '<tr class="calendar-tr">';
+            let tableRowEnd = '</tr>';
+            let emptyCells = '<td class="calendar-td"></td>';
+            let cellEnd = `</td>`;
+            let cell_class = 'class="calendar-td calendar-td-data"';
             let html = '';
-            let calendarDayIndex = 1;
+            let dayOfWeek = 1;
+            let preceedingDate = "00";
             for (let date of dates) {
-                // Initializes the calendar by creating a table row.
                 if (date['date'] === "01") {
                     html += tableRowStart;
-                } 
+                }
+                if (preceedingDate == date['date']) {
+                    additionalClasses.set(date['date_id'], convertToCSSFormat(date['category']))
+                //     // document.getElementById(date['date']).classList.add(date["category"])
+                    continue;
+                } else {
+                    preceedingDate = date['date'];
+                }
                // Prints empty cells if the starting day of the month and the calendar format do not match.  
-                while (calendarDayIndex != date['day_id']) {
+                while (dayOfWeek != date['day_id']) {
                     html += emptyCells;
-                    if (calendarDayIndex + 1 < 8) {
-                        calendarDayIndex = calendarDayIndex + 1;
+                    if (dayOfWeek + 1 < 8) {
+                        dayOfWeek = dayOfWeek + 1;
                     } else {
                         html += tableRowEnd;
                         html += tableRowStart;
-                        calendarDayIndex = 1;
+                        dayOfWeek = 1;
                     }
                 }
                 // Prints the date otherwise.
-                if (calendarDayIndex === date['day_id']) {
+                if (dayOfWeek === date['day_id']) {
                     if (date['date'] == currentDay && month.value == currentMonth && year.value == currentYear) {
-                        html += `<td id="today" class="calendar-td calendar-td-data" onclick="goToDates(${date['id']})">`;
+                        html += `<td id="today" id="${date['date_id']}" class="calendar-td calendar-td-data ${convertToCSSFormat(date["category"])}" onclick="goToDates(${date['id']})">`;
                         html += date['date'];
                         html += cellEnd;
                     } else {
-                        html += `<td class="calendar-td calendar-td-data" onclick="goToDates(${date['id']})">`;
+                        html += `<td id="${date['date_id']}" class="calendar-td calendar-td-data ${convertToCSSFormat(date["category"])}" onclick="goToDates(${date['id']})">`;
                         html += date['date'];
                         html += cellEnd;
                     }
                     if (date['date'] === dates[dates.length - 1]['date']) {
-                        let range = 7 - calendarDayIndex;
+                        let range = 7 - dayOfWeek;
                         for (let i = 0; i < range; i++) {
                             html += emptyCells;
                         }
                     }
                 }
-                if (calendarDayIndex + 1 < 8) {
-                    calendarDayIndex = calendarDayIndex + 1;
+                if (dayOfWeek + 1 < 8) {
+                    dayOfWeek = dayOfWeek + 1;
                 } else {
                     html += tableRowEnd;
                     html += tableRowStart;
-                    calendarDayIndex = 1;
+                    dayOfWeek = 1;
                 }
             }
+
             document.getElementById('calendar-tbody').innerHTML = html;
+
+            for (additionalClass of additionalClasses.entries()) {
+                document.getElementById(additionalClass[0]).classList.add(convertToCSSFormat(additionalClass[1]))
+            }
         }
+
+        document.addEventListener("DOMContentLoaded", getCalendar);
+        month.addEventListener('change', getCalendar);
+        year.addEventListener('change', getCalendar);
+
 
         dayCells = document.getElementsByClassName('calendar-tbody-data');
         function goToDates(dateId) {
