@@ -178,9 +178,10 @@
 
         let eventPopupStarts = document.getElementsByClassName('event-popup-start');
         let eventPopupEnds = document.getElementsByClassName('event-popup-end');
+        let convertToMilliseconds = 1000
         for (let i = 0; i < eventPopupStarts.length; i++) {
-            eventPopupStarts[i].innerHTML = formatDateTime(eventPopupStarts[i].innerHTML * 1000);
-            eventPopupEnds[i].innerHTML = formatDateTime(eventPopupEnds[i].innerHTML * 1000);
+            eventPopupStarts[i].innerHTML = formatDateTime(eventPopupStarts[i].innerHTML * convertToMilliseconds);
+            eventPopupEnds[i].innerHTML = formatDateTime(eventPopupEnds[i].innerHTML * convertToMilliseconds);
         }
 
         let customLines = document.getElementsByClassName('custom-lines');

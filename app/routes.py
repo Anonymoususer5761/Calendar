@@ -114,8 +114,8 @@ def api_dates():
 
 @app.route("/api/dates/events")
 def api_events():
-    # if request.headers.get("Request-Source") != "JS-AJAX":
-    #     return redirect(url_for("index"))
+    if request.headers.get("Request-Source") != "JS-AJAX":
+        return redirect(url_for("index"))
     date_id = request.args.get("date_id")
     events = get_events(date_id, current_user.id)
     return jsonify(events)
