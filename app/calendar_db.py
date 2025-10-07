@@ -1,5 +1,6 @@
 from app.database_manager import get_db
 from app.helpers import get_color_hex, pad_digit
+from app.forms import AddEventForm
 
 from datetime import datetime
 
@@ -71,7 +72,7 @@ def get_date(date_id: int) -> str:
     return date
 
 
-def submit_event_form_to_db(form: dict, user_id: int):
+def submit_event_form_to_db(form: AddEventForm, user_id: int):
     name = form.name.data
     description = form.description.data
     start_time = form.start_time.data

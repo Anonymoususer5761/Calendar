@@ -83,7 +83,7 @@
         </svg>
     </div>
 
-
+    {% if current_user.is_authenticated %}
     <div id="add-event-div">
         <form action="" method="post">
             <button type="button" class="close-add-event-form">X</button>
@@ -114,7 +114,9 @@
             </p>
         </form>
     </div>
+    {% endif %}
 
+    {% if current_user.is_authenticated %}
     {% for event in events %}
         <div id="event-popup-{{ event.id }}" class="event-popup" style="--popup-color: {{ event.color }}">
             <h1 class="event-popup-name">{{ event.name }}</h1>
@@ -123,6 +125,7 @@
             <p class="event-popup-end">{{ event.end_time }}</p>
         </div>
     {% endfor %}
+    {% endif %}
 
 
     <script>
@@ -130,14 +133,18 @@
             singleDigit = singleDigit.toString().padStart(2, '0');
             return singleDigit;
         }
-    
+        
+
          function setColorMenuColor() {
             document.getElementById('event-form-color-picker').setAttribute('fill', eventColorMenu.value);
         }
 
-        let eventColorMenu = document.getElementById('event-color');
-        document.addEventListener('DOMContentLoaded', setColorMenuColor);
-        eventColorMenu.addEventListener('change', setColorMenuColor);
+        if (document.getElementById('event-form-color-picker')) {
+            let eventColorMenu = document.getElementById('event-color');
+            document.addEventListener('DOMContentLoaded', setColorMenuColor);
+            eventColorMenu.addEventListener('change', setColorMenuColor);
+        }
+
 
         selectedDate = document.querySelector('h1').innerHTML;
         // Used ChatGPT to fix a bug where time wouldn't not update dynamically.
@@ -209,11 +216,11 @@
 
         let addFormButton = document.getElementById('add-event-button');
         addFormButton.addEventListener('click', () => {
-            if (auth) {
+            if (auth === "1") {
                 document.getElementById('add-event-div').style.display = 'flex';
                 // addFormButton.classList.add('close-add-event-form');
             } else {
-                alert("User not authenticated. You must sign in to acces this feature.");
+                alert("User not authenticated. You must sign in to add events.");
             }
         });
         let removeFormButtons = document.getElementsByClassName('close-add-event-form');
