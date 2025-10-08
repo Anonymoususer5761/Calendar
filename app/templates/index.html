@@ -4,12 +4,12 @@
     <div>
         <select id="years" name="years" size="1">
             {% for year in years %}
-                <option value="{{ year.year }}">{{ year.year }}</option>
+                <option class="years-menu" value="{{ year.year }}">{{ year.year }}</option>
             {% endfor %}
         </select>
         <select id="menses" name="menses">
             {% for (month_id, month) in menses.items() %}
-                <option name="{{ month }}" value="{{ month_id }}">{{ month }}</option>
+                <option class="months-menu" name="{{ month }}" value="{{ month_id }}">{{ month }}</option>
             {% endfor %}
         </select>
     </div>

@@ -4,8 +4,19 @@ body {
     color: #1e1e22;
 } 
 
+.bold-text {
+    font-weight: bold;
+    color: #fff
+}
 
 /* Calendar */
+.years-menu {
+    background-color: #afafaf;
+}
+.months-menu {
+    background-color: #afafaf;
+}
+
 .calendar-table {
     /* width: 1820px;
     height: 800px; */
