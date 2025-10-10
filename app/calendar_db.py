@@ -68,7 +68,7 @@ def get_day_name(date_id: int) -> str:
 
 def get_date(date_id: int) -> str:
     db = get_db()
-    date:str = db.execute("SELECT date(unix_time, 'unixepoch') AS date FROM calendar WHERE calendar.id = ?", (date_id,)).fetchone()["date"]
+    date: str = db.execute("SELECT date(unix_time, 'unixepoch') AS date FROM calendar WHERE calendar.id = ?", (date_id,)).fetchone()["date"]
     return date
 
 
@@ -91,14 +91,17 @@ def submit_event_form_to_db(form: AddEventForm, user_id: int):
     return True
 
 
-def get_events(date_id, user_id):
+def get_events(date_id, user_id, include_yesterday=True):
     db = get_db()
-    events = db.execute("""
+    hours = 3600
+    if not include_yesterday:
+        hours = 0
+    events = db.execute(f"""
                         SELECT (events.id) AS event_id, (events.name) AS event_name, (events.description) AS description, start_time, end_time, (events.color) AS color
                         FROM events JOIN users ON user_id = users.id 
                         WHERE user_id = ? 
                         AND (start_time <= (SELECT (unix_time -1) AS unix_time FROM calendar WHERE id = (? + 1))
-                        AND end_time >= (SELECT (unix_time - 3600) AS unix_time FROM calendar WHERE id = ?))
+                        AND end_time >= (SELECT (unix_time - {hours}) AS unix_time FROM calendar WHERE id = ?))
 """,
         (user_id, date_id, date_id)
     ).fetchall()

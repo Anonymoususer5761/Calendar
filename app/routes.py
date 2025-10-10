@@ -111,6 +111,14 @@ def api_dates():
     dates = get_calendar(int(month), int(year))
     return jsonify(dates)
 
+@app.route('/api/index/events')
+def api_events_index():
+    if request.headers.get("Request-Source") != "JS-AJAX":
+        return redirect(url_for("index"))
+    date_id = int(request.args.get("id"))
+    events = get_events(date_id, current_user.id, include_yesterday=False)
+    return jsonify(events)
+
 
 @app.route("/api/dates/events")
 def api_events():

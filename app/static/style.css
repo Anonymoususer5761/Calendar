@@ -20,6 +20,7 @@ body {
 .calendar-table {
     /* width: 1820px;
     height: 800px; */
+    /* position: relative; */
     border: 2px solid rgb(140, 140, 140);
     font-family: sans-serif;
     letter-spacing: 1px;
@@ -27,9 +28,21 @@ body {
 }
 
 .calendar-th, .calendar-td {
+    position: relative;
     width: 14.2857142857%;
     border: 1px solid #c5c8c6;
     padding: 5px;
+}
+.calendar-td-data-tooltip{
+    position: absolute;
+    z-index: 3;
+    width: 200px;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    left: calc(200% + 5px);
+    top: 50%;
+    transform: translate(-50%, -50%)
 }
 
 .calendar-td-data:hover {
