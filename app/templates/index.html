@@ -157,6 +157,8 @@
             return html
         }
 
+        let auth = localStorage.getItem('auth');
+
         async function finishCalendar() {
             let tooltipExists = false;
             async function showTooltip(event) {
