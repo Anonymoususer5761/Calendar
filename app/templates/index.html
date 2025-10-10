@@ -183,8 +183,10 @@
                 cell.addEventListener('click', (event) => {
                     document.location.href = `/dates?id=${event.target.getAttribute('id')}`;
                 });
-                cell.addEventListener('mouseover', showTooltip);
-                cell.addEventListener('mouseout', hideTooltip);
+                if (auth == '01') {
+                    cell.addEventListener('mouseover', showTooltip);
+                    cell.addEventListener('mouseout', hideTooltip);
+                }
             }
         }
 
