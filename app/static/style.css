@@ -55,10 +55,10 @@ body {
 }
 
 .restricted {
-    background-color: #4acc4a;
+    color: #4acc4a;
 }
 .gazetted {
-    background-color: #cc4a4a;
+    color: #cc4a4a;
 }
 
 
