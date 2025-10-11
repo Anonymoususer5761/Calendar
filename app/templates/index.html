@@ -162,10 +162,7 @@
         async function finishCalendar() {
             let tooltipExists = false;
             async function showTooltip(event) {
-                if (tooltipExists) {
-                    event.target.removeChild(event.target._divRef);
-                    tooltipExists = false;
-                }
+                hideToolTip()
                 let div = document.createElement('div');
                 div.className = 'calendar-td-data-tooltip';
                 event.target.appendChild(div);
