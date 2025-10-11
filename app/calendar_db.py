@@ -96,18 +96,43 @@ def get_events(date_id, user_id, include_yesterday=True):
     hours = 3600
     if not include_yesterday:
         hours = 0
-    events = db.execute(f"""
-                        SELECT (events.id) AS event_id, (events.name) AS event_name, (events.description) AS description, start_time, end_time, (events.color) AS color
-                        FROM events JOIN users ON user_id = users.id 
-                        WHERE user_id = ? 
-                        AND (start_time <= (SELECT (unix_time -1) AS unix_time FROM calendar WHERE id = (? + 1))
-                        AND end_time >= (SELECT (unix_time - {hours}) AS unix_time FROM calendar WHERE id = ?))
-""",
-        (user_id, date_id, date_id)
-    ).fetchall()
+    try:
+        events = db.execute(f"""
+            SELECT (events.id) AS event_id, (events.name) AS event_name, (events.description) AS description, start_time, end_time, (events.color) AS color
+            FROM events JOIN users ON user_id = users.id 
+            WHERE user_id = ? 
+            AND (start_time <= (SELECT (unix_time -1) AS unix_time FROM calendar WHERE id = (? + 1))
+            AND end_time >= (SELECT (unix_time - {hours}) AS unix_time FROM calendar WHERE id = ?))
+    """,
+            (user_id, date_id, date_id)
+        ).fetchall()
+    finally:
+        db.close()
 
     if events:
         dict_events = [{"id": event["event_id"], "name": event["event_name"], "desc": event["description"], "start_time": event["start_time"], "end_time": event["end_time"], "color": event["color"]} for event in events]
         return dict_events
 
     return None
+
+
+def get_specific_holidays(date_id):
+    db = get_db()
+    try:
+        holidays = db.execute(f"""
+            SELECT holiday, category
+            FROM calendar 
+            JOIN indian_holidays 
+                ON calendar.id = indian_holidays.date_id 
+            WHERE calendar.id = ?
+    """,
+            (date_id,)
+        ).fetchall()
+    finally:
+        db.close()
+
+    if holidays:
+        dict_day = [{"holiday": holiday["holiday"], "category": holiday["category"]} for holiday in holidays]
+        return dict_day
+    return None
+

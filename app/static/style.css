@@ -38,7 +38,7 @@ body {
     z-index: 3;
     width: 200px;
     padding: 10px;
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(190, 190, 190, 0.8);
     color: white;
     left: calc(200% + 5px);
     top: 50%;
@@ -49,8 +49,9 @@ body {
     background-color: #c5c8c6;
 }
 
-#today {
+.today {
     color: #05a1e8;
+    background-color:#aaa
 }
 
 .restricted {
