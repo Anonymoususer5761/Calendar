@@ -151,15 +151,13 @@ async function finishCalendar() {
         cell.addEventListener('click', (event) => {
             document.location.href = `/dates?id=${event.target.getAttribute('id')}`;
         });
-        if (auth == '1') {
-            let html = await getHolidays(cell).then((html) => {
-                if (html) {
-                    cell.addEventListener('mouseover', (event) => {
-                        showTooltip(event, html);
-                    });
-                }
-            });
-            cell.addEventListener('mouseout', hideTooltip);
-        }
+        await getHolidays(cell).then((html) => {
+            if (html) {
+                cell.addEventListener('mouseover', (event) => {
+                    showTooltip(event, html);
+                });
+            }
+        });
+        cell.addEventListener('mouseout', hideTooltip);
     }
 }
