@@ -1,0 +1,165 @@
+let month = document.getElementById('menses');
+let year = document.getElementById('years');
+
+let currentDay = parseInt(localStorage.getItem('today').split("T")[0].split("-")[2]);
+let currentMonth = parseInt(localStorage.getItem('today').split("T")[0].split("-")[1]);
+let currentYear = parseInt(localStorage.getItem('today').split("T")[0].split("-")[0]);
+
+month.options[currentMonth - 1].setAttribute('selected', 'selected');
+year.options[currentYear - 1970].setAttribute('selected', 'selected');
+
+
+function convertToCSSFormat(category) {
+    if (category === "(G)") {
+        category = 'gazetted';
+    } else if (category === "(R)") {
+        category = 'restricted';
+    }
+    return category
+}
+
+async function getCalendar() {
+    const additionalClasses = new Map()
+    document.querySelector('caption').innerHTML = `${month.options[month.selectedIndex].text} ${year.value}`;
+    let datesResponse = await fetch(`/api/index/dates?month=${month.value}&year=${year.value}`, {
+        headers: {
+            'Request-Source': 'JS-AJAX',
+        }
+    });
+    let dates = await datesResponse.json();
+    let tableRowStart = '<tr class="calendar-tr">';
+    let tableRowEnd = '</tr>';
+    let emptyCells = '<td class="calendar-td"></td>';
+    let cellEnd = `</td>`;
+    let cell_class = 'class="calendar-td calendar-td-data"';
+    let html = '';
+    let dayOfWeek = 1;
+    let preceedingDate = "00";
+    for (let date of dates) {
+        if (date['date'] === "01") {
+            html += tableRowStart;
+        }
+        if (preceedingDate == date['date']) {
+            additionalClasses.set(date['id'], convertToCSSFormat(date['category']))
+        //     // document.getElementById(date['date']).classList.add(date["category"])
+            continue;
+        } else {
+            preceedingDate = date['date'];
+        }
+        // Prints empty cells if the starting day of the month and the calendar format do not match.  
+        while (dayOfWeek != date['day_id']) {
+            html += emptyCells;
+            if (dayOfWeek + 1 < 8) {
+                dayOfWeek = dayOfWeek + 1;
+            } else {
+                html += tableRowEnd;
+                html += tableRowStart;
+                dayOfWeek = 1;
+            }
+        }
+        // Prints the date otherwise.
+        if (dayOfWeek === date['day_id']) {
+            if (date['date'] == currentDay && month.value == currentMonth && year.value == currentYear) {
+                html += `<td id="${date['id']}"" class="today calendar-td calendar-td-data ${convertToCSSFormat(date['category'])}">`;
+                html += date['date'];
+                html += cellEnd;
+            } else {
+                html += `<td id="${date['id']}" class="calendar-td calendar-td-data ${convertToCSSFormat(date["category"])}">`;
+                html += date['date'];
+                html += cellEnd;
+            }
+            if (date['date'] === dates[dates.length - 1]['date']) {
+                let range = 7 - dayOfWeek;
+                for (let i = 0; i < range; i++) {
+                    html += emptyCells;
+                }
+            }
+        }
+        if (dayOfWeek + 1 < 8) {
+            dayOfWeek = dayOfWeek + 1;
+        } else {
+            html += tableRowEnd;
+            html += tableRowStart;
+            dayOfWeek = 1;
+        }
+    }
+
+    document.getElementById('calendar-tbody').innerHTML = html;
+
+    for (additionalClass of additionalClasses.entries()) {
+        document.getElementById(additionalClass[0]).classList.add(convertToCSSFormat(additionalClass[1]))
+    }
+}
+
+getCalendar().then( () => {
+    finishCalendar();
+});
+month.addEventListener('change', () => {
+    getCalendar().then( () => {
+        finishCalendar();
+    });
+});
+year.addEventListener('change', () => {
+    getCalendar().then( () => {
+        finishCalendar();
+    });
+});
+
+async function getHolidays(day) {
+    let response = await fetch(`/api/index/holidays?id=${day.getAttribute('id')}`, {
+        headers: {
+            'Request-Source': 'JS-AJAX',
+        }
+    });
+    let holidays = await response.json();
+    let html = '';
+    if (holidays) {
+        for (let holiday of holidays) {
+            html += `<h1 class="${convertToCSSFormat(holiday["category"])}">${holiday["holiday"]} ${holiday["category"]}</h1>`;
+        }
+    } else {
+        html = '';
+    }
+    if (day.classList.contains('today')) {
+        html += '<h1 class="today">Today</h1>';
+    }
+    return html;
+}
+
+let auth = localStorage.getItem('auth');
+
+async function finishCalendar() {
+    let tooltipExists = false;
+    async function hideTooltip(event) {
+        if (tooltipExists) {
+            event.target.removeChild(event.target._divRef);
+            tooltipExists = false;
+        }
+    }
+    async function showTooltip(event, html) {
+        await hideTooltip()
+        let div = document.createElement('div');
+        div.className = 'calendar-td-data-tooltip';
+        event.target.appendChild(div);
+        event.target._divRef = div;
+        tooltipExists = true;
+        div.innerHTML = html;
+
+    }
+    let dayCells = document.getElementsByClassName('calendar-td-data');
+    for (let cell of dayCells) {
+        cell.addEventListener('click', (event) => {
+            document.location.href = `/dates?id=${event.target.getAttribute('id')}`;
+        });
+        if (auth == '1') {
+            let html = await getHolidays(cell).then((html) => {
+                if (html) {
+                    cell.addEventListener('mouseover', (event) => {
+                        showTooltip(event, html);
+                    });
+                }
+            });
+            cell.addEventListener('mouseout', hideTooltip);
+        }
+    }
+}
