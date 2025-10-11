@@ -1,53 +1,258 @@
 id,holiday,category,date_id
-1,New Year's Day,(R),20090
-2,Guru Gobind Singh's Birthday,(R),20095
-3,Makar Sankranti/ Magha Bihu/ Pongal/ Hazarat Ali's Birthday,(R),20103
-4,Republic Day,(G),20115
-5,Basant Panchami / Sri Panchami,(R),20122
-6,Guru Ravidas's Birthday,(R),20132
-7,Shivaji Jayanti,(R),20139
-8,Swami Dayananda Saraswati Jayanti,(R),20143
-9,Maha Shivaratri,(G),20146
-10,Holika Dahan,(R),20161
-11,Holi,(G),20162
-12,Dolyatra,(R),20162
-13,Jamat-Ul-Vida,(R),20176
-14,Chaitra Sukladi/ Gudi Padava/ Ugadi/ Cheti Chand,(R),20178
-15,Id-ul-Fitr,(G),20179
-16,Ram Navami,(R),20185
-17,Mahavir Jayanti,(G),20189
-18,Vaisakhi/ Vishu,(R),20192
-19,Meshadi (Tamil New Year's Day),(R),20193
-20,Birthday of Dr. B. R. Ambedkar,(G),20193
-21,Vaisakhadi (Bengal)/ Bahag Bihu (Assam),(R),20194
-22,Good Friday,(G),20197
-23,Easter Sunday,(R),20199
-24,Guru Rabindranath's Birthday,(R),20218
-25,Buddha Purnima,(G),20221
-26,Id-ul-Zuha (Bakrid),(G),20247
-27,Rath Yatra,(R),20267
-28,Muharram,(G),20276
-29,Raksha Bandhan,(R),20310
-30,Independence day,(G),20316
-31,Parsi New Year's day/ Nauraj,(R),20316
-32,Janmashtami (Smarta),(R),20316
-33,Janmashtami,(G),20317
-34,Ganesh Chaturthi / Vinayaka Chaturthi,(R),20328
-35,Milad-un-Nabi or Id-e-Milad (Birthday of Prophet Mohammad),(G),20337
-36,Onam or Thiru Onam Day,(R),20337
-37,Dussehra (Maha Saptami),(R),20361
-38,Dussehra (Maha Ashtami),(R),20362
-39,Dussehra (Maha Navmi),(R),20363
-40,Mahatma Gandhi's Birthday,(G),20364
-41,Dussehra,(G),20364
-42,Maharishi Valmiki's Birthday,(R),20369
-43,Karaka Chaturthi (Karva Chouth),(R),20372
-44,Diwali (Deepawali),(G),20382
-45,Naraka Chaturdasi,(R),20382
-46,Govardhan Puja,(R),20384
-47,Bhai Duj,(R),20385
-48,Pratihar Sashthi or Surya Sashthi (Chhat Puja),(R),20390
-49,Guru Nanak's Birthday,(G),20398
-50,Guru Teg Bahadur's Martyrdom Day,(R),20417
-51,Christmas Eve,(R),20447
-52,Christmas Day,(G),20448
+1,New Year's Day,(R),18994
+2,Guru Gobind Singh's Birthday,(R),19002
+3,Lohri,(R),19006
+4,Makar Sankranti/ Magha Bihu/ Pongal,(R),19007
+5,Republic Day,(G),19019
+6,Basant Panchami / Sri Panchami,(R),19029
+7,Hazarat Ali's Birthday,(R),19039
+8,Guru Ravidas's Birthday,(R),19040
+9,Shivaji Jayanti,(R),19043
+10,Swami Dayananda Saraswati Jayanti,(R),19050
+11,Maha Shivaratri,(G),19053
+12,Holika Dahan,(R),19069
+13,Holi,(G),19070
+14,Dolyatra,(R),19070
+15,Chaitra Sukladi/ Gudi Padava/ Ugadi/ Cheti Chand,(R),19085
+16,Ram Navami,(R),19093
+17,Mahavir Jayanti,(G),19097
+18,Vaisakhi/ Vishu/ Meshadi,(R),19097
+19,Birthday of Dr. B. R. Ambedkar,(G),19097
+20,Good Friday,(G),19098
+21,Vaisakhadi (Bengal)/ Bahag Bihu (Assam),(R),19098
+22,Easter Sunday,(R),19100
+23,Jamat-Ul-Vida,(R),19112
+24,Id-ul- Fitr,(G),19116
+25,Guru Rabindranath's Birthday,(R),19122
+26,Buddha Purnima,(G),19129
+27,Rath Yatra,(R),19175
+28,Id-ul-Zuha (Bakrid),(G),19184
+29,Muharram,(G),19214
+30,Raksha Bandhan,(R),19216
+31,Independence day,(G),19220
+32,Parsi New Year's day/ Nauraj,(R),19221
+33,Janmashtami (Smarta),(R),19223
+34,Janmashtami,(G),19224
+35,Vinayaka Chaturthi/ Ganesh Chaturthi,(R),19236
+36,Onam or Thiru Onam Day,(R),19244
+37,Mahatma Gandhi's Birthday,(G),19268
+38,Dussehra (Maha Saptami),(R),19268
+39,Dussehra (Maha Ashtami),(R),19269
+40,Dussehra (Maha Navmi),(R),19270
+41,Dussehra,(G),19271
+42,Milad-un-Nabi or Id-e-Milad (Birthday of Prophet Mohammad),(G),19275
+43,Maharishi Valmiki's Birthday,(R),19275
+44,Karaka Chaturthi (Karva Chouth),(R),19279
+45,Diwali (Deepawali),(G),19290
+46,Naraka Chaturdasi,(R),19290
+47,Govardhan Puja,(R),19291
+48,Bhai Duj,(R),19292
+49,Pratihar Sashthi or Surya Sashthi (Chhat Puja),(R),19296
+50,Guru Nanak's Birthday,(G),19305
+51,Guru Teg Bahadur's Martyrdom Day,(R),19321
+52,Christmas Eve,(R),19351
+53,Christmas Day,(G),19352
+54,Guru Gobind Singh's Birthday,(R),19356
+55,New Year's Day,(R),19359
+56,Makar Sankranti/Magha Bihu,(R),19372
+57,Pongal,(R),19373
+58,Republic Day,(G),19384
+59,Basant Panchami/Sri Panchami,(R),19384
+60,Hazarat Ali's Birthday, Guru Ravidas's Birthday,19394
+61,Swami Dayananda Saraswati Jayanti,(R),19404
+62,Maha Shivaratri,(R),19407
+63,Shivaji Jayanti,(R),19408
+64,Holika Dahan, Dolyatra,19424
+65,Holi,(G),19425
+66,Chaitra Sukladi/ Gudi Padava/ Ugadi/ Cheti Chand,(R),19439
+67,Ram Navami,(G),19447
+68,Mahavir Jayanti,(G),19452
+69,Good Friday,(G),19455
+70,Easter Sunday,(R),19457
+71,Vaisakhi/Vishu/Meshadi,(R),19462
+72,Birthday of Dr. B. R. Ambedkar,(G),19462
+73,Vaisakhadi (Bengal)/ Bahag Bihu (Assam),(R),19463
+74,Jamat-Ul-Vida,(R),19469
+75,Id-ul-Fitr,(G),19470
+76,Buddha Purnima,(G),19483
+77,Guru Rabindranath's Birthday,(R),19487
+78,Rath Yatra,(R),19529
+79,Id-ul-Zuha (Bakrid),(G),19538
+80,Muharram,(G),19568
+81,Independence Day,(G),19585
+82,Parsi New Year's day/ Nauraj,(R),19586
+83,Vinayaka Chaturthi,(R),19590
+84,Onam or Thiru Onam Day,(R),19599
+85,Raksha Bandhan,(R),19600
+86,Janmashtami (Smarta),(R),19607
+87,Janmashtami (Vaishnva),(G),19608
+88,Ganesh Chaturthi,(R),19620
+89,Milad-un-Nabi or Id-e-Milad (Birthday of Prophet Mohammad),(G),19629
+90,Mahatma Gandhi's Birthday,(G),19633
+91,Dussehra (Saptami),(R),19652
+92,Dussehra (Maha Ashtami),(R),19653
+93,Dussehra (Maha Navmi),(R),19654
+94,Dussehra,(G),19655
+95,Maharishi Valmiki's Birthday,(R),19659
+96,Karaka Chaturthi (Karva Chouth),(R),19663
+97,Diwali (Deepawali),(G),19674
+98,Naraka Chaturdasi,(R),19674
+99,Govardhan Puja,(R),19675
+100,Bhai Duj,(R),19677
+101,Pratihar Sashthi or Surya Sashthi (Chhat Puja),(R),19681
+102,Guru Teg Bahadur's Martyrdom Day,(R),19686
+103,Guru Nanak's Birthday,(G),19689
+104,Christmas Eve,(R),19716
+105,Christmas Day,(G),19717
+106,New Year's Day,(R),19724
+107,Lohri,(R),19736
+108,Makar Sankranti,(R),19737
+109,Magha Bihu/ Pongal,(R),19738
+110,Guru Gobind Singh's Birthday,(R),19740
+111,Hazarat Ali's Birthday,(R),19748
+112,Republic Day,(G),19749
+113,Basant Panchami / Sri Panchami,(R),19768
+114,Shivaji Jayanti,(R),19773
+115,Guru Ravidas's Birthday,(R),19778
+116,Swami Dayananda Saraswati Jayanti,(R),19789
+117,Maha Shivaratri,(R),19791
+118,Holika Dahan,(R),19807
+119,Holi,(G),19808
+120,Dolyatra,(R),19808
+121,Good Friday,(G),19812
+122,Easter Sunday,(R),19814
+123,Jamat-Ul-Vida,(R),19819
+124,Chaitra Sukladi/ Gudi Padava/ Ugadi/ Cheti Chand,(R),19823
+125,Id-ul- Fitr,(G),19825
+126,Vaisakhi/ Vishu,(R),19827
+127,Meshadi (Tamil New Year's Day) / Vaisakhadi (Bengal)/ Bahag Bihu (Assam),(R),19828
+128,Ram Navami,(G),19831
+129,Mahavir Jayanti,(G),19835
+130,Guru Rabindranath's Birthday,(R),19852
+131,Buddha Purnima,(G),19867
+132,Id-ul-Zuha (Bakrid),(G),19892
+133,Rath Yatra,(R),19912
+134,Muharram,(G),19922
+135,Independence Day,(G),19951
+136,Parsi New Year's day / Nauraj,(R),19951
+137,Raksha Bandhan,(R),19955
+138,Janmashtami (Vaishnva),(G),19962
+139,Ganesh Chaturthi / Vinayaka Chaturthi,(R),19974
+140,Onam or Thiru Onam Day,(R),19982
+141,Milad-un-Nabi or Id-e-Milad (Birthday of Prophet Mohammad),(G),19983
+142,Mahatma Gandhi's Birthday,(G),19999
+143,Dussehra (Maha Saptami),(R),20007
+144,Dussehra (Maha Ashtami) / Dussehra (Maha Navmi),(R),20008
+145,Dussehra,(G),20009
+146,Maharishi Valmiki's Birthday,(R),20014
+147,Karaka Chaturthi (Karva Chouth),(R),20017
+148,Diwali (Deepawali),(G),20028
+149,Naraka Chaturdasi,(R),20028
+150,Govardhan Puja,(R),20030
+151,Bhai Duj,(R),20031
+152,Pratihar Sashthi or Surya Sashthi (Chhat Puja),(R),20035
+153,Guru Nanak's Birthday,(G),20043
+154,Guru Teg Bahadur's Martyrdom Day,(R),20052
+155,Christmas Eve,(R),20082
+156,Christmas Day,(G),20083
+157,New Year's Day,(R),20090
+158,Guru Gobind Singh's Birthday,(R),20095
+159,Makar Sankranti/ Magha Bihu/ Pongal/ Hazarat Ali's Birthday,(R),20103
+160,Republic Day,(G),20115
+161,Basant Panchami / Sri Panchami,(R),20122
+162,Guru Ravidas's Birthday,(R),20132
+163,Shivaji Jayanti,(R),20139
+164,Swami Dayananda Saraswati Jayanti,(R),20143
+165,Maha Shivaratri,(G),20146
+166,Holika Dahan,(R),20161
+167,Holi,(G),20162
+168,Dolyatra,(R),20162
+169,Jamat-Ul-Vida,(R),20176
+170,Chaitra Sukladi/ Gudi Padava/ Ugadi/ Cheti Chand,(R),20178
+171,Id-ul-Fitr,(G),20179
+172,Ram Navami,(R),20185
+173,Mahavir Jayanti,(G),20189
+174,Vaisakhi/ Vishu,(R),20192
+175,Meshadi (Tamil New Year's Day),(R),20193
+176,Birthday of Dr. B. R. Ambedkar,(G),20193
+177,Vaisakhadi (Bengal)/ Bahag Bihu (Assam),(R),20194
+178,Good Friday,(G),20197
+179,Easter Sunday,(R),20199
+180,Guru Rabindranath's Birthday,(R),20218
+181,Buddha Purnima,(G),20221
+182,Id-ul-Zuha (Bakrid),(G),20247
+183,Rath Yatra,(R),20267
+184,Muharram,(G),20276
+185,Raksha Bandhan,(R),20310
+186,Independence day,(G),20316
+187,Parsi New Year's day/ Nauraj,(R),20316
+188,Janmashtami (Smarta),(R),20316
+189,Janmashtami,(G),20317
+190,Ganesh Chaturthi / Vinayaka Chaturthi,(R),20328
+191,Milad-un-Nabi or Id-e-Milad (Birthday of Prophet Mohammad),(G),20337
+192,Onam or Thiru Onam Day,(R),20337
+193,Dussehra (Maha Saptami),(R),20361
+194,Dussehra (Maha Ashtami),(R),20362
+195,Dussehra (Maha Navmi),(R),20363
+196,Mahatma Gandhi's Birthday,(G),20364
+197,Dussehra,(G),20364
+198,Maharishi Valmiki's Birthday,(R),20369
+199,Karaka Chaturthi (Karva Chouth),(R),20372
+200,Diwali (Deepawali),(G),20382
+201,Naraka Chaturdasi,(R),20382
+202,Govardhan Puja,(R),20384
+203,Bhai Duj,(R),20385
+204,Pratihar Sashthi or Surya Sashthi (Chhat Puja),(R),20390
+205,Guru Nanak's Birthday,(G),20398
+206,Guru Teg Bahadur's Martyrdom Day,(R),20417
+207,Christmas Eve,(R),20447
+208,Christmas Day,(G),20448
+209,New Year's Day,(R),20455
+210,Hazarat Ali's Birthday,(R),20457
+211,Makar Sankranti/ Magha Bihu/ Pongal,(R),20468
+212,Basant Panchami / Sri Panchami,(R),20477
+213,Republic Day,(G),20480
+214,Guru Ravidas's Birthday,(R),20486
+215,Swami Dayananda Saraswati Jayanti,(R),20497
+216,Maha Shivaratri,(R),20500
+217,Shivaji Jayanti,(R),20504
+218,Holika Dahan / Dolyatra,(R),20516
+219,Holi,(G),20517
+220,Chaitra Sukladi/ Gudi Padava/ Ugadi/ Cheti Chand,(R),20532
+221,Jamat-Ul-Vida,(R),20533
+222,Id-ul-Fitr,(G),20534
+223,Ram Navami,(G),20539
+224,Mahavir Jayanti,(G),20544
+225,Good Friday,(G),20547
+226,Easter Sunday,(R),20549
+227,Vaisakhi/ Vishu/ Meshadi (Tamil New Year's Day),(R),20558
+228,Vaisakhadi (Bengal)/ Bahag Bihu (Assam),(R),20559
+229,Buddha Purnima,(G),20575
+230,Guru Rabindranath's Birthday,(R),20583
+231,Id-ul-Zuha (Bakrid),(G),20601
+232,Muharram,(G),20631
+233,Rath Yatra,(R),20651
+234,Independence Day,(G),20681
+235,Parsi New Year's day / Nauraj,(R),20681
+236,Milad-un-Nabi or Id-e-Milad (Birthday of Prophet Mohammad),(G),20692
+237,Onam or Thiru Onam Day,(R),20692
+238,Raksha Bandhan,(R),20694
+239,Janmashtami (Vaishnva),(G),20701
+240,Ganesh Chaturthi / Vinayaka Chaturthi,(R),20711
+241,Mahatma Gandhi's Birthday,(G),20729
+242,Dussehra (Saptami),(R),20745
+243,Dussehra (Maha Ashtami),(R),20746
+244,Dussehra,(G),20747
+245,Dussehra (Maha Navmi),(R),20747
+246,Maharishi Valmiki's Birthday,(R),20753
+247,Karaka Chaturthi (Karva Chouth),(R),20756
+248,Diwali (Deepawali),(G),20766
+249,Naraka Chaturdasi,(R),20766
+250,Govardhan Puja,(R),20767
+251,Bhai Duj,(R),20769
+252,Pratihar Sashthi or Surya Sashthi (Chhat Puja),(R),20773
+253,Guru Nanak's Birthday,(G),20782
+254,Guru Teg Bahadur's Martyrdom Day,(R),20782
+255,Hazarat Ali's Birthday,(R),20811
+256,Christmas Eve,(R),20812
+257,Christmas Day,(G),20813
