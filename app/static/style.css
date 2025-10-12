@@ -47,7 +47,8 @@ html, body {
     position: absolute;
     top: 0;
     color: white;
-    left: 92.5%;
+    left: 91%;
+    margin-right: 8px;
 }
 #main {
     margin-left: 10px;

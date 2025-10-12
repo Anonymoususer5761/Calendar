@@ -24,7 +24,10 @@
                 </ul>
             </nav>
             <div id="clock">
-                <p>23:42:14</p>
+                <span id="clock-year"></span>
+                <span id="clock-month"></span>
+                <span id="clock-date"></span>
+                <span id="clock-time"></span>
             </div>
             <div>
                 {% with messages = get_flashed_messages() %}
@@ -37,7 +40,6 @@
                     {% endif %}
                 {% endwith %}
             </div>
-        <hr>
         </div>
         <main id="main">
             {% block main %}

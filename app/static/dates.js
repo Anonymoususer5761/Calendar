@@ -4,7 +4,7 @@ function pad(singleDigit) {
 }
 
 
-    function setColorMenuColor() {
+function setColorMenuColor() {
     document.getElementById('event-form-color-picker').setAttribute('fill', document.getElementById('event-color').value);
 }
 
@@ -15,7 +15,7 @@ if (document.getElementById('event-form-color-picker')) {
 }
 
 
-selectedDate = document.querySelector('h1').innerHTML;
+
 // Used ChatGPT to fix a bug where time wouldn't not update dynamically.
 function moveDayLine() {
     let svg = document.getElementById('now');
@@ -29,10 +29,12 @@ function moveDayLine() {
     svg.setAttribute("y2", y_axis);
     svg.removeAttribute("display");
 }
-
-if (localStorage.getItem('today').split("T")[0] === selectedDate) {
+selectedDate = document.querySelector('h1').innerHTML;
+let today = new Date()
+let todayDate = today.toISOString().split('T')[0]
+if (todayDate === selectedDate) {
     document.addEventListener('DOMContentLoaded', moveDayLine())
-    let interval = setInterval(moveDayLine, 1000);
+    setInterval(moveDayLine, 1000);
 }
 
 // Events imported from Fetch API.
