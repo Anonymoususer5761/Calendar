@@ -1,15 +1,60 @@
-/* Webpage */
+/* Entire Webpage */
 body {
+    position: static;
     background-color: #fafafa;
     color: #1e1e22;
-} 
-
+}
+html, body {
+    margin: 0;
+    padding: 0;
+}
 .bold-text {
     font-weight: bold;
     color: #fff
 }
+#header {
+    position: sticky;
+    width: 100%;
+    background-color: #100f16d5;
+    z-index: 10;
+    margin: 0;
+    padding: 2px;
+}
+.navbar {
+    margin: 0;
+    padding: 0;
+}
+.navbar ul {
+    list-style-type: none;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
+.navbar a {
+    color: white;
+    text-decoration: none;
+    margin: 0;
+    padding: 0;
+    padding-left: 15px;
+    display: block;
+}
+.navbar li {
+    margin: 0;
+    padding: 0;
+    float: left;
+}
+#clock {
+    position: absolute;
+    top: 0;
+    color: white;
+    left: 92.5%;
+}
+#main {
+    margin-left: 10px;
+    margin-right: 10px
+}
 
-/* Calendar */
+/* Index */
 .years-menu {
     background-color: #afafaf;
 }
