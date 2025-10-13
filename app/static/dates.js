@@ -14,8 +14,6 @@ if (document.getElementById('event-form-color-picker')) {
     eventColorMenu.addEventListener('change', setColorMenuColor);
 }
 
-
-
 // Used ChatGPT to fix a bug where time wouldn't not update dynamically.
 function moveDayLine() {
     let svg = document.getElementById('now');
@@ -84,13 +82,10 @@ function hoverEventListeners() {
 
 hoverEventListeners();
 
-let auth = localStorage.getItem('auth');
-
 let addFormButton = document.getElementById('add-event-button');
 addFormButton.addEventListener('click', () => {
-    if (auth === "1") {
+    if (authorised) {
         document.getElementById('add-event-div').style.display = 'flex';
-        // addFormButton.classList.add('close-add-event-form');
     } else {
         alert("User not authenticated. You must sign in to add events.");
     }
@@ -99,7 +94,6 @@ let removeFormButtons = document.getElementsByClassName('close-add-event-form');
 for (let removeFormButton of removeFormButtons) {
     removeFormButton.addEventListener('click', () => {
         document.getElementById('add-event-div').style.display = 'none';
-        // addFormButton.classList.remove('close-add-event-form');
     });
 }
 

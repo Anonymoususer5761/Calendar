@@ -5,18 +5,13 @@ async function isAuthenticated() {
         }
     });
     let auth = await response.json();
-    if (auth) {
-        return true;
-    }
-    return false;
+    return auth;
 }
 
+var authorised = false;
+
 isAuthenticated().then(auth => {
-    if (auth) {
-        localStorage.setItem('auth', 1);
-    } else {
-        localStorage.setItem('auth', 0);
-    }
+    authorised = auth;
 });
 
 function getNow() {

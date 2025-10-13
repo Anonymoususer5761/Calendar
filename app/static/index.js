@@ -127,8 +127,6 @@ async function getHolidays(day) {
     return html;
 }
 
-let auth = localStorage.getItem('auth');
-
 async function finishCalendar() {
     let tooltipExists = false;
     async function hideTooltip(event) {
@@ -162,5 +160,3 @@ async function finishCalendar() {
         cell.addEventListener('mouseout', hideTooltip);
     }
 }
-
-console.log(variable);
