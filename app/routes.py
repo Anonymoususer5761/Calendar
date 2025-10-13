@@ -40,6 +40,11 @@ def dates():
     return render_template("dates.html", date=date, day_name=day_name, event_polylines=event_polylines, events=events, add_event_form=add_event_form)
 
 
+@app.route("/timer")
+def timer():
+    return render_template("timer.html")
+
+
 @app.route("/settings", methods=["POST", "GET"])
 def settings():
     settings = SettingsForm()
