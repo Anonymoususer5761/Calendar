@@ -14,13 +14,8 @@ isAuthenticated().then(auth => {
     authorised = auth;
 });
 
-function getNow() {
-    let now = new Date();
-    return now;
-}
-
 function updateClock(clock) {
-    let now = getNow()
+    let now = new Date()
     clock['clock-date'].innerHTML = now.getDate().toString().padStart(2, '0');;
     clock['clock-month'].innerHTML = (now.getMonth() + 1).toString().padStart(2, '0');
     clock['clock-year'].innerHTML = now.getFullYear().toString().padStart(4, '0');;

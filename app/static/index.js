@@ -1,7 +1,7 @@
 let month = document.getElementById('menses');
 let year = document.getElementById('years');
 
-let CurrentDate = getNow();
+let CurrentDate = new Date();
 let currentDay = CurrentDate.getDate();
 let currentMonth = CurrentDate.getMonth() + 1;
 let currentYear = CurrentDate.getFullYear();
