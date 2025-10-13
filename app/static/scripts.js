@@ -40,5 +40,3 @@ document.addEventListener('DOMContentLoaded', () => {
         updateClock(clockElements);
     }, 1000);
 });
-
-let variable = 35
