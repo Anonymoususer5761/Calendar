@@ -15,6 +15,7 @@ html, body {
 #header {
     position: sticky;
     width: 100%;
+    top: 0;
     background-color: #100f16d5;
     z-index: 10;
     margin: 0;
@@ -51,6 +52,7 @@ html, body {
     margin-right: 8px;
 }
 #main {
+    margin-top: 10px;
     margin-left: 10px;
     margin-right: 10px
 }

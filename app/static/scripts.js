@@ -19,12 +19,17 @@ isAuthenticated().then(auth => {
     }
 });
 
-function updateClock(clock) {
+function getNow() {
     let now = new Date();
-    clock['clock-date'].innerHTML = now.getDate();
-    clock['clock-month'].innerHTML = now.getMonth() + 1;
-    clock['clock-year'].innerHTML = now.getFullYear();
-    clock['clock-time'].innerHTML = `${now.getHours()}:${now.getMinutes()}:${now.getSeconds().toString().padStart(2, '0')}`;
+    return now;
+}
+
+function updateClock(clock) {
+    let now = getNow()
+    clock['clock-date'].innerHTML = now.getDate().toString().padStart(2, '0');;
+    clock['clock-month'].innerHTML = (now.getMonth() + 1).toString().padStart(2, '0');
+    clock['clock-year'].innerHTML = now.getFullYear().toString().padStart(4, '0');;
+    clock['clock-time'].innerHTML = `${now.getHours()}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}`;
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -35,3 +40,5 @@ document.addEventListener('DOMContentLoaded', () => {
         updateClock(clockElements);
     }, 1000);
 });
+
+let variable = 35

@@ -1,9 +1,10 @@
 let month = document.getElementById('menses');
 let year = document.getElementById('years');
 
-let currentDay = parseInt(localStorage.getItem('today').split("T")[0].split("-")[2]);
-let currentMonth = parseInt(localStorage.getItem('today').split("T")[0].split("-")[1]);
-let currentYear = parseInt(localStorage.getItem('today').split("T")[0].split("-")[0]);
+let CurrentDate = getNow();
+let currentDay = CurrentDate.getDate();
+let currentMonth = CurrentDate.getMonth() + 1;
+let currentYear = CurrentDate.getFullYear();
 
 month.options[currentMonth - 1].setAttribute('selected', 'selected');
 year.options[currentYear - 1970].setAttribute('selected', 'selected');
@@ -15,7 +16,7 @@ function convertToCSSFormat(category) {
     } else if (category === "(R)") {
         category = 'restricted';
     }
-    return category
+    return category;
 }
 
 async function getCalendar() {
@@ -161,3 +162,5 @@ async function finishCalendar() {
         cell.addEventListener('mouseout', hideTooltip);
     }
 }
+
+console.log(variable);
