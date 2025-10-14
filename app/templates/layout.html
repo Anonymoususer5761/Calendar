@@ -14,7 +14,7 @@
             <nav class="navbar">
                 <ul>
                     <li><a href="{{ url_for('index') }}">Home</a></li>
-                    <li><a href="{{ url_for('timer') }}">Timer</a></li>
+                    <li><a href="{{ url_for('clock') }}">Clock</a></li>
                     <li><a href="{{ url_for('settings') }}">Settings</a></li>
                     <li>
                         {% if current_user.is_authenticated %}
