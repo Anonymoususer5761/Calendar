@@ -24,13 +24,13 @@
                         {% endif %}
                     </li>
                 </ul>
+                <div id="clock">
+                    <span id="clock-year"></span>
+                    <span id="clock-month"></span>
+                    <span id="clock-date"></span>
+                    <span id="clock-time"></span>
+                </div>
             </nav>
-            <div id="clock">
-                <span id="clock-year"></span>
-                <span id="clock-month"></span>
-                <span id="clock-date"></span>
-                <span id="clock-time"></span>
-            </div>
             <div>
                 {% with messages = get_flashed_messages() %}
                     {% if messages %}
