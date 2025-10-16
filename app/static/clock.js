@@ -31,7 +31,7 @@ pauseButton.addEventListener('click', () => {
     currentTime = elapsedTime;
 });
 resetButton.addEventListener('click', () => {
-    timer.innerHTML = '00:00:00.0000'
+    timer.innerHTML = '00:00:00.000'
     clearInterval(intervalId);
     startButton.style.display = 'inline-block';
     pauseButton.style.display = 'none';
