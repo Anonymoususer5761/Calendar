@@ -4,6 +4,10 @@
 
 {% block main %}
     <div id="stopwatch">
-        
+        <div id="timer">00:00:00.000</div>
+        <button id="start-button">Start</button>
+        <button id="pause-button">Pause</button>
+        <button id="reset-button">Reset</button>
+    <script src="{{ url_for('static', filename='clock.js') }}"></script>
     </div>
 {% endblock %}

@@ -1,0 +1,52 @@
+#start-button {
+    display: inline-block;
+    position: relative;
+    width: 80px;
+    height: 30px;
+    border: 3px solid;
+    border-radius: 12px;
+    background-color: #333333;
+    color: greenyellow;
+    cursor: pointer;
+    font-family: consolas, monospace;
+}
+#pause-button {
+    display: none;
+    position: relative;
+    width: 80px;
+    height: 30px;
+    border: 3px solid;
+    border-radius: 12px;
+    background-color: #333333;
+    color: rgb(187, 79, 79);
+    cursor: pointer;
+    font-family: consolas, monospace;
+}
+
+#reset-button {
+    display: inline-block;
+    position: relative;
+    width: 80px;
+    height: 30px;
+    border: 3px solid;
+    border-radius: 12px;
+    background-color: #333333;
+    color: rgb(211, 153, 27);
+    cursor: pointer;
+    font-family: consolas, monospace;
+}
+
+#timer {
+    font-size: 75px;
+    color: #ff9500;
+    font-family: consolas, monospace;
+}
+
+#stopwatch {
+    text-align: center;
+    padding: 15px;
+    height: 250px;
+    border: 3px solid;
+    border-radius: 25px;
+    background-color: #59596b
+}
