@@ -42,7 +42,15 @@ def dates():
 
 @app.route("/clock")
 def clock():
-    return render_template("clock.html")
+    return render_template("stopwatch.html")
+
+@app.route("/clock/stopwatch")
+def stopwatch():
+    return render_template("stopwatch.html")
+
+@app.route("/clock/session")
+def session():
+    return render_template("session.html")
 
 
 @app.route("/settings", methods=["POST", "GET"])
