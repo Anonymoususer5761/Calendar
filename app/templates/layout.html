@@ -14,7 +14,7 @@
             <nav class="navbar">
                 <ul>
                     <li><a href="{{ url_for('index') }}">Home</a></li>
-                    <li><a href="{{ url_for('clock') }}">Clock</a></li>
+                    <li><a href="{{ url_for('stopwatch') }}">Clock</a></li>
                     <li><a href="{{ url_for('settings') }}">Settings</a></li>
                     <li>
                         {% if current_user.is_authenticated %}
@@ -24,11 +24,11 @@
                         {% endif %}
                     </li>
                 </ul>
-                <div id="clock">
-                    <span id="clock-year"></span>
-                    <span id="clock-month"></span>
-                    <span id="clock-date"></span>
-                    <span id="clock-time"></span>
+                <div id="datetime">
+                    <span id="datetime-year"></span>
+                    <span id="datetime-month"></span>
+                    <span id="datetime-date"></span>
+                    <span id="datetime-time"></span>
                 </div>
             </nav>
             <div>

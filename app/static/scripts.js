@@ -14,19 +14,19 @@ isAuthenticated().then(auth => {
     authorised = auth;
 });
 
-function updateClock(clock) {
+function updateClock(datetime) {
     let now = new Date()
-    clock['clock-date'].innerHTML = now.getDate().toString().padStart(2, '0');;
-    clock['clock-month'].innerHTML = (now.getMonth() + 1).toString().padStart(2, '0');
-    clock['clock-year'].innerHTML = now.getFullYear().toString().padStart(4, '0');;
-    clock['clock-time'].innerHTML = `${now.getHours()}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}`;
+    datetime['datetime-date'].innerHTML = now.getDate().toString().padStart(2, '0');;
+    datetime['datetime-month'].innerHTML = (now.getMonth() + 1).toString().padStart(2, '0');
+    datetime['datetime-year'].innerHTML = now.getFullYear().toString().padStart(4, '0');;
+    datetime['datetime-time'].innerHTML = `${now.getHours()}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}`;
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    let clockDiv = document.getElementById('clock');
-    clockElements = clockDiv.children;
-    updateClock(clockElements)
+    let datetimeDiv = document.getElementById('datetime');
+    datetimeDivElements = datetimeDiv.children;
+    updateClock(datetimeDivElements)
     setInterval(() => {
-        updateClock(clockElements);
+        updateClock(datetimeDivElements);
     }, 1000);
 });

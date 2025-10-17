@@ -11,6 +11,7 @@ let intervalId;
 let hours = 0;
 let minutes = 0;
 let seconds = 0;
+let milliseconds = 0;
 
 startButton.addEventListener('click', () => {
     if (paused) {
@@ -44,5 +45,5 @@ function updateTime() {
     minutes = Math.floor((elapsedTime / 60000) % 60).toString().padStart(2, '0');
     seconds = Math.floor((elapsedTime / 1000) % 60).toString().padStart(2, '0');
     milliseconds = Math.floor(elapsedTime % 1000).toString().padStart(3, '0');
-    timer.innerHTML = `${hours}:${minutes}:${seconds}.${milliseconds}`
+    timer.innerHTML = `${hours}:${minutes}:${seconds}.${milliseconds}`;
 }
