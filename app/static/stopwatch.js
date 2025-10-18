@@ -29,17 +29,16 @@ const stopwatch = {
     seconds: 0,
     milliseconds: 0,
     currentTime: 0,
-    updateTimer: () => {
-        stopwatch.elapsedTime = Date.now() - stopwatch.startTime;
-        stopwatch.displayStringValue = formatTimeValue(stopwatch.elapsedTime, hideHours=false)
-        if (clockFunction === 'stopwatch') {
-            timer.innerHTML = stopwatch.displayStringValue;
-        }
-    },
     startTimer: () => {
         if (stopwatch.paused) {
             stopwatch.startTime = Date.now() - stopwatch.currentTime;
-            stopwatch.intervalId = setInterval(stopwatch.updateTimer);
+            stopwatch.intervalId = setInterval(() => {
+                stopwatch.elapsedTime = Date.now() - stopwatch.startTime;
+                stopwatch.displayStringValue = formatTimeValue(stopwatch.elapsedTime, hideHours=false)
+                if (clockFunction === 'stopwatch') {
+                    timer.innerHTML = stopwatch.displayStringValue;
+                }
+            });
             stopwatch.paused = false;
         }
     },
@@ -54,14 +53,15 @@ const stopwatch = {
         timer.innerHTML = stopwatch.defaultStringValue;
         clearInterval(stopwatch.intervalId);
         stopwatch.currentTime = 0;
+        stopwatch.displayStringValue = stopwatch.defaultStringValue;
         stopwatch.paused = true;
     }
 }
 
 const pomodoro = {
-    startDuration: 1500000,
-    defaultStringValue: "25:00.000",
-    displayStringValue: "25:00.000",
+    sessionDuration: 1500000,
+    sessionDurationDefualtStringValue: "25:00.000",
+    sessionDurationCurrentStringValue: "25:00.000",
     remainingDuration: 1500000,
     currentTime: 0,
     startTime: 0,
@@ -76,18 +76,11 @@ const pomodoro = {
         if (pomodoro.paused) {
             pomodoro.startTime = Date.now() - pomodoro.currentTime ;
             pomodoro.intervalId = setInterval(() => {
-            pomodoro.elapsedTime = Date.now() - pomodoro.startTime;
+                pomodoro.elapsedTime = Date.now() - pomodoro.startTime;
+                pomodoro.remainingDuration = pomodoro.sessionDuration - pomodoro.elapsedTime;
+                pomodoro.sessionDurationCurrentStringValue = formatTimeValue(pomodoro.remainingDuration)
                 if (clockFunction === 'pomodoro') {
-                    pomodoro.remainingDuration = pomodoro.startDuration - pomodoro.elapsedTime;
-                    pomodoro.hours = Math.floor(pomodoro.remainingDuration / 3600000).toString().padStart(2, '0');
-                    pomodoro.minutes = Math.floor((pomodoro.remainingDuration / 60000) % 60).toString().padStart(2, '0');
-                    pomodoro.seconds = Math.floor((pomodoro.remainingDuration / 1000) % 60).toString().padStart(2, '0');
-                    pomodoro.milliseconds = Math.floor(pomodoro.remainingDuration % 1000).toString().padStart(3, '0');
-                    if (pomodoro.hours != 0) {
-                        timer.innerHTML = `${pomodoro.hours}:${pomodoro.minutes}:${pomodoro.seconds}.${pomodoro.milliseconds}`;
-                    } else {
-                        timer.innerHTML = `${pomodoro.minutes}:${pomodoro.seconds}.${pomodoro.milliseconds}`;
-                    }
+                    timer.innerHTML = pomodoro.sessionDurationCurrentStringValue;
                 }
             }, 25);
             pomodoro.paused = false;
@@ -101,10 +94,11 @@ const pomodoro = {
         }
     },
     resetTimer: () => {
+        timer.innerHTML = pomodoro.sessionDurationDefualtStringValue
         clearInterval(pomodoro.intervalId);
         pomodoro.paused=true;
         pomodoro.currentTime = 0;
-        timer.innerHTML = pomodoro.defaultStringValue;
+        pomodoro.sessionDurationCurrentStringValue = pomodoro.sessionDurationDefualtStringValue;
     }
 }
 
@@ -123,7 +117,7 @@ stopwatchSwitcher.addEventListener('click', () => {
     }
 });
 pomodoroSwitcher.addEventListener('click', () => {
-    timer.innerHTML = pomodoro.displayStringValue;
+    timer.innerHTML = pomodoro.sessionDurationCurrentStringValue;
     clockFunction = 'pomodoro';
     if (pomodoro.paused) {
         startButton.style.display = 'inline-block';
