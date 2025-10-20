@@ -20,21 +20,20 @@ function formatTimeValue(timeValue, hideHours=true) {
 const stopwatch = {
     defaultStringValue: '00:00:00.000',
     displayStringValue: '00:00:00.000',
-    elapsedTime: 0,
+    totalTimeElapsed: 0,
+    currentLapTime: 0,
+    lapTimes: [0,],
     startTime: 0,
     paused: true,
     intervalId: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0,
-    milliseconds: 0,
     currentTime: 0,
     startTimer: () => {
         if (stopwatch.paused) {
             stopwatch.startTime = Date.now() - stopwatch.currentTime;
             stopwatch.intervalId = setInterval(() => {
-                stopwatch.elapsedTime = Date.now() - stopwatch.startTime;
-                stopwatch.displayStringValue = formatTimeValue(stopwatch.elapsedTime, hideHours=false)
+                stopwatch.totalTimeElapsed = Date.now() - stopwatch.startTime;
+                stopwatch.currentLapTime = stopwatch.totalTimeElapsed - stopwatch.lapTimes[stopwatch.lapTimes.length - 1]
+                stopwatch.displayStringValue = formatTimeValue(stopwatch.currentLapTime, hideHours=false)
                 if (clockFunction === 'stopwatch') {
                     timer.innerHTML = stopwatch.displayStringValue;
                 }
@@ -42,17 +41,22 @@ const stopwatch = {
             stopwatch.paused = false;
         }
     },
+    lapTimer: () => {
+        stopwatch.lapTimes.push(stopwatch.totalTimeElapsed)
+    },
     stopTimer: () => {
         if (!stopwatch.paused) {
             clearInterval(stopwatch.intervalId);
             stopwatch.paused = true;
-            stopwatch.currentTime = stopwatch.elapsedTime;
+            stopwatch.currentTime = stopwatch.totalTimeElapsed;
         }
     },
     resetTimer: () => {
         timer.innerHTML = stopwatch.defaultStringValue;
         clearInterval(stopwatch.intervalId);
         stopwatch.currentTime = 0;
+        stopwatch.lapTimes = [0,];
+        stopwatch.totalTimeElapsed = 0;
         stopwatch.displayStringValue = stopwatch.defaultStringValue;
         stopwatch.paused = true;
     }
@@ -68,10 +72,6 @@ const pomodoro = {
     elapsedTime: 0,
     paused: true,
     intervalId: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0,
-    milliseconds: 0,
     startTimer: () => {
         if (pomodoro.paused) {
             pomodoro.startTime = Date.now() - pomodoro.currentTime ;
@@ -159,4 +159,19 @@ resetButton.addEventListener('click', () => {
     }
     startButton.style.display = 'inline-block';
     pauseButton.style.display = 'none';
+});
+
+function formatLapTable(lapCount, lapTime, totalTime) {
+    return `<tr>\n\t<td>${lapCount}</td>\n\t<td>${lapTime}</td>\n\t<td>${totalTime}</td>\n</tr>`;
+}
+
+const lapButton = document.getElementById('lap-button');
+const lapTable = document.getElementById('lap-counter-table-body');
+lapButton.addEventListener('click', () => {
+    let html = ''
+    stopwatch.lapTimer();
+    for (let i = stopwatch.lapTimes.length - 1; i > 0; i--) {
+        html += formatLapTable(i, stopwatch.lapTimes[i], stopwatch.totalTimeElapsed);
+    }
+    lapTable.innerHTML = html;
 });

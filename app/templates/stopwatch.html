@@ -14,6 +14,22 @@
         <button id="start-button">Start</button>
         <button id="pause-button">Pause</button>
         <button id="reset-button">Reset</button>
+        <button id="lap-button">Lap</button>
+        <table id="lap-counter">
+            <thead>
+                <caption>
+
+                </caption>
+                <tr>
+                    <th>Lap</th>
+                    <th>Time</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody id="lap-counter-table-body">
+
+            </tbody>
+        </table>
     </div>
     <script src="{{ url_for('static', filename='stopwatch.js') }}"></script>
 {% endblock %}
