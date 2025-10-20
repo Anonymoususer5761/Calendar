@@ -105,8 +105,11 @@ const pomodoro = {
 let clockFunction = 'stopwatch';
 const stopwatchSwitcher = document.getElementById('clock-options-stopwatch');
 const pomodoroSwitcher = document.getElementById('clock-options-pomodoro');
+stopwatchSwitcher.classList.add('current-clock-option');
 stopwatchSwitcher.addEventListener('click', () => {
     timer.innerHTML = stopwatch.displayStringValue;
+    stopwatchSwitcher.classList.add('current-clock-option');
+    pomodoroSwitcher.classList.remove('current-clock-option');
     clockFunction = 'stopwatch';
     if (stopwatch.paused) {
         startButton.style.display = 'inline-block';
@@ -118,6 +121,8 @@ stopwatchSwitcher.addEventListener('click', () => {
 });
 pomodoroSwitcher.addEventListener('click', () => {
     timer.innerHTML = pomodoro.sessionDurationCurrentStringValue;
+    pomodoroSwitcher.classList.add('current-clock-option');
+    stopwatchSwitcher.classList.remove('current-clock-option');
     clockFunction = 'pomodoro';
     if (pomodoro.paused) {
         startButton.style.display = 'inline-block';

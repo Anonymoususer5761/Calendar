@@ -64,13 +64,18 @@
     float: left;
 }
 #clock-options li {
-    color: black;
+    color: #009933;
     border-radius: 4px;
     margin: 1px;
     padding: 3px;
     font-family: monospace;
+    font-size: 0.85rem;
 }
 #clock-options li:hover {
-    color: #3000FF;
     cursor: pointer;
+}
+
+#clock-options li.current-clock-option {
+    border-radius: 7px;
+    background-color: #f8fcf4;
 }

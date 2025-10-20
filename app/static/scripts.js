@@ -24,7 +24,7 @@ function updateDatetime(datetime) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    // I had to look up an easy way to do this on Stack Overflow, but the answer was in JQuery, so I asked ChatGPT to convert it to normal JavaScript.
+    // I had to look up an easy way to dynamically change link style on Stack Overflow, but the answer was in JQuery, so I asked ChatGPT to convert it to normal JavaScript.
     document.querySelectorAll(`a[href*='${location.pathname}']`).forEach(a => {
         a.classList.add('current')
     });
