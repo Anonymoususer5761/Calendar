@@ -4,10 +4,10 @@ const pauseButton = document.getElementById('pause-button');
 const resetButton = document.getElementById('reset-button');
 
 function formatTimeValue(timeValue, hideHours=true) {
-    let hours = Math.floor(timeValue / 3600000).toString().padStart(2, '0');
-    let minutes = Math.floor((timeValue / 60000) % 60).toString().padStart(2, '0');
-    let seconds = Math.floor((timeValue / 1000) % 60).toString().padStart(2, '0');
-    let milliseconds = Math.floor(timeValue % 1000).toString().padStart(3, '0');
+    let hours = padNumber(Math.floor(timeValue / 3600000), 2);
+    let minutes = padNumber(Math.floor((timeValue / 60000) % 60), 2);
+    let seconds = padNumber(Math.floor((timeValue / 1000) % 60), 2);
+    let milliseconds = padNumber(Math.floor(timeValue % 1000), 3);
     if (!hideHours) {
         return `${hours}:${minutes}:${seconds}.${milliseconds}`;
     }

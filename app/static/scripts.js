@@ -30,3 +30,8 @@ document.addEventListener('DOMContentLoaded', () => {
         updateClock(datetimeDivElements);
     }, 1000);
 });
+
+// QOL functions
+function padNumber(number, toPad) {
+    return String(number).padStart(toPad, '0');
+}
