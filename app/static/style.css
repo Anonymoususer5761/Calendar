@@ -50,7 +50,10 @@ html, body {
     padding: 8px;
     display: block;
     text-align: center;
-    font-size: 16px
+    font-size: 16px;
+}
+.navbar a.current {
+    background-color: #e6fc86;
 }
 .navbar li {
     margin: 0;

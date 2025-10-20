@@ -14,7 +14,8 @@ isAuthenticated().then(auth => {
     authorised = auth;
 });
 
-function updateClock(datetime) {
+// Code related to the navbar:
+function updateDatetime(datetime) {
     let now = new Date()
     datetime['datetime-date'].innerHTML = now.getDate().toString().padStart(2, '0');;
     datetime['datetime-month'].innerHTML = (now.getMonth() + 1).toString().padStart(2, '0');
@@ -23,15 +24,19 @@ function updateClock(datetime) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    // I had to look up an easy way to do this on Stack Overflow, but the answer was in JQuery, so I asked ChatGPT to convert it to normal JavaScript.
+    document.querySelectorAll(`a[href*='${location.pathname}']`).forEach(a => {
+        a.classList.add('current')
+    });
     let datetimeDiv = document.getElementById('datetime');
     datetimeDivElements = datetimeDiv.children;
-    updateClock(datetimeDivElements)
+    updateDatetime(datetimeDivElements)
     setInterval(() => {
-        updateClock(datetimeDivElements);
+        updateDatetime(datetimeDivElements);
     }, 1000);
 });
 
-// QOL functions
+// Code used for imporving readability and maintainability:
 function padNumber(number, toPad) {
     return String(number).padStart(toPad, '0');
 }
