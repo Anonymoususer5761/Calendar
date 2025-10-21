@@ -19,8 +19,9 @@ function formatTimeValue(timeValue, hideHours=true) {
 }
 
 const stopwatch = {
-    defaultStringValue: '00:00:00.000',
+    defaultMainStringValue: '00:00:00.000',
     displayMainTimerStringValue: '00:00:00.000',
+    defaultSplitTimerStringValue: '00:00:00.000',
     displaySplitTimerStringValue: '00:00:00.000',
     totalTimeElapsed: 0,
     currentLapTime: 0,
@@ -65,7 +66,10 @@ const stopwatch = {
         }
     },
     resetTimer: () => {
-        mainTimer.innerHTML = stopwatch.defaultStringValue;
+        stopwatch.displayStringValue = stopwatch.defaultMainStringValue;
+        stopwatch.displaySplitTimerStringValue = stopwatch.defaultSplitTimerStringValue;
+        mainTimer.innerHTML = stopwatch.displayStringValue;
+        splitTimer.innerHTML = stopwatch.displaySplitTimerStringValue;
         clearInterval(stopwatch.intervalId);
         stopwatch.currentTime = 0;
         stopwatch.lapTimes = [{
@@ -73,7 +77,7 @@ const stopwatch = {
             totalTime: 0,
         },];
         stopwatch.totalTimeElapsed = 0;
-        stopwatch.displayStringValue = stopwatch.defaultStringValue;
+
         stopwatch.paused = true;
     }
 }
@@ -121,6 +125,26 @@ const pomodoro = {
 let clockFunction = 'stopwatch';
 const stopwatchSwitcher = document.getElementById('clock-options-stopwatch');
 const pomodoroSwitcher = document.getElementById('clock-options-pomodoro');
+function updateDisplayedClockOptions() {
+    if (clockFunction === 'stopwatch') {
+        if (stopwatch.paused) {
+            startButton.style.display = 'inline-block';
+            pauseButton.style.display = 'none';
+        } else {
+            pauseButton.style.display = 'inline-block';
+            startButton.style.display = 'none'; 
+        }
+    } else if (clockFunction === 'pomodoro') {
+        if (pomodoro.paused) {
+            startButton.style.display = 'inline-block';
+            pauseButton.style.display = 'none';
+        } else {
+            pauseButton.style.display = 'inline-block';
+            startButton.style.display = 'none';
+        }
+    }
+}
+
 stopwatchSwitcher.classList.add('current-clock-option');
 stopwatchSwitcher.addEventListener('click', () => {
     mainTimer.innerHTML = stopwatch.displayMainTimerStringValue;
@@ -128,26 +152,14 @@ stopwatchSwitcher.addEventListener('click', () => {
     stopwatchSwitcher.classList.add('current-clock-option');
     pomodoroSwitcher.classList.remove('current-clock-option');
     clockFunction = 'stopwatch';
-    if (stopwatch.paused) {
-        startButton.style.display = 'inline-block';
-        pauseButton.style.display = 'none';     
-    } else {
-        pauseButton.style.display = 'inline-block';
-        startButton.style.display = 'none'; 
-    }
+    updateDisplayedClockOptions()
 });
 pomodoroSwitcher.addEventListener('click', () => {
     mainTimer.innerHTML = pomodoro.sessionDurationCurrentStringValue;
     pomodoroSwitcher.classList.add('current-clock-option');
     stopwatchSwitcher.classList.remove('current-clock-option');
     clockFunction = 'pomodoro';
-    if (pomodoro.paused) {
-        startButton.style.display = 'inline-block';
-        pauseButton.style.display = 'none';     
-    } else {
-        pauseButton.style.display = 'inline-block';
-        startButton.style.display = 'none'; 
-    }
+    updateDisplayedClockOptions()
 });
 
 startButton.addEventListener('click', () => {
@@ -156,8 +168,7 @@ startButton.addEventListener('click', () => {
     } else if (clockFunction === 'pomodoro') {
         pomodoro.startTimer();
     }
-    pauseButton.style.display = 'inline-block';
-    startButton.style.display = 'none'; 
+    updateDisplayedClockOptions()
 });
 pauseButton.addEventListener('click', () => {
     if (clockFunction === 'stopwatch') {
@@ -165,8 +176,7 @@ pauseButton.addEventListener('click', () => {
     } else if (clockFunction === 'pomodoro') {
         pomodoro.stopTimer();
     }
-    startButton.style.display = 'inline-block';
-    pauseButton.style.display = 'none';
+    updateDisplayedClockOptions()
 });
 resetButton.addEventListener('click', () => {
     if (clockFunction === 'stopwatch') {
@@ -174,8 +184,7 @@ resetButton.addEventListener('click', () => {
     } else if (clockFunction === 'pomodoro') {
         pomodoro.resetTimer();
     }
-    startButton.style.display = 'inline-block';
-    pauseButton.style.display = 'none';
+    updateDisplayedClockOptions()
 });
 
 function formatLapTable(lapCount, lapTime, totalTime) {
