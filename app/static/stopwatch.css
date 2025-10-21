@@ -11,10 +11,16 @@
     background-color: #f4f7e8;
     margin: 30px;
 }
-#timer {
+.timer {
+    font-family: var(--clock-font);
+}
+#main-timer {
     font-size: 75px;
     color: #68edcb;
-    font-family: var(--clock-font);
+}
+#split-timer {
+    font-size: 25px;
+    color: #bbb93b
 }
 
 #start-button {
@@ -96,8 +102,8 @@
 }
 
 #lap-counter {
-    padding: 0.8em;
+    padding: 1.5em;
 }
-#lap-counter-body {
+#lap-counter-body td {
     font-family: var(--clock-font);
 }

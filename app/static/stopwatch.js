@@ -1,4 +1,5 @@
-const timer = document.getElementById('timer');
+const mainTimer = document.getElementById('main-timer');
+const splitTimer = document.getElementById('split-timer');
 const startButton = document.getElementById('start-button');
 const pauseButton = document.getElementById('pause-button');
 const resetButton = document.getElementById('reset-button');
@@ -19,10 +20,15 @@ function formatTimeValue(timeValue, hideHours=true) {
 
 const stopwatch = {
     defaultStringValue: '00:00:00.000',
-    displayStringValue: '00:00:00.000',
+    displayMainTimerStringValue: '00:00:00.000',
+    displaySplitTimerStringValue: '00:00:00.000',
     totalTimeElapsed: 0,
     currentLapTime: 0,
-    lapTimes: [0,],
+    lapTimes: [ {
+            lapTime: 0,
+            totalTime: 0,
+        },
+    ],
     startTime: 0,
     paused: true,
     intervalId: 0,
@@ -32,17 +38,24 @@ const stopwatch = {
             stopwatch.startTime = Date.now() - stopwatch.currentTime;
             stopwatch.intervalId = setInterval(() => {
                 stopwatch.totalTimeElapsed = Date.now() - stopwatch.startTime;
-                stopwatch.currentLapTime = stopwatch.totalTimeElapsed - stopwatch.lapTimes[stopwatch.lapTimes.length - 1]
-                stopwatch.displayStringValue = formatTimeValue(stopwatch.currentLapTime, hideHours=false)
+                stopwatch.currentLapTime = stopwatch.totalTimeElapsed - stopwatch.lapTimes[stopwatch.lapTimes.length - 1].totalTime;
+                stopwatch.displayMainTimerStringValue = formatTimeValue(stopwatch.totalTimeElapsed, hideHours=false);
+                stopwatch.displaySplitTimerStringValue = formatTimeValue(stopwatch.currentLapTime, hideHours=false);
                 if (clockFunction === 'stopwatch') {
-                    timer.innerHTML = stopwatch.displayStringValue;
+                    mainTimer.innerHTML = stopwatch.displayMainTimerStringValue;
+                    splitTimer.innerHTML = stopwatch.displaySplitTimerStringValue;
                 }
             });
             stopwatch.paused = false;
         }
     },
     lapTimer: () => {
-        stopwatch.lapTimes.push(stopwatch.totalTimeElapsed)
+        if (!stopwatch.paused) {
+            stopwatch.lapTimes.push({
+                lapTime: stopwatch.currentLapTime,
+                totalTime: stopwatch.totalTimeElapsed,
+            });
+        }
     },
     stopTimer: () => {
         if (!stopwatch.paused) {
@@ -52,10 +65,13 @@ const stopwatch = {
         }
     },
     resetTimer: () => {
-        timer.innerHTML = stopwatch.defaultStringValue;
+        mainTimer.innerHTML = stopwatch.defaultStringValue;
         clearInterval(stopwatch.intervalId);
         stopwatch.currentTime = 0;
-        stopwatch.lapTimes = [0,];
+        stopwatch.lapTimes = [{
+            lapTime: 0,
+            totalTime: 0,
+        },];
         stopwatch.totalTimeElapsed = 0;
         stopwatch.displayStringValue = stopwatch.defaultStringValue;
         stopwatch.paused = true;
@@ -80,7 +96,7 @@ const pomodoro = {
                 pomodoro.remainingDuration = pomodoro.sessionDuration - pomodoro.elapsedTime;
                 pomodoro.sessionDurationCurrentStringValue = formatTimeValue(pomodoro.remainingDuration)
                 if (clockFunction === 'pomodoro') {
-                    timer.innerHTML = pomodoro.sessionDurationCurrentStringValue;
+                    mainTimer.innerHTML = pomodoro.sessionDurationCurrentStringValue;
                 }
             }, 25);
             pomodoro.paused = false;
@@ -94,7 +110,7 @@ const pomodoro = {
         }
     },
     resetTimer: () => {
-        timer.innerHTML = pomodoro.sessionDurationDefualtStringValue
+        mainTimer.innerHTML = pomodoro.sessionDurationDefualtStringValue
         clearInterval(pomodoro.intervalId);
         pomodoro.paused=true;
         pomodoro.currentTime = 0;
@@ -107,7 +123,8 @@ const stopwatchSwitcher = document.getElementById('clock-options-stopwatch');
 const pomodoroSwitcher = document.getElementById('clock-options-pomodoro');
 stopwatchSwitcher.classList.add('current-clock-option');
 stopwatchSwitcher.addEventListener('click', () => {
-    timer.innerHTML = stopwatch.displayStringValue;
+    mainTimer.innerHTML = stopwatch.displayMainTimerStringValue;
+    splitTimer.innerHTML = stopwatch.displaySplitTimerStringValue;
     stopwatchSwitcher.classList.add('current-clock-option');
     pomodoroSwitcher.classList.remove('current-clock-option');
     clockFunction = 'stopwatch';
@@ -120,7 +137,7 @@ stopwatchSwitcher.addEventListener('click', () => {
     }
 });
 pomodoroSwitcher.addEventListener('click', () => {
-    timer.innerHTML = pomodoro.sessionDurationCurrentStringValue;
+    mainTimer.innerHTML = pomodoro.sessionDurationCurrentStringValue;
     pomodoroSwitcher.classList.add('current-clock-option');
     stopwatchSwitcher.classList.remove('current-clock-option');
     clockFunction = 'pomodoro';
@@ -168,10 +185,10 @@ function formatLapTable(lapCount, lapTime, totalTime) {
 const lapButton = document.getElementById('lap-button');
 const lapTable = document.getElementById('lap-counter-table-body');
 lapButton.addEventListener('click', () => {
-    let html = ''
     stopwatch.lapTimer();
+    let html = ''
     for (let i = stopwatch.lapTimes.length - 1; i > 0; i--) {
-        html += formatLapTable(i, stopwatch.lapTimes[i], stopwatch.totalTimeElapsed);
+        html += formatLapTable(i, formatTimeValue(stopwatch.lapTimes[i].lapTime), formatTimeValue(stopwatch.lapTimes[i].totalTime));
     }
     lapTable.innerHTML = html;
 });
