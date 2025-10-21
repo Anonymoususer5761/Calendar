@@ -4,6 +4,8 @@ const startButton = document.getElementById('start-button');
 const pauseButton = document.getElementById('pause-button');
 const resetButton = document.getElementById('reset-button');
 
+const lapCounter = document.getElementById('lap-counter');
+
 function formatTimeValue(timeValue, hideHours=true) {
     let hours = padNumber(Math.floor(timeValue / 3600000), 2);
     let minutes = padNumber(Math.floor((timeValue / 60000) % 60), 2);
@@ -56,6 +58,7 @@ const stopwatch = {
                 lapTime: stopwatch.currentLapTime,
                 totalTime: stopwatch.totalTimeElapsed,
             });
+            lapCounter.style.display = 'block';
         }
     },
     stopTimer: () => {
@@ -77,8 +80,9 @@ const stopwatch = {
             totalTime: 0,
         },];
         stopwatch.totalTimeElapsed = 0;
-
         stopwatch.paused = true;
+        lapTableBody.innerHTML = '';
+        lapCounter.style.display = 'none';
     }
 }
 
@@ -130,9 +134,11 @@ function updateDisplayedClockOptions() {
         if (stopwatch.paused) {
             startButton.style.display = 'inline-block';
             pauseButton.style.display = 'none';
+            lapButton.style.display = 'none';
         } else {
             pauseButton.style.display = 'inline-block';
-            startButton.style.display = 'none'; 
+            startButton.style.display = 'none';
+            lapButton.style.display = 'inline-block';
         }
     } else if (clockFunction === 'pomodoro') {
         if (pomodoro.paused) {
@@ -188,16 +194,29 @@ resetButton.addEventListener('click', () => {
 });
 
 function formatLapTable(lapCount, lapTime, totalTime) {
-    return `<tr>\n\t<td>${lapCount}</td>\n\t<td>${lapTime}</td>\n\t<td>${totalTime}</td>\n</tr>`;
+    const row = document.createElement('tr');
+
+    const cell1 = document.createElement('td');
+    cell1.textContent = lapCount;
+
+    const cell2 = document.createElement('td');
+    cell2.textContent = lapTime;
+
+    const cell3 = document.createElement('td');
+    cell3.textContent = totalTime;
+
+    row.append(cell1);
+    row.append(cell2);
+    row.append(cell3);
+    return row
 }
 
 const lapButton = document.getElementById('lap-button');
-const lapTable = document.getElementById('lap-counter-table-body');
+const lapTableBody = document.getElementById('lap-counter-table-body');
 lapButton.addEventListener('click', () => {
     stopwatch.lapTimer();
-    let html = ''
+    lapTableBody.innerHTML = '';
     for (let i = stopwatch.lapTimes.length - 1; i > 0; i--) {
-        html += formatLapTable(i, formatTimeValue(stopwatch.lapTimes[i].lapTime), formatTimeValue(stopwatch.lapTimes[i].totalTime));
+        lapTableBody.append(formatLapTable(i, formatTimeValue(stopwatch.lapTimes[i].lapTime), formatTimeValue(stopwatch.lapTimes[i].totalTime)));
     }
-    lapTable.innerHTML = html;
 });
