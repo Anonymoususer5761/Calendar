@@ -27,6 +27,7 @@ const stopwatch = {
     displaySplitTimerStringValue: '00:00:00.000',
     totalTimeElapsed: 0,
     currentLapTime: 0,
+    lapCount: 0,
     lapTimes: [ {
             lapTime: 0,
             totalTime: 0,
@@ -83,6 +84,7 @@ const stopwatch = {
         stopwatch.paused = true;
         lapTableBody.innerHTML = '';
         lapCounter.style.display = 'none';
+        stopwatch.lapCount = 0;
     }
 }
 
@@ -195,15 +197,19 @@ resetButton.addEventListener('click', () => {
 
 function formatLapTable(lapCount, lapTime, totalTime) {
     const row = document.createElement('tr');
+    row.classList.add('tr-laps')
 
     const cell1 = document.createElement('td');
     cell1.textContent = lapCount;
+    row.classList.add('td-laps')
 
     const cell2 = document.createElement('td');
     cell2.textContent = lapTime;
+    row.classList.add('tr-laps')
 
     const cell3 = document.createElement('td');
     cell3.textContent = totalTime;
+    row.classList.add('tr-laps')
 
     row.append(cell1);
     row.append(cell2);
@@ -215,8 +221,12 @@ const lapButton = document.getElementById('lap-button');
 const lapTableBody = document.getElementById('lap-counter-table-body');
 lapButton.addEventListener('click', () => {
     stopwatch.lapTimer();
-    lapTableBody.innerHTML = '';
-    for (let i = stopwatch.lapTimes.length - 1; i > 0; i--) {
-        lapTableBody.append(formatLapTable(i, formatTimeValue(stopwatch.lapTimes[i].lapTime), formatTimeValue(stopwatch.lapTimes[i].totalTime)));
-    }
+    stopwatch.lapCount++
+    lapTableBody.prepend(
+        formatLapTable(
+            stopwatch.lapCount,
+            formatTimeValue(stopwatch.lapTimes[stopwatch.lapCount].lapTime),
+            formatTimeValue(stopwatch.lapTimes[stopwatch.lapCount].totalTime),
+        )
+    );
 });
