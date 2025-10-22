@@ -61,6 +61,7 @@ const stopwatch = {
             });
             lapCounter.style.display = 'block';
         }
+        stopwatch.syncTimeToServer();
     },
     stopTimer: () => {
         if (!stopwatch.paused) {
@@ -85,8 +86,56 @@ const stopwatch = {
         lapTableBody.innerHTML = '';
         lapCounter.style.display = 'none';
         stopwatch.lapCount = 0;
+    },
+    syncTimeToServer: async () => {
+        console.log(stopwatch.totalTimeElapsed);
+        console.log(stopwatch.paused);
+        let response = await fetch(`/api/clock/stopwatch?elapsed_time=${stopwatch.totalTimeElapsed}&paused=${stopwatch.paused}&start_time=${stopwatch.startTime}`, {
+            headers: {
+                "Request-Source": "JS-AJAX",
+            }
+        });
+        let status = await response.json();
+        return status;
     }
 }
+
+function formatLapTable(lapCount, lapTime, totalTime) {
+    const row = document.createElement('tr');
+    row.classList.add('tr-laps')
+
+    const cell1 = document.createElement('td');
+    cell1.textContent = lapCount;
+    row.classList.add('td-laps')
+
+    const cell2 = document.createElement('td');
+    cell2.textContent = lapTime;
+    row.classList.add('tr-laps')
+
+    const cell3 = document.createElement('td');
+    cell3.textContent = totalTime;
+    row.classList.add('tr-laps')
+
+    row.append(cell1);
+    row.append(cell2);
+    row.append(cell3);
+    return row
+}
+
+const lapButton = document.getElementById('lap-button');
+const lapTableBody = document.getElementById('lap-counter-table-body');
+lapButton.addEventListener('click', () => {
+    stopwatch.lapTimer();
+    stopwatch.lapCount++
+    lapTableBody.prepend(
+        formatLapTable(
+            stopwatch.lapCount,
+            formatTimeValue(stopwatch.lapTimes[stopwatch.lapCount].lapTime),
+            formatTimeValue(stopwatch.lapTimes[stopwatch.lapCount].totalTime),
+        )
+    );
+});
+
 
 const pomodoro = {
     sessionDuration: 1500000,
@@ -193,40 +242,4 @@ resetButton.addEventListener('click', () => {
         pomodoro.resetTimer();
     }
     updateDisplayedClockOptions()
-});
-
-function formatLapTable(lapCount, lapTime, totalTime) {
-    const row = document.createElement('tr');
-    row.classList.add('tr-laps')
-
-    const cell1 = document.createElement('td');
-    cell1.textContent = lapCount;
-    row.classList.add('td-laps')
-
-    const cell2 = document.createElement('td');
-    cell2.textContent = lapTime;
-    row.classList.add('tr-laps')
-
-    const cell3 = document.createElement('td');
-    cell3.textContent = totalTime;
-    row.classList.add('tr-laps')
-
-    row.append(cell1);
-    row.append(cell2);
-    row.append(cell3);
-    return row
-}
-
-const lapButton = document.getElementById('lap-button');
-const lapTableBody = document.getElementById('lap-counter-table-body');
-lapButton.addEventListener('click', () => {
-    stopwatch.lapTimer();
-    stopwatch.lapCount++
-    lapTableBody.prepend(
-        formatLapTable(
-            stopwatch.lapCount,
-            formatTimeValue(stopwatch.lapTimes[stopwatch.lapCount].lapTime),
-            formatTimeValue(stopwatch.lapTimes[stopwatch.lapCount].totalTime),
-        )
-    );
 });

@@ -3,6 +3,7 @@ from app.calendar_db import *
 from app.forms import LoginForm, RegistrationForm, AddEventForm, SettingsForm
 from app.user import sign_in_user, register_user
 from app.pytemplates import get_events_and_format_events_svg
+from app.stopwatch import Stopwatch
 
 from flask import render_template, request, redirect, url_for, flash, jsonify
 from flask_login import logout_user, login_required, current_user
@@ -136,6 +137,18 @@ def api_events():
     events = get_events(date_id, current_user.id)
     return jsonify(events)
 
+
+@app.route("/api/clock/stopwatch")
+def api_stopwatch():
+    if request.headers.get("Request-Source" != "JS-AJAX"):
+        return redirect(url_for("index"))
+    elapsed_time = float(request.args.get("elapsed_time"))
+    paused = False if request.args.get("paused") == 'false' else True
+    start_time = float(request.args.get("start_time"))
+    stopwatch = Stopwatch(elapsed_time=elapsed_time, paused=paused, start_time=start_time)
+    if not stopwatch.paused:
+        stopwatch.start()
+    return True
 
 
 @app.route("/api/settings/set-settings")
