@@ -5,7 +5,7 @@ from app.user import sign_in_user, register_user
 from app.pytemplates import get_events_and_format_events_svg
 from app.stopwatch import Stopwatch
 
-from flask import render_template, request, redirect, url_for, flash, jsonify
+from flask import render_template, request, redirect, url_for, flash, jsonify, session
 from flask_login import logout_user, login_required, current_user
 
 @app.route('/')
@@ -87,6 +87,7 @@ def login():
     return render_template("login.html", form=form)
 
 
+@login_required
 @app.route("/logout")
 def logout():
     logout_user()
@@ -140,16 +141,40 @@ def api_events():
 
 @app.route("/api/clock/stopwatch")
 def api_stopwatch():
-    if request.headers.get("Request-Source" != "JS-AJAX"):
-        return redirect(url_for("index"))
-    elapsed_time = float(request.args.get("elapsed_time"))
-    paused = False if request.args.get("paused") == 'false' else True
-    start_time = float(request.args.get("start_time"))
-    stopwatch = Stopwatch(elapsed_time=elapsed_time, paused=paused, start_time=start_time)
-    if not stopwatch.paused:
-        stopwatch.start()
-    return True
+    if request.headers.get("Request-Source") != "JS-AJAX":
+        return redirect(url_for("clock"))
 
+    elapsed_time = float(request.args.get("elapsed_time"))
+    paused = request.args.get("paused") == 'true'
+    start_time = float(request.args.get("start_time"))
+    session["stopwatch"] = {
+        "elapsed_time": elapsed_time,
+        "paused": paused,
+        "start_time": start_time,
+    }
+    stopwatch = Stopwatch(elapsed_time=elapsed_time, paused=paused, start_time=start_time)
+    
+    if not paused:
+        stopwatch.start()
+        return "200"
+    session["stopwatch"]["stopwatch"] = True
+    stopwatch.stop()
+    return "200"
+
+
+@app.route("/api/clock/stopwatch/from")
+def api_stopwatch_from():
+    if request.headers.get("Request-Source" != "JS-AJAX"):
+        return redirect(url_for("clock"))
+    
+    elapsed_time = session["stopwatch"]["elapsed_time"]
+    paused = session["stopwatch"]["paused"]
+    start_time = session["stopwatch"]["start_time"]
+    return jsonify({
+        "elapsed_time": elapsed_time,
+        "paused": paused,
+        "start_time": start_time
+    })
 
 @app.route("/api/settings/set-settings")
 def api_set_settings():
