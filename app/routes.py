@@ -3,10 +3,12 @@ from app.calendar_db import *
 from app.forms import LoginForm, RegistrationForm, AddEventForm, SettingsForm
 from app.user import sign_in_user, register_user
 from app.pytemplates import get_events_and_format_events_svg
-from app.stopwatch import Stopwatch
+from app.helpers import update_dictionary
 
 from flask import render_template, request, redirect, url_for, flash, jsonify, session
 from flask_login import logout_user, login_required, current_user
+
+import time
 
 @app.route('/')
 @app.route('/index')
@@ -139,42 +141,74 @@ def api_events():
     return jsonify(events)
 
 
-@app.route("/api/clock/stopwatch")
-def api_stopwatch():
+@app.route("/api/clock/stopwatch/initialize")
+@app.route("/api/clock/stopwatch/reset")
+def api_stopwatch_initialize(bypass_verification=False):
+    if not bypass_verification:
+        if request.headers.get("Request-Source") != "JS-AJAX":
+            return redirect(url_for("clock"))
+
+    session["stopwatch"] = {
+        "start_time": 0,
+        "paused": True,
+        "elapsed_time": 0,
+        "paused_at": 0,
+    }
+    return jsonify(True)
+
+@app.route("/api/clock/stopwatch/start")
+def api_stopwatch_start():
     if request.headers.get("Request-Source") != "JS-AJAX":
         return redirect(url_for("clock"))
 
-    elapsed_time = float(request.args.get("elapsed_time"))
-    paused = request.args.get("paused") == 'true'
-    start_time = float(request.args.get("start_time"))
-    session["stopwatch"] = {
-        "elapsed_time": elapsed_time,
-        "paused": paused,
-        "start_time": start_time,
-    }
-    stopwatch = Stopwatch(elapsed_time=elapsed_time, paused=paused, start_time=start_time)
+    if not session.get("stopwatch"):
+        api_stopwatch_initialize(bypass_verification=True)
     
-    if not paused:
-        stopwatch.start()
-        return "200"
-    session["stopwatch"]["stopwatch"] = True
-    stopwatch.stop()
-    return "200"
+    session["stopwatch"] = update_dictionary(
+        session["stopwatch"],
+        start_time = int(request.args.get("start_time")) - session["stopwatch"]["paused_at"],
+        paused = False,
+        elapsed_time = int(request.args.get("elapsed_time")),
+    )
+    return jsonify(session["stopwatch"])
 
-
-@app.route("/api/clock/stopwatch/from")
-def api_stopwatch_from():
-    if request.headers.get("Request-Source" != "JS-AJAX"):
+@app.route("/api/clock/stopwatch/stop")
+def api_stopwatch_stop():
+    if request.headers.get("Request-Source") != "JS-AJAX":
         return redirect(url_for("clock"))
     
-    elapsed_time = session["stopwatch"]["elapsed_time"]
-    paused = session["stopwatch"]["paused"]
-    start_time = session["stopwatch"]["start_time"]
-    return jsonify({
-        "elapsed_time": elapsed_time,
-        "paused": paused,
-        "start_time": start_time
-    })
+    session["stopwatch"] = update_dictionary(
+        session["stopwatch"],
+        paused = True,
+        elapsed_time = int(request.args.get("elapsed_time")),
+        paused_at = int(request.args.get("elapsed_time")),
+    )
+    return jsonify(session["stopwatch"])
+
+@app.route("/api/clock/stopwatch/elapsed_time")
+def api_stopwatch_elapsed_time(bypass_verification=False):
+    if not bypass_verification:
+        if request.headers.get("Request-Source") != "JS-AJAX":
+            return redirect(url_for("clock"))
+    
+    session["stopwatch"] = update_dictionary(
+        session["stopwatch"],
+        elapsed_time = round(time.time() * 1000) - session["stopwatch"]["start_time"],
+    )
+    return jsonify(session["stopwatch"]["elapsed_time"])
+
+@app.route("/api/clock/stopwatch/")
+def api_stopwatch():
+    if request.headers.get("Request-Source") != "JS-AJAX":
+        return redirect(url_for("clock"))
+    
+    if not session.get("stopwatch"):
+        return jsonify(False)
+    if request.args.get("update") == "True":
+        api_stopwatch_elapsed_time(bypass_verification=True)
+    stopwatch = session["stopwatch"]
+    return jsonify(stopwatch)
+
 
 @app.route("/api/settings/set-settings")
 def api_set_settings():

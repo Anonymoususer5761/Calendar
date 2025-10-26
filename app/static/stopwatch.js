@@ -20,12 +20,14 @@ function formatTimeValue(timeValue, hideHours=true) {
     return `${minutes}:${seconds}.${milliseconds}`;
 }
 
+const defaultStopwatchStringValue = '00:00:00.000';
+
 const stopwatch = {
-    defaultMainStringValue: '00:00:00.000',
-    displayMainTimerStringValue: '00:00:00.000',
-    defaultSplitTimerStringValue: '00:00:00.000',
-    displaySplitTimerStringValue: '00:00:00.000',
-    totalTimeElapsed: 0,
+    defaultMainStringValue: defaultStopwatchStringValue,
+    displayMainTimerStringValue: defaultStopwatchStringValue,
+    defaultSplitTimerStringValue: defaultStopwatchStringValue,
+    displaySplitTimerStringValue: defaultStopwatchStringValue,
+    elapsedTime: 0,
     currentLapTime: 0,
     lapCount: 0,
     lapTimes: [ {
@@ -36,30 +38,28 @@ const stopwatch = {
     startTime: 0,
     paused: true,
     intervalId: 0,
-    currentTime: 0,
+    pausedAt: 0,
     startTimer: () => {
         if (stopwatch.paused) {
-            stopwatch.startTime = Date.now() - stopwatch.currentTime;
             stopwatch.intervalId = setInterval(() => {
-                stopwatch.totalTimeElapsed = Date.now() - stopwatch.startTime;
-                stopwatch.currentLapTime = stopwatch.totalTimeElapsed - stopwatch.lapTimes[stopwatch.lapTimes.length - 1].totalTime;
-                stopwatch.displayMainTimerStringValue = formatTimeValue(stopwatch.totalTimeElapsed, hideHours=false);
+                stopwatch.elapsedTime = Date.now() - stopwatch.startTime;
+                stopwatch.currentLapTime = stopwatch.elapsedTime - stopwatch.lapTimes[stopwatch.lapTimes.length - 1].totalTime;
+                stopwatch.displayMainTimerStringValue = formatTimeValue(stopwatch.elapsedTime, hideHours=false);
                 stopwatch.displaySplitTimerStringValue = formatTimeValue(stopwatch.currentLapTime, hideHours=false);
                 if (clockFunction === 'stopwatch') {
                     mainTimer.innerHTML = stopwatch.displayMainTimerStringValue;
                     splitTimer.innerHTML = stopwatch.displaySplitTimerStringValue;
                 }
-
-            });
+            }, 25);
             stopwatch.paused = false;
-            stopwatch.syncTimeToServer();
+            stopwatch.syncWithServer('start');
         }
     },
     lapTimer: () => {
         if (!stopwatch.paused) {
             stopwatch.lapTimes.push({
                 lapTime: stopwatch.currentLapTime,
-                totalTime: stopwatch.totalTimeElapsed,
+                totalTime: stopwatch.elapsedTime,
             });
             lapCounter.style.display = 'block';
         }
@@ -68,8 +68,8 @@ const stopwatch = {
         if (!stopwatch.paused) {
             clearInterval(stopwatch.intervalId);
             stopwatch.paused = true;
-            stopwatch.currentTime = stopwatch.totalTimeElapsed;
-            stopwatch.syncTimeToServer();
+            stopwatch.pausedAt = stopwatch.elapsedTime;
+            stopwatch.syncWithServer('stop');
         }
     },
     resetTimer: () => {
@@ -78,37 +78,60 @@ const stopwatch = {
         mainTimer.innerHTML = stopwatch.displayStringValue;
         splitTimer.innerHTML = stopwatch.displaySplitTimerStringValue;
         clearInterval(stopwatch.intervalId);
-        stopwatch.currentTime = 0;
+        stopwatch.pausedAt = 0;
         stopwatch.lapTimes = [{
             lapTime: 0,
             totalTime: 0,
         },];
-        stopwatch.totalTimeElapsed = 0;
+        stopwatch.elapsedTime = 0;
         stopwatch.paused = true;
         lapTableBody.innerHTML = '';
         lapCounter.style.display = 'none';
         stopwatch.lapCount = 0;
-        stopwatch.syncTimeToServer();
+        stopwatch.syncWithServer('reset')
     },
-    syncTimeToServer: async () => {
-        response = await fetch(`/api/clock/stopwatch?elapsed_time=${stopwatch.totalTimeElapsed}&paused=${stopwatch.paused}&start_time=${stopwatch.startTime}`, {
+    syncWithServer: async (api_route) => {
+        if (api_route === 'start'){
+            await fetch(`/api/clock/stopwatch/${api_route}?elapsed_time=${stopwatch.elapsedTime}&start_time=${stopwatch.startTime}`, {
+                headers: {
+                    "Request-Source": "JS-AJAX",
+                }
+            });
+            return;
+        }
+        if (api_route === 'stop') {
+            await fetch(`/api/clock/stopwatch/${api_route}?elapsed_time=${stopwatch.elapsedTime}`, {
+                headers: {
+                    "Request-Source": "JS-AJAX",
+                }
+            });
+            return;
+        }
+        if (api_route === 'reset') {
+            await fetch(`/api/clock/stopwatch/${api_route}`, {
+                headers: {
+                    "Request-Source": "JS-AJAX",
+                }
+            });
+            return;
+        }
+        if (api_route === 'elapsed_time') {
+            let response = await fetch(`/api/clock/stopwatch/${api_route}`, {
+                headers: {
+                    "Request-Source": "JS-AJAX",
+                }
+            });
+            let elapsedTime = await response.json()
+            return elapsedTime;
+        }
+        let response = await fetch(`/api/clock/stopwatch?update=True`, {
             headers: {
                 "Request-Source": "JS-AJAX",
             }
         });
-        return;
+        serverStopwatch = await response.json()
+        return serverStopwatch;
     },
-    syncTimeFromServer: async () => {
-        let response = await fetch(`/api/clock/stopwatch/from`, {
-            header: {
-                "Request-Source": "JS-AJAX",
-            }
-        });
-        let stopwatchData = await response.json();
-        stopwatch.paused = stopwatchData["paused"];
-        stopwatch.totalTimeElapsed = stopwatchData["elapsed_time"];
-        stopwatch.paused = stopwatchData["elapsed_time"];
-    }
 }
 
 function formatLapTable(lapCount, lapTime, totalTime) {
@@ -232,6 +255,7 @@ pomodoroSwitcher.addEventListener('click', () => {
 
 startButton.addEventListener('click', () => {
     if (clockFunction === 'stopwatch') {
+        stopwatch.startTime = Date.now() - stopwatch.pausedAt;
         stopwatch.startTimer();
     } else if (clockFunction === 'pomodoro') {
         pomodoro.startTimer();
@@ -257,4 +281,18 @@ resetButton.addEventListener('click', () => {
 const syncButton = document.getElementById('sync-button');
 syncButton.addEventListener('click', async () => {
     await stopwatch.syncTimeFromServer();
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    stopwatch.syncWithServer(api_route='').then(serverStopwatch => {
+        if (serverStopwatch) {
+            stopwatch.startTime = serverStopwatch["start_time"];
+            stopwatch.elapsedTime = serverStopwatch["elapsed_time"];
+            stopwatch.pausedAt = serverStopwatch["paused_at"];
+            if (!serverStopwatch["paused"]) {
+                stopwatch.startTimer();
+                updateDisplayedClockOptions();
+            }
+        }
+    });
 });

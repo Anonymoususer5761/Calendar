@@ -1,7 +1,8 @@
 import os
+from datetime import timedelta
 
 class Config:
     SECRET_KEY = os.environ.get("SECRET_KEY") or "placeholder-secret-key-please-change-this"
-
-    # SESSION_PERMANENT = os.environ.get("SESSION_PERMANENT") or False
-    # SESSION_TYPE = os.environ.get("SESSION_TYPE") or "filesystem"
+    PERMANENT_SESSION_LIFETIME = timedelta(minutes=30)
+    SESSION_PERMANENT = os.environ.get("SESSION_PERMANENT") or True
+    SESSION_TYPE = os.environ.get("SESSION_TYPE") or "filesystem"

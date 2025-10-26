@@ -52,3 +52,8 @@ def modulate_color(hex_code: str, factor: float =0.2) -> str:
             rgb[i] = 0
     print("#%02x%02x%02x" % (rgb[0], rgb[1], rgb[2]))
     return "#%02x%02x%02x" % (rgb[0], rgb[1], rgb[2])
+
+
+def update_dictionary(dictionary: dict, **kwargs) -> dict:
+    dictionary.update(kwargs)
+    return dictionary
