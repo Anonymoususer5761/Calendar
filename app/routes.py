@@ -152,7 +152,7 @@ def api_stopwatch_initialize(bypass_verification=False):
         "start_time": 0,
         "paused": True,
         "elapsed_time": 0,
-        "paused_at": 0,
+        "current_time": 0,
     }
     return jsonify(True)
 
@@ -166,9 +166,8 @@ def api_stopwatch_start():
     
     session["stopwatch"] = update_dictionary(
         session["stopwatch"],
-        start_time = int(request.args.get("start_time")) - session["stopwatch"]["paused_at"],
+        start_time = int(request.args.get("start_time")),
         paused = False,
-        elapsed_time = int(request.args.get("elapsed_time")),
     )
     return jsonify(session["stopwatch"])
 
@@ -181,7 +180,7 @@ def api_stopwatch_stop():
         session["stopwatch"],
         paused = True,
         elapsed_time = int(request.args.get("elapsed_time")),
-        paused_at = int(request.args.get("elapsed_time")),
+        current_time = int(request.args.get("elapsed_time")),
     )
     return jsonify(session["stopwatch"])
 
@@ -190,21 +189,22 @@ def api_stopwatch_elapsed_time(bypass_verification=False):
     if not bypass_verification:
         if request.headers.get("Request-Source") != "JS-AJAX":
             return redirect(url_for("clock"))
-    
+    # current_time = round(time.time() * 1000) - session["stopwatch"]["start_time"] if not session["stopwatch"]["current_time"] == 0 else session["stopwatch"]["current_time"]
+    elapsed_time  = round(time.time() * 1000) - session["stopwatch"]["start_time"]
     session["stopwatch"] = update_dictionary(
         session["stopwatch"],
-        elapsed_time = round(time.time() * 1000) - session["stopwatch"]["start_time"],
+        elapsed_time = elapsed_time,
     )
     return jsonify(session["stopwatch"]["elapsed_time"])
 
-@app.route("/api/clock/stopwatch/")
+@app.route("/api/clock/stopwatch")
 def api_stopwatch():
     if request.headers.get("Request-Source") != "JS-AJAX":
         return redirect(url_for("clock"))
     
     if not session.get("stopwatch"):
         return jsonify(False)
-    if request.args.get("update") == "True":
+    if not session["stopwatch"]["paused"]:
         api_stopwatch_elapsed_time(bypass_verification=True)
     stopwatch = session["stopwatch"]
     return jsonify(stopwatch)

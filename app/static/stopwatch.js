@@ -20,13 +20,13 @@ function formatTimeValue(timeValue, hideHours=true) {
     return `${minutes}:${seconds}.${milliseconds}`;
 }
 
-const defaultStopwatchStringValue = '00:00:00.000';
+const defaultStopwatchString = '00:00:00.000';
 
 const stopwatch = {
-    defaultMainStringValue: defaultStopwatchStringValue,
-    displayMainTimerStringValue: defaultStopwatchStringValue,
-    defaultSplitTimerStringValue: defaultStopwatchStringValue,
-    displaySplitTimerStringValue: defaultStopwatchStringValue,
+    defaultPrimaryTimerString: defaultStopwatchString,
+    primaryTimerString: defaultStopwatchString,
+    defaultSecondaryTimerString: defaultStopwatchString,
+    secondaryTimerString: defaultStopwatchString,
     elapsedTime: 0,
     currentLapTime: 0,
     lapCount: 0,
@@ -44,11 +44,10 @@ const stopwatch = {
             stopwatch.intervalId = setInterval(() => {
                 stopwatch.elapsedTime = Date.now() - stopwatch.startTime;
                 stopwatch.currentLapTime = stopwatch.elapsedTime - stopwatch.lapTimes[stopwatch.lapTimes.length - 1].totalTime;
-                stopwatch.displayMainTimerStringValue = formatTimeValue(stopwatch.elapsedTime, hideHours=false);
-                stopwatch.displaySplitTimerStringValue = formatTimeValue(stopwatch.currentLapTime, hideHours=false);
+                stopwatch.primaryTimerString = formatTimeValue(stopwatch.elapsedTime, hideHours=false);
+                stopwatch.secondaryTimerString = formatTimeValue(stopwatch.currentLapTime, hideHours=false);
                 if (clockFunction === 'stopwatch') {
-                    mainTimer.innerHTML = stopwatch.displayMainTimerStringValue;
-                    splitTimer.innerHTML = stopwatch.displaySplitTimerStringValue;
+                    stopwatch.updateDisplay();
                 }
             }, 25);
             stopwatch.paused = false;
@@ -73,10 +72,9 @@ const stopwatch = {
         }
     },
     resetTimer: () => {
-        stopwatch.displayStringValue = stopwatch.defaultMainStringValue;
-        stopwatch.displaySplitTimerStringValue = stopwatch.defaultSplitTimerStringValue;
-        mainTimer.innerHTML = stopwatch.displayStringValue;
-        splitTimer.innerHTML = stopwatch.displaySplitTimerStringValue;
+        stopwatch.primaryTimerString = defaultStopwatchString;
+        stopwatch.secondaryTimerString = defaultStopwatchString;
+        stopwatch.updateDisplay();
         clearInterval(stopwatch.intervalId);
         stopwatch.pausedAt = 0;
         stopwatch.lapTimes = [{
@@ -88,11 +86,15 @@ const stopwatch = {
         lapTableBody.innerHTML = '';
         lapCounter.style.display = 'none';
         stopwatch.lapCount = 0;
-        stopwatch.syncWithServer('reset')
+        stopwatch.syncWithServer('reset');
+    },
+    updateDisplay: () => {
+        mainTimer.innerHTML = stopwatch.primaryTimerString;
+        splitTimer.innerHTML = stopwatch.secondaryTimerString;
     },
     syncWithServer: async (api_route) => {
         if (api_route === 'start'){
-            await fetch(`/api/clock/stopwatch/${api_route}?elapsed_time=${stopwatch.elapsedTime}&start_time=${stopwatch.startTime}`, {
+            await fetch(`/api/clock/stopwatch/${api_route}?start_time=${stopwatch.startTime}`, {
                 headers: {
                     "Request-Source": "JS-AJAX",
                 }
@@ -238,8 +240,8 @@ function updateDisplayedClockOptions() {
 
 stopwatchSwitcher.classList.add('current-clock-option');
 stopwatchSwitcher.addEventListener('click', () => {
-    mainTimer.innerHTML = stopwatch.displayMainTimerStringValue;
-    splitTimer.innerHTML = stopwatch.displaySplitTimerStringValue;
+    mainTimer.innerHTML = stopwatch.primaryTimerString;
+    splitTimer.innerHTML = stopwatch.secondaryTimerString;
     stopwatchSwitcher.classList.add('current-clock-option');
     pomodoroSwitcher.classList.remove('current-clock-option');
     clockFunction = 'stopwatch';
@@ -284,11 +286,14 @@ syncButton.addEventListener('click', async () => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-    stopwatch.syncWithServer(api_route='').then(serverStopwatch => {
+    stopwatch.syncWithServer('').then(serverStopwatch => {
         if (serverStopwatch) {
             stopwatch.startTime = serverStopwatch["start_time"];
-            stopwatch.elapsedTime = serverStopwatch["elapsed_time"];
-            stopwatch.pausedAt = serverStopwatch["paused_at"];
+            stopwatch.elapsedTime = serverStopwatch["elapsed_time"]
+            stopwatch.primaryTimerString = formatTimeValue(serverStopwatch["elapsed_time"], hideHours=false);
+            stopwatch.secondaryTimerString = formatTimeValue(serverStopwatch["elapsed_time"], hideHours=false);
+            stopwatch.updateDisplay()
+            stopwatch.pausedAt = serverStopwatch["current_time"];
             if (!serverStopwatch["paused"]) {
                 stopwatch.startTimer();
                 updateDisplayedClockOptions();
