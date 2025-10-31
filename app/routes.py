@@ -153,6 +153,12 @@ def api_stopwatch_initialize(bypass_verification=False):
         "paused": True,
         "elapsed_time": 0,
         "current_time": 0,
+        "lap_times": [
+            {
+                "lapTime": 0,
+                "totalTime": 0,
+            }
+        ]
     }
     return jsonify(True)
 
@@ -169,6 +175,19 @@ def api_stopwatch_start():
         start_time = int(request.args.get("start_time")),
         paused = False,
     )
+    return jsonify(session["stopwatch"])
+
+# AI Usage Disclaimer: I used ChatGPT to send POST requests using fetch api.
+@app.route("/api/clock/stopwatch/lap", methods=["POST"])
+def api_stopwatch_lap():
+    if request.headers.get("Request-Source") != "JS-AJAX":
+        return redirect(url_for("clock"))
+
+    data = request.get_json()
+    lap_time = data.get("lap_time")
+
+    session["stopwatch"]["lap_times"].append(lap_time)
+    session.modified = True
     return jsonify(session["stopwatch"])
 
 @app.route("/api/clock/stopwatch/stop")
@@ -189,7 +208,7 @@ def api_stopwatch_elapsed_time(bypass_verification=False):
     if not bypass_verification:
         if request.headers.get("Request-Source") != "JS-AJAX":
             return redirect(url_for("clock"))
-    # current_time = round(time.time() * 1000) - session["stopwatch"]["start_time"] if not session["stopwatch"]["current_time"] == 0 else session["stopwatch"]["current_time"]
+
     elapsed_time  = round(time.time() * 1000) - session["stopwatch"]["start_time"]
     session["stopwatch"] = update_dictionary(
         session["stopwatch"],

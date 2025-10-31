@@ -61,6 +61,7 @@ const stopwatch = {
                 totalTime: stopwatch.elapsedTime,
             });
             lapCounter.style.display = 'block';
+            stopwatch.syncWithServer('lap');
         }
     },
     stopTimer: () => {
@@ -101,6 +102,23 @@ const stopwatch = {
             });
             return;
         }
+        // AI Usage Disclaimer: I used ChatGPT to send POST requests using fetch api.
+        if (api_route === 'lap'){
+            await fetch(`/api/clock/stopwatch/${api_route}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Request-Source": "JS-AJAX",
+                },
+                body: JSON.stringify({
+                    lap_time: {
+                        lapTime: stopwatch.currentLapTime,
+                        totalTime: stopwatch.elapsedTime,
+                    },
+                }),
+            });
+            return;
+        }
         if (api_route === 'stop') {
             await fetch(`/api/clock/stopwatch/${api_route}?elapsed_time=${stopwatch.elapsedTime}`, {
                 headers: {
@@ -126,7 +144,7 @@ const stopwatch = {
             let elapsedTime = await response.json()
             return elapsedTime;
         }
-        let response = await fetch(`/api/clock/stopwatch?update=True`, {
+        let response = await fetch(`/api/clock/stopwatch`, {
             headers: {
                 "Request-Source": "JS-AJAX",
             }
@@ -280,10 +298,6 @@ resetButton.addEventListener('click', () => {
     }
     updateDisplayedClockOptions()
 });
-const syncButton = document.getElementById('sync-button');
-syncButton.addEventListener('click', async () => {
-    await stopwatch.syncTimeFromServer();
-});
 
 document.addEventListener('DOMContentLoaded', () => {
     stopwatch.syncWithServer('').then(serverStopwatch => {
@@ -291,12 +305,27 @@ document.addEventListener('DOMContentLoaded', () => {
             stopwatch.startTime = serverStopwatch["start_time"];
             stopwatch.elapsedTime = serverStopwatch["elapsed_time"]
             stopwatch.primaryTimerString = formatTimeValue(serverStopwatch["elapsed_time"], hideHours=false);
-            stopwatch.secondaryTimerString = formatTimeValue(serverStopwatch["elapsed_time"], hideHours=false);
-            stopwatch.updateDisplay()
+            stopwatch.updateDisplay();
             stopwatch.pausedAt = serverStopwatch["current_time"];
             if (!serverStopwatch["paused"]) {
                 stopwatch.startTimer();
                 updateDisplayedClockOptions();
+            }
+            stopwatch.lapTimes = serverStopwatch.lap_times;
+            stopwatch.lapCount = serverStopwatch.lap_times.length - 1;
+            stopwatch.currentLapTime = serverStopwatch.lap_times[stopwatch.lapCount].lapTime;
+            stopwatch.secondaryTimerString = formatTimeValue(stopwatch.currentLapTime, hideHours=false);
+            if (serverStopwatch.lap_times.length > 1) {
+                lapCounter.style.display = 'block';
+                for (let i = 1; i < serverStopwatch.lap_times.length; i++) {
+                    lapTableBody.prepend(
+                        formatLapTable(
+                            i,
+                            formatTimeValue(stopwatch.lapTimes[i].lapTime),
+                            formatTimeValue(stopwatch.lapTimes[i].totalTime),
+                        )
+                    );
+                }
             }
         }
     });
