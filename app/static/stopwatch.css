@@ -87,30 +87,6 @@
     cursor: pointer;
     font-family: var(--clock-font);
 }
-#clock-options {
-    display: flex;
-    list-style-type: none;
-    overflow: hidden;
-    margin: 2px;
-    padding: 2px;
-    float: left;
-}
-#clock-options li {
-    color: #009933;
-    border-radius: 4px;
-    margin: 1px;
-    padding: 3px;
-    font-family: var(--clock-font);
-    font-size: 0.85rem;
-}
-#clock-options li:hover {
-    cursor: pointer;
-}
-#clock-options li.current-clock-option {
-    border-radius: 7px;
-    background-color: #f8fcf4;
-}
-
 #lap-counter {
     display: none;
     padding: 1.5em;

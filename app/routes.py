@@ -42,11 +42,13 @@ def dates():
     events, event_polylines = get_events_and_format_events_svg(date_id, current_user.id) if current_user.is_authenticated else [None, None]
     return render_template("dates.html", date=date, day_name=day_name, event_polylines=event_polylines, events=events, add_event_form=add_event_form)
 
-@app.route("/stopwatch")
+@app.route("/clock")
+@app.route("/clock/stopwatch")
 def stopwatch():
     return render_template("stopwatch.html")
 
-@app.route("/pomodoro")
+
+@app.route("/clock/pomodoro")
 def pomodoro():
     return render_template("pomodoro.html")
 

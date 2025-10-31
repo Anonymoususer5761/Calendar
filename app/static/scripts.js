@@ -1,5 +1,5 @@
 async function isAuthenticated() {
-    let response = await fetch('api/global?auth=return', {
+    let response = await fetch('/api/global?auth=return', {
         headers: {
             'Request-Source': 'JS-AJAX',
         }

@@ -8,15 +8,19 @@
 {% endblock %}
 
 {% block main %}
-    <ul>
-        <li>
-            <a href="{{ url_for('stopwatch') }}">Stopwatch</a>
-        </li>
-        <li>
-            <a href="{{ url_for('pomodoro') }}">Pomodoro</a>
-        </li>
-    </ul>
+    <div id="clock">
+        <ul id="clock-options">
+            <li>
+                <a id="clock-options-stopwatch" href="{{ url_for('stopwatch') }}">Stopwatch</a>
+            </li>
+            <li>
+                <a id="clock-options-pomodoro" href="{{ url_for('pomodoro') }}">Pomodoro</a>
+            </li>
+        </ul>
     {% block subpage_main %}
 
     {% endblock %}
+    </div>
+    <script src="{{ url_for('static', filename='clock.js') }}"></script>
+    {% block subpage_script %}{% endblock %}
 {% endblock %}

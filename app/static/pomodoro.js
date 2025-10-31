@@ -3,17 +3,45 @@ const startButton = document.getElementById('pomodoro-start');
 const pauseButton = document.getElementById('pomodoro-stop');
 const resetButton = document.getElementById('pomodoro-reset');
 
-const sessionMaxLength = 1500000;
-let currentSessionDuration = 1500000;
-let sessionStartTime = 0;
-let sessionCurrentLength = sessionMaxLength;
-let paused = true;
-let elapsedTime = 0;
-let intervalID;
-let hours = 0;
-let minutes = 0;
-let seconds = 0;
-let milliseconds = 0;
+const pomodoro = {
+    sessionDuration: 1500000,
+    sessionDurationDefualtStringValue: "25:00.000",
+    sessionDurationCurrentStringValue: "25:00.000",
+    remainingDuration: 1500000,
+    currentTime: 0,
+    startTime: 0,
+    elapsedTime: 0,
+    paused: true,
+    intervalId: 0,
+    startTimer: () => {
+        if (pomodoro.paused) {
+            pomodoro.startTime = Date.now() - pomodoro.currentTime ;
+            pomodoro.intervalId = setInterval(() => {
+                pomodoro.elapsedTime = Date.now() - pomodoro.startTime;
+                pomodoro.remainingDuration = pomodoro.sessionDuration - pomodoro.elapsedTime;
+                pomodoro.sessionDurationCurrentStringValue = formatTimeValue(pomodoro.remainingDuration)
+                if (clockFunction === 'pomodoro') {
+                    mainTimer.innerHTML = pomodoro.sessionDurationCurrentStringValue;
+                }
+            }, 25);
+            pomodoro.paused = false;
+        }
+    },
+    stopTimer: () => {
+        if (!pomodoro.paused) {
+            clearInterval(pomodoro.intervalId);
+            pomodoro.paused = true;
+            pomodoro.currentTime = pomodoro.elapsedTime;
+        }
+    },
+    resetTimer: () => {
+        mainTimer.innerHTML = pomodoro.sessionDurationDefualtStringValue
+        clearInterval(pomodoro.intervalId);
+        pomodoro.paused=true;
+        pomodoro.currentTime = 0;
+        pomodoro.sessionDurationCurrentStringValue = pomodoro.sessionDurationDefualtStringValue;
+    }
+}
 
 startButton.addEventListener('click', () => {
     if (paused) {

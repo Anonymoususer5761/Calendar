@@ -1,37 +1,35 @@
-{% extends "layout.html" %}
+{% extends "clock.html" %}
 
-{% block style %}
+{% block subpage_style %}
     <link rel="stylesheet" href="{{ url_for('static', filename='stopwatch.css') }}">
 {% endblock %}
 
-{% block main %}
-    <div id="clock">
-        <ul id="clock-options">
-            <li id="clock-options-stopwatch">Stopwatch</li>
-            <li id="clock-options-pomodoro">Pomodoro</li>
-        </ul>
-        <p id="main-timer" class="timer">00:00:00.000</p>
-        <p id= "split-timer" class="timer">00:00:00.000</p>
-        <button id="start-button">Start</button>
-        <button id="pause-button">Pause</button>
-        <button id="lap-button">Lap</button>
-        <button id="reset-button">Reset</button>
+{% block subpage_main %}
 
-        <table id="lap-counter">
-            <thead>
-                <caption>
+    <p id="main-timer" class="timer">00:00:00.000</p>
+    <p id= "split-timer" class="timer">00:00:00.000</p>
+    <button id="start-button">Start</button>
+    <button id="pause-button">Pause</button>
+    <button id="lap-button">Lap</button>
+    <button id="reset-button">Reset</button>
 
-                </caption>
-                <tr>
-                    <th>Lap</th>
-                    <th>Time</th>
-                    <th>Total</th>
-                </tr>
-            </thead>
-            <tbody id="lap-counter-table-body">
+    <table id="lap-counter">
+        <thead>
+            <caption>
 
-            </tbody>
-        </table>
-    </div>
+            </caption>
+            <tr>
+                <th>Lap</th>
+                <th>Time</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody id="lap-counter-table-body">
+
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block subpage_script %}
     <script src="{{ url_for('static', filename='stopwatch.js') }}"></script>
 {% endblock %}

@@ -46,9 +46,7 @@ const stopwatch = {
                 stopwatch.currentLapTime = stopwatch.elapsedTime - stopwatch.lapTimes[stopwatch.lapTimes.length - 1].totalTime;
                 stopwatch.primaryTimerString = formatTimeValue(stopwatch.elapsedTime, hideHours=false);
                 stopwatch.secondaryTimerString = formatTimeValue(stopwatch.currentLapTime, hideHours=false);
-                if (clockFunction === 'stopwatch') {
-                    stopwatch.updateDisplay();
-                }
+                stopwatch.updateDisplay();
             }, 25);
             stopwatch.paused = false;
             stopwatch.syncWithServer('start');
@@ -190,112 +188,29 @@ lapButton.addEventListener('click', () => {
     );
 });
 
-
-const pomodoro = {
-    sessionDuration: 1500000,
-    sessionDurationDefualtStringValue: "25:00.000",
-    sessionDurationCurrentStringValue: "25:00.000",
-    remainingDuration: 1500000,
-    currentTime: 0,
-    startTime: 0,
-    elapsedTime: 0,
-    paused: true,
-    intervalId: 0,
-    startTimer: () => {
-        if (pomodoro.paused) {
-            pomodoro.startTime = Date.now() - pomodoro.currentTime ;
-            pomodoro.intervalId = setInterval(() => {
-                pomodoro.elapsedTime = Date.now() - pomodoro.startTime;
-                pomodoro.remainingDuration = pomodoro.sessionDuration - pomodoro.elapsedTime;
-                pomodoro.sessionDurationCurrentStringValue = formatTimeValue(pomodoro.remainingDuration)
-                if (clockFunction === 'pomodoro') {
-                    mainTimer.innerHTML = pomodoro.sessionDurationCurrentStringValue;
-                }
-            }, 25);
-            pomodoro.paused = false;
-        }
-    },
-    stopTimer: () => {
-        if (!pomodoro.paused) {
-            clearInterval(pomodoro.intervalId);
-            pomodoro.paused = true;
-            pomodoro.currentTime = pomodoro.elapsedTime;
-        }
-    },
-    resetTimer: () => {
-        mainTimer.innerHTML = pomodoro.sessionDurationDefualtStringValue
-        clearInterval(pomodoro.intervalId);
-        pomodoro.paused=true;
-        pomodoro.currentTime = 0;
-        pomodoro.sessionDurationCurrentStringValue = pomodoro.sessionDurationDefualtStringValue;
-    }
-}
-
-let clockFunction = 'stopwatch';
-const stopwatchSwitcher = document.getElementById('clock-options-stopwatch');
-const pomodoroSwitcher = document.getElementById('clock-options-pomodoro');
 function updateDisplayedClockOptions() {
-    if (clockFunction === 'stopwatch') {
-        if (stopwatch.paused) {
-            startButton.style.display = 'inline-block';
-            pauseButton.style.display = 'none';
-            lapButton.style.display = 'none';
-        } else {
-            pauseButton.style.display = 'inline-block';
-            startButton.style.display = 'none';
-            lapButton.style.display = 'inline-block';
-        }
-    } else if (clockFunction === 'pomodoro') {
-        if (pomodoro.paused) {
-            startButton.style.display = 'inline-block';
-            pauseButton.style.display = 'none';
-        } else {
-            pauseButton.style.display = 'inline-block';
-            startButton.style.display = 'none';
-        }
+    if (stopwatch.paused) {
+        startButton.style.display = 'inline-block';
+        lapButton.style.display = 'none';
+        pauseButton.style.display = 'none';
+    } else {
+        startButton.style.display = 'none';
+        lapButton.style.display = 'inline-block';
+        pauseButton.style.display = 'inline-block';
     }
 }
-
-stopwatchSwitcher.classList.add('current-clock-option');
-stopwatchSwitcher.addEventListener('click', () => {
-    mainTimer.innerHTML = stopwatch.primaryTimerString;
-    splitTimer.innerHTML = stopwatch.secondaryTimerString;
-    stopwatchSwitcher.classList.add('current-clock-option');
-    pomodoroSwitcher.classList.remove('current-clock-option');
-    clockFunction = 'stopwatch';
-    updateDisplayedClockOptions()
-});
-pomodoroSwitcher.addEventListener('click', () => {
-    mainTimer.innerHTML = pomodoro.sessionDurationCurrentStringValue;
-    pomodoroSwitcher.classList.add('current-clock-option');
-    stopwatchSwitcher.classList.remove('current-clock-option');
-    clockFunction = 'pomodoro';
-    updateDisplayedClockOptions()
-});
 
 startButton.addEventListener('click', () => {
-    if (clockFunction === 'stopwatch') {
-        stopwatch.startTime = Date.now() - stopwatch.pausedAt;
-        stopwatch.startTimer();
-    } else if (clockFunction === 'pomodoro') {
-        pomodoro.startTimer();
-    }
+    stopwatch.startTime = Date.now() - stopwatch.pausedAt;
+    stopwatch.startTimer();
     updateDisplayedClockOptions()
 });
 pauseButton.addEventListener('click', () => {
-    if (clockFunction === 'stopwatch') {
-        stopwatch.stopTimer();
-    } else if (clockFunction === 'pomodoro') {
-        pomodoro.stopTimer();
-    }
+    stopwatch.stopTimer();
     updateDisplayedClockOptions()
 });
 resetButton.addEventListener('click', () => {
-    if (clockFunction === 'stopwatch') {
-        stopwatch.resetTimer();
-    } else if (clockFunction === 'pomodoro') {
-        pomodoro.resetTimer();
-    }
+    stopwatch.resetTimer();
     updateDisplayedClockOptions()
 });
 
@@ -305,7 +220,6 @@ document.addEventListener('DOMContentLoaded', () => {
             stopwatch.startTime = serverStopwatch["start_time"];
             stopwatch.elapsedTime = serverStopwatch["elapsed_time"]
             stopwatch.primaryTimerString = formatTimeValue(serverStopwatch["elapsed_time"], hideHours=false);
-            stopwatch.updateDisplay();
             stopwatch.pausedAt = serverStopwatch["current_time"];
             if (!serverStopwatch["paused"]) {
                 stopwatch.startTimer();
@@ -314,7 +228,7 @@ document.addEventListener('DOMContentLoaded', () => {
             stopwatch.lapTimes = serverStopwatch.lap_times;
             stopwatch.lapCount = serverStopwatch.lap_times.length - 1;
             stopwatch.currentLapTime = serverStopwatch.lap_times[stopwatch.lapCount].lapTime;
-            stopwatch.secondaryTimerString = formatTimeValue(stopwatch.currentLapTime, hideHours=false);
+            stopwatch.secondaryTimerString = formatTimeValue(stopwatch.elapsedTime - serverStopwatch.lap_times[stopwatch.lapCount].totalTime, hideHours=false);
             if (serverStopwatch.lap_times.length > 1) {
                 lapCounter.style.display = 'block';
                 for (let i = 1; i < serverStopwatch.lap_times.length; i++) {
@@ -327,6 +241,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     );
                 }
             }
+            stopwatch.updateDisplay();
         }
     });
 });
