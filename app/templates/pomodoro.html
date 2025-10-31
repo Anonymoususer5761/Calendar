@@ -10,6 +10,9 @@
         <button id="pomodoro-start">Start</button>
         <button id="pomodoro-stop">Stop</button>
         <button id="pomodoro-reset">Reset</button>
-        <script src="{{ url_for('static', filename='pomodoro.js') }}"></script>
     </div>
+{% endblock %}
+
+{% block subpage_script %}
+    <script src="{{ url_for('static', filename='pomodoro.js') }}"></script>
 {% endblock %}

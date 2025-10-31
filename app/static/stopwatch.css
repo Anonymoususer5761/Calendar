@@ -1,16 +1,6 @@
 :root {
     --clock-font: monospace
 }
-
-#clock {
-    text-align: center;
-    padding: 30px;
-    height: 40%;
-    border: 1px solid #333333;
-    border-radius: 5px;
-    background-color: #f4f7e8;
-    margin: 30px;
-}
 .timer {
     font-family: var(--clock-font);
 }
@@ -20,9 +10,8 @@
 }
 #split-timer {
     font-size: 25px;
-    color: #bbb93b
+    color: #D4D2A5;
 }
-
 #start-button {
     display: inline-block;
     position: relative;
@@ -90,6 +79,7 @@
 #lap-counter {
     display: none;
     padding: 1.5em;
+    color: #FCDEBE;
 }
 #lap-counter-body td {
     font-family: var(--clock-font);

@@ -1,3 +1,13 @@
+#clock {
+    text-align: center;
+    padding: 30px;
+    height: 40%;
+    border: 2px solid #333333;
+    border-radius: 10px;
+    background-color: #5E5768;
+    margin: 30px;
+}
+
 #clock-options {
     display: flex;
     list-style-type: none;
@@ -14,13 +24,13 @@
     font-size: 0.85rem;
 }
 #clock-options a {
-    color: #009933;
+    color: #FCDEBE;
 }
 #clock-options a:hover {
     cursor: pointer;
-    color: #06c546;
+    color: #E5CAAD;
 }
 #clock-options a.current-clock-option {
     border-radius: 7px;
-    background-color: #f8fcf4;
+    background-color: #5E576899;
 }

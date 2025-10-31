@@ -1,7 +1,7 @@
 /* Entire Webpage */
 body {
     position: static;
-    background-color: #fafafa;
+    background-color: #ffffff;
     color: #1e1e22;
 }
 html, body {
@@ -16,7 +16,7 @@ html, body {
     position: sticky;
     top: 0;
     height: max-content;
-    background-color: #c9ec77d5;
+    background-color: #3A445D;
     z-index: 10;
     margin: 0;
 }
@@ -53,7 +53,7 @@ html, body {
     font-size: 16px;
 }
 .navbar a.current {
-    background-color: #e6fc86;
+    background-color: #4C556C;
 }
 .navbar li {
     margin: 0;
