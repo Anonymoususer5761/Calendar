@@ -1,6 +1,6 @@
 from app import app
 from app.calendar_db import *
-from app.forms import LoginForm, RegistrationForm, AddEventForm, SettingsForm
+from app.forms import LoginForm, RegistrationForm, AddEventForm, SettingsForm, PomodoroSettingsForm
 from app.user import sign_in_user, register_user
 from app.pytemplates import get_events_and_format_events_svg
 from app.helpers import update_dictionary
@@ -50,7 +50,8 @@ def stopwatch():
 
 @app.route("/clock/pomodoro")
 def pomodoro():
-    return render_template("pomodoro.html")
+    form = PomodoroSettingsForm()
+    return render_template("pomodoro.html", form=form)
 
 
 @app.route("/settings", methods=["POST", "GET"])

@@ -1,7 +1,7 @@
 const pomodoroTimer = document.getElementById('pomodoro-timer');
-const startButton = document.getElementById('pomodoro-start');
-const pauseButton = document.getElementById('pomodoro-stop');
-const resetButton = document.getElementById('pomodoro-reset');
+const startButton = document.getElementById('start-button');
+const pauseButton = document.getElementById('stop-button');
+const resetButton = document.getElementById('reset-button');
 
 const pomodoro = {
     sessionDuration: 1500000,
@@ -83,3 +83,13 @@ function updateSession() {
         pomodoroTimer.innerHTML = `${hours}:${minutes}:${seconds}.${milliseconds}`;
     }
 }
+
+const pomodoroSettingsButton = document.getElementById('pomodoro-settings-button');
+const pomodoroSettingsMenu = document.getElementById('pomodoro-settings-menu');
+const pomodoroSettingsMenuCloseButton = document.getElementById('pomodoro-settings-menu-close-button');
+pomodoroSettingsButton.addEventListener('click', () => {
+    pomodoroSettingsMenu.style.display = 'block';
+});
+pomodoroSettingsMenuCloseButton.addEventListener('click', () => {
+    pomodoroSettingsMenu.style.display= 'none';
+});

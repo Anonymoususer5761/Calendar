@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, DateTimeLocalField, SelectField
-from wtforms.validators import DataRequired, EqualTo, Email
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, DateTimeLocalField, SelectField, IntegerField
+from wtforms.validators import DataRequired, EqualTo, Email, NumberRange
 
 from app.helpers import color_choices
 
@@ -10,12 +10,14 @@ class LoginForm(FlaskForm):
     remember_me = BooleanField("Remember me")
     submit = SubmitField("Sign In")
 
+
 class RegistrationForm(FlaskForm):
     username = StringField("Username", validators=[DataRequired()])
     email = StringField("Email", validators=[DataRequired(), Email()])
     password = PasswordField("Password", validators=[DataRequired()])
     password2 = PasswordField("Repeat Password", validators=[DataRequired(), EqualTo("password")])
     submit = SubmitField("Register")
+
 
 class AddEventForm(FlaskForm):
     name = StringField("Event", validators=[DataRequired()], render_kw={"placeholder": "Event Time"})
@@ -25,7 +27,15 @@ class AddEventForm(FlaskForm):
     event_color = SelectField("Color", choices=color_choices)
     submit = SubmitField("Add Event")
 
+
 class SettingsForm(FlaskForm):
     color_mode = BooleanField("Dark Mode")
     region = SelectField("Region", choices=((1, "None"), (2, "India")))
     submit = SubmitField("Save Changes")
+
+
+class PomodoroSettingsForm(FlaskForm):
+    session_length = IntegerField("Session Duration", validators=[DataRequired(), NumberRange(min=1)], default=25)
+    short_break = IntegerField("Short Break", validators=[DataRequired(), NumberRange(min=1)], default=5)
+    long_break = IntegerField("Long Break", validators=[DataRequired(), NumberRange(min=1)], default=15)
+    long_break_interval = IntegerField("Long Break Interval", validators=[DataRequired(), NumberRange(min=0)], default=4)

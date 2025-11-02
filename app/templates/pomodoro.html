@@ -4,12 +4,36 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='pomodoro.css') }}">
 {% endblock %}
 
+{% block clock %}
+    <button id="pomodoro-settings-button">settings</button>
+    <p id="pomodoro-timer" class="timer">00:00:00.000</p>
+    <button id="start-button">Start</button>
+    <button id="stop-button">Pause</button>
+    <button id="reset-button">Reset</button>
+{% endblock %}
+
 {% block subpage_main %}
-    <div id="pomodoro-div">
-        <p id="pomodoro-timer">25:00.000</p>
-        <button id="pomodoro-start">Start</button>
-        <button id="pomodoro-stop">Stop</button>
-        <button id="pomodoro-reset">Reset</button>
+    <div id="pomodoro-settings-menu">
+        <button id="pomodoro-settings-menu-close-button">close</button>
+        <form action="" method="post">
+            {{ form.hidden_tag() }}
+            <p>
+                {{ form.session_length.label }}<br>
+                {{ form.session_length() }}
+            </p>
+            <p>
+                {{ form.short_break.label }}<br>
+                {{ form.short_break() }}
+            </p>
+            <p>
+                {{ form.long_break.label }}<br>
+                {{ form.long_break() }}
+            </p>
+            <p>
+                {{ form.long_break_interval.label }}<br>
+                {{ form.long_break_interval() }}
+            </p>
+        </form>
     </div>
 {% endblock %}
 
