@@ -6,20 +6,6 @@ const resetButton = document.getElementById('reset-button');
 
 const lapCounter = document.getElementById('lap-counter');
 
-function formatTimeValue(timeValue, hideHours=true) {
-    let hours = padNumber(Math.floor(timeValue / 3600000), 2);
-    let minutes = padNumber(Math.floor((timeValue / 60000) % 60), 2);
-    let seconds = padNumber(Math.floor((timeValue / 1000) % 60), 2);
-    let milliseconds = padNumber(Math.floor(timeValue % 1000), 3);
-    if (!hideHours) {
-        return `${hours}:${minutes}:${seconds}.${milliseconds}`;
-    }
-    if (hours != '00') {
-        return `${hours}:${minutes}:${seconds}.${milliseconds}`;
-    }
-    return `${minutes}:${seconds}.${milliseconds}`;
-}
-
 const defaultStopwatchString = '00:00:00.000';
 
 const stopwatch = {
@@ -207,11 +193,11 @@ startButton.addEventListener('click', () => {
 });
 pauseButton.addEventListener('click', () => {
     stopwatch.stopTimer();
-    updateDisplayedClockOptions()
+    updateDisplayedClockOptions();
 });
 resetButton.addEventListener('click', () => {
     stopwatch.resetTimer();
-    updateDisplayedClockOptions()
+    updateDisplayedClockOptions();
 });
 
 document.addEventListener('DOMContentLoaded', () => {
