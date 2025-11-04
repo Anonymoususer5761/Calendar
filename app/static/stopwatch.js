@@ -33,7 +33,7 @@ const stopwatch = {
                 stopwatch.primaryTimerString = formatTimeValue(stopwatch.elapsedTime, hideHours=false);
                 stopwatch.secondaryTimerString = formatTimeValue(stopwatch.currentLapTime, hideHours=false);
                 stopwatch.updateDisplay();
-            }, 25);
+            }, clockUpdateInterval);
             stopwatch.paused = false;
             stopwatch.syncWithServer('start');
         }

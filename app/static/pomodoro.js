@@ -3,33 +3,45 @@ const startButton = document.getElementById('start-button');
 const pauseButton = document.getElementById('stop-button');
 const resetButton = document.getElementById('reset-button');
 
-const sessionDurationInputForm = document.getElementById('session_length');
-let userDefinedSessionDuration = parseInt(sessionDurationInputForm.value * 60000);
-sessionDurationInputForm.addEventListener('change', () => {
-    userDefinedSessionDuration = parseInt(sessionDurationInputForm.value) * 60000;
-    pomodoro.sessionDuration = userDefinedSessionDuration;
-    pomodoro.remainingSessionDuration = userDefinedSessionDuration;
-    pomodoro.updateDisplay()
-});
+const millisecondsInMinute = 60000;
 
 const pomodoro = {
-    sessionDuration: userDefinedSessionDuration,
-    remainingSessionDuration: userDefinedSessionDuration,
-    sessionDurationStringValue: formatTimeValue(userDefinedSessionDuration),
-    remainingSessionDurationStringValue: formatTimeValue(userDefinedSessionDuration),
+    sessionDuration: 0,
+    remainingSessionDuration: 0,
+    breakDuration: 0,
+    remainingBreakDuration: 0,
     pausedAt: 0,
-    sessionStartTime: 0,
+    startTime: 0,
     elapsedTime: 0,
     paused: true,
     intervalId: 0,
-    startTimer: () => {
+    breakTime: false,
+    sessionCounter: 1,
+    breakCounter: 0,
+    longBreakInterval: 0,
+    startSession: () => {
         if (pomodoro.paused) {
+            pomodoro.startTime = Date.now() - pomodoro.pausedAt;
             pomodoro.intervalId = setInterval(() => {
-                pomodoro.elapsedTime = Date.now() - pomodoro.sessionStartTime;
-                pomodoro.remainingSessionDuration = pomodoro.sessionDuration - pomodoro.elapsedTime;
-                pomodoro.updateDisplay();
-            }, 25);
+                pomodoro.elapsedTime = Date.now() - pomodoro.startTime;
+                pomodoro.remainingSessionDuration = pomodoro.sessionDuration - (pomodoro.elapsedTime * timerMultiplierForDebugging);
+                pomodoro.updateDisplay(pomodoro.remainingSessionDuration);
+                if (pomodoro.remainingSessionDuration <= 0) {
+                    clearInterval(pomodoro.intervalId);
+                    pomodoro.breakTime = true;
+                    pomodoro.breakCounter++;
+                    pomodoro.updateDisplay(0);
+                    let breakType = pomodoro.breakCounter % pomodoro.longBreakInterval === 0 ? 'long' : 'short';
+                    updateBreakDuration(breakType);
+                    alert(`Starting a ${pomodoro.remainingBreakDuration / millisecondsInMinute} minute ${breakType} break.\nSession: ${pomodoro.sessionCounter}\nBreak: ${pomodoro.breakCounter}`);
+                    pomodoro.paused = true;
+                    pomodoro.pausedAt = 0;
+                    pomodoro.startBreak();
+                    return;
+                }
+            }, clockUpdateInterval);
             pomodoro.paused = false;
+            return;
         }
     },
     stopTimer: () => {
@@ -39,19 +51,78 @@ const pomodoro = {
             pomodoro.pausedAt = pomodoro.elapsedTime;
         }
     },
+    startBreak: () => {
+        if (pomodoro.paused) {
+            pomodoro.startTime = Date.now() - pomodoro.pausedAt;
+            pomodoro.intervalId = setInterval(() => {
+                pomodoro.elapsedTime = Date.now() - pomodoro.startTime;
+                pomodoro.remainingBreakDuration = pomodoro.breakDuration - (pomodoro.elapsedTime * timerMultiplierForDebugging);
+                pomodoro.updateDisplay(pomodoro.remainingBreakDuration);
+                if (pomodoro.remainingBreakDuration <= 0) {
+                    clearInterval(pomodoro.intervalId);
+                    pomodoro.breakTime=false;
+                    pomodoro.sessionCounter++;
+                    pomodoro.updateDisplay(0);
+                    updateSessionDuration();
+                    alert(`Break ended! Starting a ${pomodoro.remainingSessionDuration / millisecondsInMinute} minute pomodoro session.\nSession: ${pomodoro.sessionCounter}\nBreak: ${pomodoro.breakCounter}`);
+                    pomodoro.paused = true;
+                    pomodoro.pausedAt = 0;
+                    pomodoro.startSession();
+                }
+            }, clockUpdateInterval);
+            pomodoro.paused = false;
+        }
+    },
     resetTimer: () => {
         pomodoro.remainingSessionDuration = pomodoro.sessionDuration;
         clearInterval(pomodoro.intervalId);
         pomodoro.paused=true;
         pomodoro.pausedAt = 0;
-        pomodoro.updateDisplay();
+        pomodoro.breakTime=false;
+        pomodoro.sessionCounter = 0;
+        pomodoro.updateDisplay(pomodoro.remainingSessionDuration);
     },
-    updateDisplay: () => {
-        pomodoroTimer.innerHTML = formatTimeValue(pomodoro.remainingSessionDuration);
+    updateDisplay: (timeValue) => {
+        pomodoroTimer.innerHTML = formatTimeValue(timeValue);
     },
 }
 
-pomodoroTimer.innerHTML = pomodoro.remainingSessionDurationStringValue;
+const sessionDurationInputForm = document.getElementById('session_length');
+function updateSessionDuration() {
+    userDefinedSessionDuration = parseInt(sessionDurationInputForm.value) * millisecondsInMinute;
+    pomodoro.sessionDuration = userDefinedSessionDuration;
+    pomodoro.remainingSessionDuration = userDefinedSessionDuration;
+    pomodoro.updateDisplay(pomodoro.remainingSessionDuration);
+}
+updateSessionDuration();
+sessionDurationInputForm.addEventListener('change', () => {
+    if (pomodoro.paused) {
+        updateSessionDuration();
+    }
+});
+
+const shortBreakDurationInputForm = document.getElementById('short_break');
+const longBreakDurationInputForm = document.getElementById('long_break');
+function updateBreakDuration(breakType) {
+    let userDefinedBreakDuration;
+    if (breakType === 'short') {
+        userDefinedBreakDuration = parseInt(shortBreakDurationInputForm.value) * millisecondsInMinute;
+    } else {
+        userDefinedBreakDuration = parseInt(longBreakDurationInputForm.value) * millisecondsInMinute;
+    }
+    pomodoro.breakDuration = userDefinedBreakDuration;
+    pomodoro.remainingBreakDuration = userDefinedBreakDuration;
+}
+updateBreakDuration('short');
+
+const longBreakIntervalInputForm = document.getElementById('long_break_interval');
+function updateLongBreakInterval() {
+    pomodoro.longBreakInterval = parseInt(longBreakIntervalInputForm.value);
+}
+updateLongBreakInterval();
+longBreakIntervalInputForm.addEventListener('change', updateLongBreakInterval);
+
+pomodoro.updateDisplay(pomodoro.remainingSessionDuration);
 function updateDisplayedClockOptions() {
     if (pomodoro.paused) {
         startButton.style.display = 'inline-block';
@@ -63,8 +134,11 @@ function updateDisplayedClockOptions() {
 }
 
 startButton.addEventListener('click', () => {
-    pomodoro.sessionStartTime = Date.now() - pomodoro.pausedAt;
-    pomodoro.startTimer();
+    if (!pomodoro.breakTime) {
+        pomodoro.startSession();
+    } else {
+        pomodoro.startBreak();
+    }
     updateDisplayedClockOptions();
 });
 pauseButton.addEventListener('click', () => {
@@ -75,20 +149,6 @@ resetButton.addEventListener('click', () => {
     pomodoro.resetTimer();
     updateDisplayedClockOptions()
 });
-
-function updateSession() {
-    elapsedTime = Date.now() - sessionStartTime;
-    sessionCurrentLength = sessionMaxLength - elapsedTime;
-    hours = Math.floor(sessionCurrentLength / 3600000).toString().padStart(2, '0');
-    minutes = Math.floor((sessionCurrentLength / 60000) % 60).toString().padStart(2, '0');
-    seconds = Math.floor((sessionCurrentLength / 1000) % 60).toString().padStart(2, '0');
-    milliseconds = Math.floor(sessionCurrentLength % 1000).toString().padStart(3, '0');
-    if (hours == 0) {
-        pomodoroTimer.innerHTML = `${minutes}:${seconds}.${milliseconds}`;
-    } else {
-        pomodoroTimer.innerHTML = `${hours}:${minutes}:${seconds}.${milliseconds}`;
-    }
-}
 
 const pomodoroSettingsButton = document.getElementById('pomodoro-settings-button');
 const pomodoroSettingsMenu = document.getElementById('pomodoro-settings-menu');

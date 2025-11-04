@@ -3,6 +3,10 @@ const pomodoroSwitcher = document.getElementById('clock-options-pomodoro');
 
 const webpage_path = window.location.href.split('/').pop();
 
+const clockUpdateInterval = 25;
+
+const timerMultiplierForDebugging = 8;
+
 if (webpage_path === 'clock' | webpage_path === 'stopwatch') {
     stopwatchSwitcher.classList.add('current-clock-option');
 } else {
