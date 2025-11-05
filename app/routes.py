@@ -10,6 +10,8 @@ from flask_login import logout_user, login_required, current_user
 
 import time
 
+milliseconds_in_second = 1000
+
 @app.route('/')
 @app.route('/index')
 @app.route('/home')
@@ -155,7 +157,7 @@ def api_stopwatch_initialize(bypass_verification=False):
         "start_time": 0,
         "paused": True,
         "elapsed_time": 0,
-        "current_time": 0,
+        "paused_at": 0,
         "lap_times": [
             {
                 "lapTime": 0,
@@ -202,7 +204,7 @@ def api_stopwatch_stop():
         session["stopwatch"],
         paused = True,
         elapsed_time = int(request.args.get("elapsed_time")),
-        current_time = int(request.args.get("elapsed_time")),
+        paused_at = int(request.args.get("elapsed_time")),
     )
     return jsonify(session["stopwatch"])
 
@@ -212,7 +214,7 @@ def api_stopwatch_elapsed_time(bypass_verification=False):
         if request.headers.get("Request-Source") != "JS-AJAX":
             return redirect(url_for("clock"))
 
-    elapsed_time  = round(time.time() * 1000) - session["stopwatch"]["start_time"]
+    elapsed_time  = round(time.time() * milliseconds_in_second) - session["stopwatch"]["start_time"]
     session["stopwatch"] = update_dictionary(
         session["stopwatch"],
         elapsed_time = elapsed_time,
@@ -230,6 +232,82 @@ def api_stopwatch():
         api_stopwatch_elapsed_time(bypass_verification=True)
     stopwatch = session["stopwatch"]
     return jsonify(stopwatch)
+
+
+@app.route("/api/clock/pomodoro/initialize")
+@app.route("/api/clock/pomodoro/reset")
+def api_pomodoro_initialize(bypass_verification=False):
+    if not bypass_verification:
+        if request.headers.get("Request-Source") != "JS-AJAX":
+            return redirect(url_for("clock"))
+
+    session["pomodoro"] = {
+        "start_time": 0,
+        "paused": True,
+        "elapsed_time": 0,
+        "session_duration": 0,
+        "remaining_duration": 0,
+        "paused_at": 0,
+        "break_time": False,
+    }
+    return jsonify(True)
+
+@app.route("/api/clock/pomodoro/start")
+def api_pomodoro_start():
+    if request.headers.get("Request-Source") != "JS-AJAX":
+        return redirect(url_for("clock"))
+    
+    if not session.get("stopwatch"):
+        api_pomodoro_initialize(bypass_verification=True)
+    
+    session["pomodoro"] = update_dictionary(
+        session["pomodoro"],
+        start_time = int(request.args.get("start_time")),
+        session_duration = int(request.args.get("session_duration")),
+        paused = False,
+        break_time = True if request.args.get("break_time") == "true" else False
+    )
+    return jsonify(session["pomodoro"])
+
+@app.route("/api/clock/pomodoro/stop")
+def api_pomodoro_stop():
+    if request.headers.get("Request-Source") != "JS-AJAX":
+        return redirect(url_for("clock"))
+    
+    session["pomodoro"] = update_dictionary(
+        session["pomodoro"],
+        paused = True,
+        elapsed_time = int(request.args.get("elapsed_time")),
+        paused_at = int(request.args.get("elapsed_time")),
+    )
+    return jsonify(session["pomodoro"])
+
+@app.route("/api/clock/pomodoro/elapsed_time")
+def api_pomodoro_elapsed_time(bypass_verification=False):
+    if not bypass_verification:
+        if request.headers.get("Request-Source") != "JS-AJAX":
+            return redirect(url_for("clock"))
+    
+    elapsed_time  = round(time.time() * milliseconds_in_second) - session["pomodoro"]["start_time"]
+    remaining_duration = session["pomodoro"]["session_duration"] - elapsed_time
+    session["pomodoro"] = update_dictionary(
+        session["pomodoro"],
+        elapsed_time = elapsed_time,
+        remaining_duration = remaining_duration,
+    )
+    return jsonify(session["pomodoro"]["elapsed_time"])
+
+@app.route("/api/clock/pomodoro/")
+def api_pomodoro():
+    if request.headers.get("Request-Source") != "JS-AJAX":
+        return redirect(url_for("clock"))
+    
+    if not session.get("pomodoro"):
+        return jsonify(False)
+    if not session["pomodoro"]["paused"]:
+        api_pomodoro_elapsed_time(bypass_verification=True)
+    pomodoro = session["pomodoro"]
+    return jsonify(pomodoro)
 
 
 @app.route("/api/settings/set-settings")

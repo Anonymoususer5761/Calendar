@@ -78,7 +78,7 @@ const stopwatch = {
         splitTimer.innerHTML = stopwatch.secondaryTimerString;
     },
     syncWithServer: async (api_route) => {
-        if (api_route === 'start'){
+        if (api_route === 'start') {
             await fetch(`/api/clock/stopwatch/${api_route}?start_time=${stopwatch.startTime}`, {
                 headers: {
                     "Request-Source": "JS-AJAX",
@@ -133,7 +133,7 @@ const stopwatch = {
                 "Request-Source": "JS-AJAX",
             }
         });
-        serverStopwatch = await response.json()
+        let serverStopwatch = await response.json();
         return serverStopwatch;
     },
 }
@@ -174,7 +174,7 @@ lapButton.addEventListener('click', () => {
     );
 });
 
-function updateDisplayedClockOptions() {
+function updateClockOptions() {
     if (stopwatch.paused) {
         startButton.style.display = 'inline-block';
         lapButton.style.display = 'none';
@@ -189,15 +189,15 @@ function updateDisplayedClockOptions() {
 startButton.addEventListener('click', () => {
     stopwatch.startTime = Date.now() - stopwatch.pausedAt;
     stopwatch.startTimer();
-    updateDisplayedClockOptions()
+    updateClockOptions()
 });
 pauseButton.addEventListener('click', () => {
     stopwatch.stopTimer();
-    updateDisplayedClockOptions();
+    updateClockOptions();
 });
 resetButton.addEventListener('click', () => {
     stopwatch.resetTimer();
-    updateDisplayedClockOptions();
+    updateClockOptions();
 });
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -206,10 +206,10 @@ document.addEventListener('DOMContentLoaded', () => {
             stopwatch.startTime = serverStopwatch["start_time"];
             stopwatch.elapsedTime = serverStopwatch["elapsed_time"]
             stopwatch.primaryTimerString = formatTimeValue(serverStopwatch["elapsed_time"], hideHours=false);
-            stopwatch.pausedAt = serverStopwatch["current_time"];
+            stopwatch.pausedAt = serverStopwatch["paused_at"];
             if (!serverStopwatch["paused"]) {
                 stopwatch.startTimer();
-                updateDisplayedClockOptions();
+                updateClockOptions();
             }
             stopwatch.lapTimes = serverStopwatch.lap_times;
             stopwatch.lapCount = serverStopwatch.lap_times.length - 1;
