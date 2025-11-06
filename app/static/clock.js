@@ -5,7 +5,7 @@ const webpage_path = window.location.href.split('/').pop();
 
 const clockUpdateInterval = 25;
 
-const timerMultiplierForDebugging = 8;
+const timerMultiplierForDebugging = 1;
 
 if (webpage_path === 'clock' | webpage_path === 'stopwatch') {
     stopwatchSwitcher.classList.add('current-clock-option');

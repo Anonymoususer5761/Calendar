@@ -7,7 +7,6 @@ const millisecondsInMinute = 60000;
 
 const pomodoro = {
     sessionDuration: 0,
-    breakDuration: 0,
     remainingDuration: 0,
     pausedAt: 0,
     startTime: 0,
@@ -53,7 +52,7 @@ const pomodoro = {
         if (pomodoro.paused) {
             pomodoro.intervalId = setInterval(() => {
                 pomodoro.elapsedTime = Date.now() - pomodoro.startTime;
-                pomodoro.remainingDuration = pomodoro.breakDuration - (pomodoro.elapsedTime * timerMultiplierForDebugging);
+                pomodoro.remainingDuration = pomodoro.sessionDuration - (pomodoro.elapsedTime * timerMultiplierForDebugging);
                 pomodoro.updateDisplay();
                 if (pomodoro.remainingDuration <= 0) {
                     clearInterval(pomodoro.intervalId);
@@ -95,7 +94,7 @@ const pomodoro = {
             return;
         }
         if (api_route === 'stop') {
-            await fetch(`/api/clock/pomodoro/${api_route}?elapsed_time=${pomodoro.elapsedTime}`, {
+            await fetch(`/api/clock/pomodoro/${api_route}?elapsed_time=${pomodoro.elapsedTime}&remaining_duration=${pomodoro.remainingDuration}`, {
                 headers: {
                     "Request-Source": "JS-AJAX",
                 }
@@ -126,36 +125,41 @@ const longBreakDurationInputForm = document.getElementById('long_break');
 const longBreakIntervalInputForm = document.getElementById('long_break_interval');
 function updatePomodoro() {
     pomodoro.longBreakInterval = parseInt(longBreakIntervalInputForm.value);
-    let userDefinedSessionDuration = parseInt(sessionDurationInputForm.value) * millisecondsInMinute;
-    pomodoro.sessionDuration = userDefinedSessionDuration;
-    let userDefinedBreakDuration;
-    if (pomodoro.breakCounter % pomodoro.longBreakInterval === 0) {
-        userDefinedBreakDuration = parseInt(longBreakDurationInputForm.value) * millisecondsInMinute;
-    } else {
-        userDefinedBreakDuration = parseInt(shortBreakDurationInputForm.value) * millisecondsInMinute;
+    if (!pomodoro.breakTime) {
+        pomodoro.sessionDuration = parseInt(sessionDurationInputForm.value) * millisecondsInMinute;
+        pomodoro.remainingDuration = pomodoro.sessionDuration;
+        return
     }
-    pomodoro.breakDuration = userDefinedBreakDuration;
+    if (pomodoro.breakCounter % pomodoro.longBreakInterval === 0) {
+        pomodoro.sessionDuration = parseInt(longBreakDurationInputForm.value) * millisecondsInMinute;
+    } else {
+        pomodoro.sessionDuration = parseInt(shortBreakDurationInputForm.value) * millisecondsInMinute;
+    }
     pomodoro.remainingDuration = pomodoro.sessionDuration;
-    return
+    return;
 }
 longBreakIntervalInputForm.addEventListener('change', () => {
     if (pomodoro.paused) {
         updatePomodoro();
+        pomodoro.updateDisplay();
     }
 });
 sessionDurationInputForm.addEventListener('change', () => {
     if (pomodoro.paused) {
         updatePomodoro();
+        pomodoro.updateDisplay();
     }
 });
 shortBreakDurationInputForm.addEventListener('change', () => {
     if (pomodoro.paused) {
         updatePomodoro();
+        pomodoro.updateDisplay();
     }
 });
 longBreakDurationInputForm.addEventListener('change', () => {
     if (pomodoro.paused) {
         updatePomodoro();
+        pomodoro.updateDisplay();
     }
 });
 
@@ -197,7 +201,7 @@ pomodoroSettingsMenuCloseButton.addEventListener('click', () => {
     pomodoroSettingsMenu.style.display= 'none';
 });
 pomodoro.syncWithServer('').then(serverPomodoro => {
-    if (!serverPomodoro) {
+    if (!serverPomodoro["_exists"]) {
         updatePomodoro();
         pomodoro.updateDisplay();
         return;
@@ -214,9 +218,9 @@ pomodoro.syncWithServer('').then(serverPomodoro => {
         } else {
             pomodoro.startBreak();
         }
+        updateClockOptions();
     }
     pomodoro.updateDisplay();
-    updateClockOptions();
     return;
 });
 

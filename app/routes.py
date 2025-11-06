@@ -249,6 +249,7 @@ def api_pomodoro_initialize(bypass_verification=False):
         "remaining_duration": 0,
         "paused_at": 0,
         "break_time": False,
+        "_exists": False,
     }
     return jsonify(True)
 
@@ -265,7 +266,8 @@ def api_pomodoro_start():
         start_time = int(request.args.get("start_time")),
         session_duration = int(request.args.get("session_duration")),
         paused = False,
-        break_time = True if request.args.get("break_time") == "true" else False
+        break_time = True if request.args.get("break_time") == "true" else False,
+        _exists = True
     )
     return jsonify(session["pomodoro"])
 
@@ -279,6 +281,7 @@ def api_pomodoro_stop():
         paused = True,
         elapsed_time = int(request.args.get("elapsed_time")),
         paused_at = int(request.args.get("elapsed_time")),
+        remaining_duration = int(request.args.get("remaining_duration"))
     )
     return jsonify(session["pomodoro"])
 
