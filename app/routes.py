@@ -243,12 +243,13 @@ def api_pomodoro_initialize(bypass_verification=False):
 
     session["pomodoro"] = {
         "start_time": 0,
-        "paused": True,
-        "elapsed_time": 0,
-        "session_duration": 0,
+        "session": 0,
         "remaining_duration": 0,
+        "paused": True,
         "paused_at": 0,
         "break_time": False,
+        "session_counter": 0,
+        "break_counter": 0,
         "_exists": False,
     }
     return jsonify(True)
@@ -265,9 +266,9 @@ def api_pomodoro_start():
         session["pomodoro"],
         start_time = int(request.args.get("start_time")),
         session_duration = int(request.args.get("session_duration")),
+        remaining_duratino = int(request.args.get("remaining_duration")),
         paused = False,
-        break_time = True if request.args.get("break_time") == "true" else False,
-        _exists = True
+        _exists = True,
     )
     return jsonify(session["pomodoro"])
 
@@ -279,14 +280,34 @@ def api_pomodoro_stop():
     session["pomodoro"] = update_dictionary(
         session["pomodoro"],
         paused = True,
-        elapsed_time = int(request.args.get("elapsed_time")),
-        paused_at = int(request.args.get("elapsed_time")),
-        remaining_duration = int(request.args.get("remaining_duration"))
+        start_time = int(request.args.get("start_time")),
+        session_duration = int(request.args.get("session_duration")),
+        paused_at = int(request.args.get("paused_at")),
+        remaining_duration = int(request.args.get("remaining_duration")),
     )
     return jsonify(session["pomodoro"])
 
-@app.route("/api/clock/pomodoro/elapsed_time")
-def api_pomodoro_elapsed_time(bypass_verification=False):
+@app.route("/api/clock/pomodoro/switch_session")
+def api_switch_session():
+    if request.headers.get("Request-Source") != "JS-AJAX":
+        return redirect(url_for("clock"))
+    
+    break_time = True if request.args.get("break_time") == "true" else False,
+    if break_time:
+        session_counter = session["pomodoro"]["session_counter"] + 1
+    else:
+        break_counter = session["pomodoro"]["break_counter"] + 1
+    session["pomodoro"] = update_dictionary(
+        session["pomodoro"],
+        break_time = True if request.args.get("break_time") == "true" else False,
+        session_counter = session_counter,
+        break_counter = break_counter,
+    )
+
+    return jsonify(True)
+
+@app.route("/api/clock/pomodoro/remaining_duration")
+def api_pomodoro_remaining_duration(bypass_verification=False):
     if not bypass_verification:
         if request.headers.get("Request-Source") != "JS-AJAX":
             return redirect(url_for("clock"))
@@ -295,7 +316,6 @@ def api_pomodoro_elapsed_time(bypass_verification=False):
     remaining_duration = session["pomodoro"]["session_duration"] - elapsed_time
     session["pomodoro"] = update_dictionary(
         session["pomodoro"],
-        elapsed_time = elapsed_time,
         remaining_duration = remaining_duration,
     )
     return jsonify(session["pomodoro"]["elapsed_time"])
@@ -308,10 +328,9 @@ def api_pomodoro():
     if not session.get("pomodoro"):
         return jsonify(False)
     if not session["pomodoro"]["paused"]:
-        api_pomodoro_elapsed_time(bypass_verification=True)
+        api_pomodoro_remaining_duration(bypass_verification=True)
     pomodoro = session["pomodoro"]
     return jsonify(pomodoro)
-
 
 @app.route("/api/settings/set-settings")
 def api_set_settings():
