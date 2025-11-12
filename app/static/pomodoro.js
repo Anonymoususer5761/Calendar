@@ -31,19 +31,22 @@ class Pomodoro {
         if (this.paused) {
             this.intervalId = setInterval(() => {
                 this.elapsedTime = Date.now() - this.startTime;
-                this.remainingDuration = this.sessionDuration - (this.elapsedTime);
+                this.remainingDuration = this.sessionDuration - (this.elapsedTime * 8);
                 if (this.remainingDuration <= 0) {
                     if (!this.breakTime) {
                         this.sessionCounter++;
+                        console.log("session: " + this.sessionCounter);
                         this.sessionDuration = this.sessionCounter % this.longBreakInterval === 0 ? this.longBreakDuration : this.shortBreakDuration;
                         this.startTime = Date.now();
                         this.breakTime = true;
                     } else {
                         this.breakCounter++;
+                        console.log("break: " + this.breakCounter);
                         this.sessionDuration = this.pomodoroDuration;
                         this.startTime = Date.now();
                         this.breakTime = false;
                     }
+                    this.updateClockBackground();
                     this.syncWithServer('switch_session');
                 }
                 this.updateDisplay();
@@ -62,7 +65,6 @@ class Pomodoro {
     }
     resetTimer() {
         clearInterval(this.intervalId);
-        this.remainingDuration = this.sessionDuration;
         this.startTime = 0;
         this.elapsedTime = 0;
         this.pausedAt = 0;
@@ -70,7 +72,10 @@ class Pomodoro {
         this.breakTime = false;
         this.sessionCounter = 0;
         this.breakCounter = 0;
-        this.syncWithServer('stop');
+        this.sessionDuration = this.pomodoroDuration
+        this.remainingDuration = this.sessionDuration;
+        this.updateClockBackground();
+        this.syncWithServer('reset');
     }
     updateDisplay() {
         pomodoroTimer.innerHTML = formatTimeValue(this.remainingDuration);
@@ -84,6 +89,15 @@ class Pomodoro {
             pauseButton.style.display = 'inline-block';
         }
     }
+    updateClockBackground() {
+        if (this.breakTime) {
+            clock.classList.remove('pomodoro-background');
+            clock.classList.add('break-background');
+        } else {
+            clock.classList.remove('break-background');
+            clock.classList.add('pomodoro-background');
+        }
+    }
     async syncWithServer(apiRoute='') {
         switch(apiRoute) {
             case 'start':
@@ -94,7 +108,7 @@ class Pomodoro {
                 });
                 return;
             case 'stop':
-                await fetch(`/api/clock/pomodoro/${apiRoute}?start_time=${this.startTime}&paused_at=${this.pausedAt}&session_duration=${this.sessionDuration}&remaining_duration=${this.remainingDuration}`, {
+                await fetch(`/api/clock/pomodoro/${apiRoute}?paused_at=${this.pausedAt}&remaining_duration=${this.remainingDuration}`, {
                     headers: {
                         "Request-Source": "JS-AJAX",
                     }
@@ -108,7 +122,8 @@ class Pomodoro {
                 });
                 return;
             case 'switch_session':
-                await fetch(`/api/clock/pomodoro/${apiRoute}?break_time=${this.breakTime}`, {
+                console.log("duration: " + this.sessionDuration);
+                await fetch(`/api/clock/pomodoro/${apiRoute}?start_time=${this.startTime}&session_duration=${this.sessionDuration}&break_time=${this.breakTime}&`, {
                     headers: {
                         "Request-Source": "JS-AJAX",
                     }
@@ -133,6 +148,7 @@ let pomodoro = new Pomodoro(
     parseInt(longBreakIntervalInputForm.value)
 )
 pomodoro.updateDisplay()
+pomodoro.updateClockBackground();
 
 startButton.addEventListener('click', () => {
     pomodoro.startTime = Date.now() - pomodoro.pausedAt;
@@ -152,6 +168,7 @@ resetButton.addEventListener('click', () => {
 pomodoro.syncWithServer().then(serverPomodoro => {
     if (serverPomodoro["_exists"]) {
         pomodoro.startTime = serverPomodoro.start_time;
+        pomodoro.sessionDuration = serverPomodoro.session_duration;
         pomodoro.remainingDuration = serverPomodoro.remaining_duration;
         pomodoro.pausedAt = serverPomodoro.paused_at;
         pomodoro.breakTime = serverPomodoro.break_time;
@@ -162,21 +179,9 @@ pomodoro.syncWithServer().then(serverPomodoro => {
         }
         pomodoro.updateDisplay();
         pomodoro.updateClockOptions();
+        pomodoro.updateClockBackground();
     }
 });
-
-const clock = document.getElementById('clock');
-function updateClockBackground() {
-    if (pomodoro.breakTime) {
-        clock.classList.remove('pomodoro-background');
-        clock.classList.add('break-background');
-    } else {
-        clock.classList.remove('break-background');
-        clock.classList.add('pomodoro-background');
-    }
-}
-
-updateClockBackground();
 
 const pomodoroSettingsButton = document.getElementById('pomodoro-settings-button');
 const pomodoroSettingsMenu = document.getElementById('pomodoro-settings-menu');

@@ -243,7 +243,7 @@ def api_pomodoro_initialize(bypass_verification=False):
 
     session["pomodoro"] = {
         "start_time": 0,
-        "session": 0,
+        "session_duration": 0,
         "remaining_duration": 0,
         "paused": True,
         "paused_at": 0,
@@ -269,6 +269,7 @@ def api_pomodoro_start():
         paused = False,
         _exists = True,
     )
+    # print(f'Duration: {session["pomodoro"]["session_duration"]}')
     return jsonify(session["pomodoro"])
 
 @app.route("/api/clock/pomodoro/stop")
@@ -279,8 +280,6 @@ def api_pomodoro_stop():
     session["pomodoro"] = update_dictionary(
         session["pomodoro"],
         paused = True,
-        start_time = int(request.args.get("start_time")),
-        session_duration = int(request.args.get("session_duration")),
         paused_at = int(request.args.get("paused_at")),
         remaining_duration = int(request.args.get("remaining_duration")),
     )
@@ -292,19 +291,23 @@ def api_switch_session():
         return redirect(url_for("clock"))
     
     break_time = True if request.args.get("break_time") == "true" else False,
-    session_counter = None
-    break_counter = None
+    session_counter = session["pomodoro"]["session_counter"]
+    break_counter = session["pomodoro"]["break_counter"]
+    break_time = True if request.args.get("break_time") == "true" else False
     if break_time:
-        session_counter = session["pomodoro"]["session_counter"] + 1
+        session_counter += 1
     else:
-        break_counter = session["pomodoro"]["break_counter"] + 1
+        break_counter += 1
     session["pomodoro"] = update_dictionary(
         session["pomodoro"],
-        break_time = True if request.args.get("break_time") == "true" else False,
+        start_time = int(request.args.get("start_time")),
+        session_duration = int(request.args.get("session_duration")),
+        break_time = break_time,
         session_counter = session_counter,
         break_counter = break_counter,
     )
-
+    print(f'SESSION: {session["pomodoro"]["session_counter"]}!!!!!!!!!!!')
+    print(f'BREAK: {session["pomodoro"]["break_counter"]}!!!!!!!!!!!')
     return jsonify(True)
 
 @app.route("/api/clock/pomodoro/remaining_duration")
