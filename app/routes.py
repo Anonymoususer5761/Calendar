@@ -266,7 +266,6 @@ def api_pomodoro_start():
         session["pomodoro"],
         start_time = int(request.args.get("start_time")),
         session_duration = int(request.args.get("session_duration")),
-        remaining_duratino = int(request.args.get("remaining_duration")),
         paused = False,
         _exists = True,
     )
@@ -293,6 +292,8 @@ def api_switch_session():
         return redirect(url_for("clock"))
     
     break_time = True if request.args.get("break_time") == "true" else False,
+    session_counter = None
+    break_counter = None
     if break_time:
         session_counter = session["pomodoro"]["session_counter"] + 1
     else:
@@ -318,7 +319,7 @@ def api_pomodoro_remaining_duration(bypass_verification=False):
         session["pomodoro"],
         remaining_duration = remaining_duration,
     )
-    return jsonify(session["pomodoro"]["elapsed_time"])
+    return jsonify(session["pomodoro"]["remaining_duration"])
 
 @app.route("/api/clock/pomodoro/")
 def api_pomodoro():
@@ -326,7 +327,7 @@ def api_pomodoro():
         return redirect(url_for("clock"))
     
     if not session.get("pomodoro"):
-        return jsonify(False)
+        api_pomodoro_initialize(bypass_verification=True)
     if not session["pomodoro"]["paused"]:
         api_pomodoro_remaining_duration(bypass_verification=True)
     pomodoro = session["pomodoro"]
