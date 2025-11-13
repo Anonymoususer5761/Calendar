@@ -5,7 +5,7 @@ from flask_login import UserMixin, login_user
 from werkzeug.security import generate_password_hash, check_password_hash
 
 default_settings = {
-    "color-palette": 1,
+    "color_mode": "light_mode",
     "region": "None",
 }
 
@@ -127,11 +127,12 @@ def register_user(form):
             )
 
             user_id = cursor.lastrowid
-            for setting_id in range(1, len(default_settings) + 1):
+            for setting, option in default_settings.items():
                 db.execute(
-                    "INSERT INTO settings (setting_id, user_id) VALUES (?, ?)", (
-                        setting_id,
+                    "INSERT INTO settings (setting_id, user_id, option_id) VALUES ((SELECT id FROM settings_name WHERE setting = ?), ?, (SELECT id FROM settings_options WHERE option = ?))", (
+                        setting,
                         user_id,
+                        option,
                     )
                 )
 

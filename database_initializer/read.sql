@@ -13,6 +13,14 @@ CREATE TABLE IF NOT EXISTS "calendar" (
 CREATE INDEX IF NOT EXISTS "calendar_index" ON "calendar" (
     "id", "date" 
 );
+
+CREATE TABLE IF NOT EXISTS "webpages" (
+        "id" INTEGER,
+        "webpage" TEXT NOT NULL,
+        "route" TEXT NOT NULL,
+        "decorators" TEXT NOT NULL
+)
+
 CREATE TABLE IF NOT EXISTS "users" (
     "id" INTEGER,
     "username" TEXT NOT NULL,
@@ -20,6 +28,7 @@ CREATE TABLE IF NOT EXISTS "users" (
     "password_hash" TEXT NOT NULL,
     PRIMARY KEY ("id")
 );
+
 CREATE INDEX IF NOT EXISTS "user_index" ON "users" (
     "id", "username", "email"
 );
@@ -32,8 +41,7 @@ CREATE TABLE IF NOT EXISTS "settings_options" (
         "id"            INTEGER,
         "setting_id"    INTEGER NOT NULL,
         "option"        TEXT NOT NULL,
-        PRIMARY KEY("id")
-        UNIQUE("setting_id", "option"),
+        PRIMARY KEY("id", "setting_id"),
         FOREIGN KEY("setting_id") REFERENCES "settings_name"("id")
 );
 CREATE TABLE IF NOT EXISTS "settings" (
