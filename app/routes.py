@@ -56,16 +56,6 @@ def pomodoro():
     return render_template("pomodoro.html", form=form)
 
 
-@app.route("/settings", methods=["POST", "GET"])
-def settings():
-    settings = SettingsForm()
-
-    if settings.validate_on_submit():
-        current_user.set_individual_option(settings)
-
-    return render_template("settings.html", settings=settings)
-
-
 @app.route("/register", methods=["GET", "POST"])
 def register():
     form = RegistrationForm()

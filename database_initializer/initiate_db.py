@@ -24,7 +24,6 @@ def main() -> int:
         sys.exit(1)
 
     fill_calendar_table(db)
-    fill_settings_table(db)
     fill_days_table(db)
     import_csv_data(db)
 
@@ -65,18 +64,6 @@ def fill_calendar_table(db: sqlite3.Connection | sqlite3.Cursor) -> None:
         date_var = date_var + timedelta(days=1)
 
     db.commit()
-
-
-def fill_settings_table(db: sqlite3.Connection | sqlite3.Cursor) -> None:
-    for setting_id, (setting, options) in enumerate(settings_and_options.items(), start=1):
-        db.execute("INSERT INTO settings_name (id, setting) VALUES (?, ?)", (setting_id, setting,))
-        option_id = 1
-        for option in options:
-            db.execute("INSERT INTO settings_options (id, setting_id, option) VALUES (?, ?, ?)", (option_id, setting_id, option,))
-            option_id += 1
-
-    db.commit()
-
 
 def fill_days_table(db: sqlite3.Connection | sqlite3.Cursor) -> None:
     for day in days:
