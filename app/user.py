@@ -7,6 +7,10 @@ from werkzeug.security import generate_password_hash, check_password_hash
 default_settings = {
     "color_mode": "light_mode",
     "region": "None",
+    "session_duration": 25,
+    "short_break": 5,
+    "long_break": 15,
+    "long_break_interval": 4
 }
 
 class User(UserMixin):

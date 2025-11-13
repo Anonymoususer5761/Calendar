@@ -14,13 +14,6 @@ CREATE INDEX IF NOT EXISTS "calendar_index" ON "calendar" (
     "id", "date" 
 );
 
-CREATE TABLE IF NOT EXISTS "webpages" (
-        "id" INTEGER,
-        "webpage" TEXT NOT NULL,
-        "route" TEXT NOT NULL,
-        "decorators" TEXT NOT NULL
-)
-
 CREATE TABLE IF NOT EXISTS "users" (
     "id" INTEGER,
     "username" TEXT NOT NULL,
