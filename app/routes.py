@@ -50,7 +50,7 @@ def stopwatch():
     return render_template("stopwatch.html")
 
 
-@app.route("/clock/pomodoro")
+@app.route("/clock/pomodoro", methods=["GET", "POST"])
 def pomodoro():
     form = PomodoroSettingsForm()
     return render_template("pomodoro.html", form=form)
@@ -61,7 +61,7 @@ def settings():
     settings = SettingsForm()
 
     if settings.validate_on_submit():
-        current_user.set_user_settings(settings)
+        current_user.set_individual_option(settings)
 
     return render_template("settings.html", settings=settings)
 

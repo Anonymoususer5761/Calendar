@@ -7,7 +7,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 default_settings = {
     "color_mode": "light_mode",
     "region": "None",
-    "session_duration": 25,
+    "pomodoro_duration": 25,
     "short_break": 5,
     "long_break": 15,
     "long_break_interval": 4
@@ -64,7 +64,45 @@ class User(UserMixin):
                             self.id
                         )
                     )
-                db.commit()
+            db.commit()
+        finally:
+            db.close()
+
+        return True
+    
+    def set_individual_option(self, settings):
+        db = get_db()
+        try:
+            for setting in settings:
+                if setting.id != "submit" and setting.id != "csrf_token":
+                    last_option_id = db.execute(
+                        """
+                        SELECT id
+                        FROM settings_options
+                        WHERE
+                        user_id = ? 
+                            AND 
+                        setting_id = (SELECT id FROM settings_name WHERE setting = ?)
+                        """, (
+                            int(self.id),
+                            setting.label,
+                        )
+                    )
+
+                    db.execute(
+                        """
+                        UPDATE settings_options
+                        SET option = ?
+                        WHERE settings_id = (SELECT id FROM settings_name WHERE setting = ?)
+                            AND
+                        user_id = ?
+                        """, (
+                        int(setting.data),
+                        setting.label,
+                        self.id,
+                        )
+                    )
+            db.commit()
         finally:
             db.close()
 

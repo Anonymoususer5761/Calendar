@@ -37,6 +37,17 @@ CREATE TABLE IF NOT EXISTS "settings_options" (
         PRIMARY KEY("id", "setting_id"),
         FOREIGN KEY("setting_id") REFERENCES "settings_name"("id")
 );
+CREATE TABLE IF NOT EXISTS "settings_custom_options" (
+        "id" INTEGER,
+        "setting_id" INTEGER NOT NULL,
+        "option_id" INTEGER NOT NULL,
+        "user_id" INTEGER NOT NULL,
+        "value" TEXT,
+        PRIMARY KEY("id", "setting_id", "option_id", "user_id"),
+        FOREIGN KEY ("setting_id") REFERENCES "settings_name"("id"),
+        FOREIGN KEY ("option_id") REFERENCES "settings_options"("id"),
+        FOREIGN KEY ("user_id") REFERENCES "users"("id")
+)
 CREATE TABLE IF NOT EXISTS "settings" (
         "setting_id"    INTEGER,
         "option_id"     INTEGER DEFAULT 1,

@@ -35,7 +35,8 @@ class SettingsForm(FlaskForm):
 
 
 class PomodoroSettingsForm(FlaskForm):
-    pomodoro_duration = IntegerField("Session Duration", validators=[DataRequired(), NumberRange(min=1)], default=25)
+    pomodoro_duration = IntegerField("Pomodoro Duration", validators=[DataRequired(), NumberRange(min=1)], default=25)
     short_break = IntegerField("Short Break", validators=[DataRequired(), NumberRange(min=1)], default=5)
     long_break = IntegerField("Long Break", validators=[DataRequired(), NumberRange(min=1)], default=15)
-    long_break_interval = IntegerField("Long Break Interval", validators=[DataRequired(), NumberRange(min=0)], default=4)
+    long_break_interval = IntegerField("Long Break Interval", validators=[DataRequired(), NumberRange(min=1)], default=4)
+    submit = SubmitField("Save")

@@ -8,8 +8,8 @@
             "None",
             "India"
         ],
-        "session_duration": [
-            25
+        "pomodoro_duration": [
+            "custom"
         ],
         "short_break": [
             5
