@@ -136,9 +136,9 @@ async function finishCalendar() {
         }
     }
     async function showTooltip(event, html) {
-        await hideTooltip()
+        await hideTooltip();
         let div = document.createElement('div');
-        div.className = 'calendar-td-data-tooltip';
+        div.className = 'calendar-td-data-tooltip card border-info mb-3';
         event.target.appendChild(div);
         event.target._divRef = div;
         tooltipExists = true;
@@ -150,7 +150,7 @@ async function finishCalendar() {
         cell.addEventListener('click', (event) => {
             document.location.href = `/dates?id=${event.target.getAttribute('id')}`;
         });
-        await getHolidays(cell).then((html) => {
+        getHolidays(cell).then((html) => {
             if (html) {
                 cell.addEventListener('mouseover', (event) => {
                     showTooltip(event, html);
