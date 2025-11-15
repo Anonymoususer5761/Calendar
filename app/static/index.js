@@ -44,6 +44,19 @@ function convertToCSSFormat(category) {
     return category;
 }
 
+function createCalendarElement(elementToCreate, extraClasses) {
+    switch(elementToCreate) {
+        case 'tr':
+            const row = document.createElement('tr');
+            row.classList.add('calendar-tr', ...(extraClasses ?? []));
+            return row;
+        case 'td':
+            const cell = document.createElement('td');
+            cell.classList.add('calendar-td', ...(extraClasses ?? []));
+            return cell;
+    }
+}
+
 async function getCalendar() {
     const additionalClasses = new Map()
     document.querySelector('caption').innerHTML = `${month.textContent} ${year.getAttribute('value')}`;
@@ -53,15 +66,25 @@ async function getCalendar() {
         }
     });
     let dates = await datesResponse.json();
-    let tableRowStart = '<tr class="calendar-tr">';
-    let tableRowEnd = '</tr>';
-    let emptyCells = '<td class="calendar-td"></td>';
-    let cellEnd = `</td>`;
-    let cell_class = 'class="calendar-td calendar-td-data"';
+    const tableBody = document.getElementById('calendar-tbody');
+
+    for (let date of dates) {
+        // If current element is the first.
+        if (date['date'] === '01') {
+            tableBody.append(createCalendarElement('tr'));
+        }
+    }
+
+    // let tableRowStart = '<tr class="calendar-tr">';
+    // let tableRowEnd = '</tr>';
+    // let emptyCells = '<td class="calendar-td"></td>';
+    // let cellEnd = `</td>`;
+    // let cell_class = 'class="calendar-td calendar-td-data"';
     let html = '';
     let dayOfWeek = 1;
     let preceedingDate = "00";
     for (let date of dates) {
+        tableBody.append(tableRow)
         if (date['date'] === "01") {
             html += tableRowStart;
         }

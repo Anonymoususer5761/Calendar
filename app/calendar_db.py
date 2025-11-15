@@ -36,7 +36,9 @@ def get_holidays():
 
 
 def get_calendar(month: int | str, year: int | str):
-    date = f"{pad_digit(year, 4)}-{pad_digit(month, 2)}-01"
+    year_pad = 4
+    month_pad = 2
+    date = f"{pad_digit(year, year_pad)}-{pad_digit(month, month_pad)}-01"
     db = get_db()
     try:
         calendar = db.execute("""
@@ -62,7 +64,7 @@ def get_calendar(month: int | str, year: int | str):
 
 def get_day_name(date_id: int) -> str:
     db = get_db()
-    name:str = db.execute("SELECT day FROM days JOIN calendar ON days.id = calendar.day_id WHERE calendar.id = ?", (date_id,)).fetchone()["day"]
+    name: str = db.execute("SELECT day FROM days JOIN calendar ON days.id = calendar.day_id WHERE calendar.id = ?", (date_id,)).fetchone()["day"]
     return name
 
 
