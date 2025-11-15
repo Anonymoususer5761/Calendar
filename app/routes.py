@@ -9,6 +9,7 @@ from flask import render_template, request, redirect, url_for, flash, jsonify, s
 from flask_login import logout_user, login_required, current_user
 
 import time
+from datetime import date
 
 milliseconds_in_second = 1000
 
@@ -19,7 +20,8 @@ def index():
     menses = get_months()
     years = get_years()
     holidays = get_holidays()
-    return render_template("index.html", menses=menses, years=years, holidays=holidays)
+    today = date.today()
+    return render_template("index.html", menses=menses, years=years, holidays=holidays, today=today)
 
 
 @app.route("/dates", methods=["GET", "POST"])

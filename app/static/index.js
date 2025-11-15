@@ -1,14 +1,39 @@
-let month = document.getElementById('menses');
-let year = document.getElementById('years');
+function removeActiveElements(itemCategory) {
+    document.querySelectorAll(`.active.${itemCategory}`).forEach(activeElement => {
+        if (activeElement.length != 0) {
+            activeElement.classList.remove('active');
+        }
+    });
+}
+document.querySelectorAll('.dropdown-item').forEach(dropdownItem => {
+    dropdownItem.addEventListener('click', (event) => {
+        let menuType = event.target.classList.contains('years') ? 'years' : 'months'
+        removeActiveElements(menuType);
+        event.target.classList.add('active');
+    });
+});
+
+document.addEventListener('shown.bs.dropdown', (event) => {
+    const dropdownMenu = event.target.parentElement.querySelector('.dropdown-menu');
+
+    const activeItem = dropdownMenu.querySelector('.active')
+
+    if (activeItem) {
+        activeItem.scrollIntoView(
+            {
+                block: 'center'
+            }
+        );
+    }
+})
 
 let CurrentDate = new Date();
 let currentDay = CurrentDate.getDate();
 let currentMonth = CurrentDate.getMonth() + 1;
 let currentYear = CurrentDate.getFullYear();
 
-month.options[currentMonth - 1].setAttribute('selected', 'selected');
-year.options[currentYear - 1970].setAttribute('selected', 'selected');
-
+let month = document.getElementById('current-month');
+let year = document.getElementById('current-year');
 
 function convertToCSSFormat(category) {
     if (category === "(G)") {
@@ -21,8 +46,8 @@ function convertToCSSFormat(category) {
 
 async function getCalendar() {
     const additionalClasses = new Map()
-    document.querySelector('caption').innerHTML = `${month.options[month.selectedIndex].text} ${year.value}`;
-    let datesResponse = await fetch(`/api/index/dates?month=${month.value}&year=${year.value}`, {
+    document.querySelector('caption').innerHTML = `${month.textContent} ${year.getAttribute('value')}`;
+    let datesResponse = await fetch(`/api/index/dates?month=${month.getAttribute('value')}&year=${year.getAttribute('value')}`, {
         headers: {
             'Request-Source': 'JS-AJAX',
         }
@@ -87,7 +112,7 @@ async function getCalendar() {
 
     document.getElementById('calendar-tbody').innerHTML = html;
 
-    for (additionalClass of additionalClasses.entries()) {
+    for (let additionalClass of additionalClasses.entries()) {
         document.getElementById(additionalClass[0]).classList.add(convertToCSSFormat(additionalClass[1]))
     }
 }

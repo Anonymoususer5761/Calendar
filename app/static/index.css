@@ -2,3 +2,7 @@
     max-height: 175px;
     overflow-y: scroll;
 }
+
+.dropdown-item {
+    cursor: pointer;
+}

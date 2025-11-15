@@ -6,24 +6,24 @@ from datetime import datetime
 
 def get_years():
     db = get_db()
-    years = db.execute("SELECT DISTINCT substr(date(unix_time, 'unixepoch'), 0, 5) AS year FROM calendar").fetchall()
+    years = db.execute("SELECT DISTINCT CAST(strftime('%Y', unix_time, 'unixepoch') AS INTEGER) AS year FROM calendar").fetchall()
     db.close()
     return years
 
 def get_months():
     months = {
-        "1": "January",
-        "2": "February",
-        "3": "March",
-        "4": "April",
-        "5": "May",
-        "6": "June",
-        "7": "July",
-        "8": "August",
-        "9": "September",
-        "10": "October",
-        "11": "November",
-        "12": "December"
+        1: "January",
+        2: "February",
+        3: "March",
+        4: "April",
+        5: "May",
+        6: "June",
+        7: "July",
+        8: "August",
+        9: "September",
+        10: "October",
+        11: "November",
+        12: "December"
     }
     return months
 

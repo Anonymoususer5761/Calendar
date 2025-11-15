@@ -16,7 +16,11 @@
 
                     <ul class="dropdown-menu years-menu">
                         {% for year in years %}
-                            <li><a class="dropdown-item" value="{{ year.year }}">{{ year.year }}</a></li>
+                            {% if today.year == year.year %}
+                                <li><a id="current-year" class="dropdown-item years active" value="{{ year.year }}">{{ year.year }}</a></li>
+                            {% else %}
+                                <li><a class="dropdown-item years" value="{{ year.year }}">{{ year.year }}</a></li>
+                            {% endif %}
                         {% endfor %}
                     </ul>
                 </div>
@@ -24,13 +28,17 @@
 
             <div class="col">
                 <div class="dropdown">
-                    <a class="btn btn-outline-secondary  dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="btn btn-outline-secondary dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Month
                     </a>
 
                     <ul class="dropdown-menu months-menu">
                         {% for (month_id, month) in menses.items() %}
-                            <li><a class="dropdown-item" value="{{ month_id }}">{{ month }}</a></li>
+                            {% if today.month == month_id %}
+                                <li><a id="current-month" class="dropdown-item months active" value="{{ month_id }}" text="{{ month }}">{{ month }}</a></li>
+                            {% else %}
+                                <li><a class="dropdown-item months" value="{{ month_id }}">{{ month }}</a></li>
+                            {% endif %}
                         {% endfor %}
                     </ul>
                 </div>
