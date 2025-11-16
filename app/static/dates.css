@@ -1,0 +1,35 @@
+.day {
+    fill: url(#day-fill);
+    stroke: url(#day-stroke);
+    stroke-width: 2px;
+}
+
+.hours {
+    stroke: rgb(66, 33, 66);
+    stroke-width: 2px;
+    opacity: 0.1
+}
+
+#day-timeline-svg {
+    width: 100%;
+    overflow-x: scroll;
+}
+
+/* AI Usage Disclaimer: User AI to write media queries. */
+#day-name {
+    font-size: 24px;
+}
+@media (max-width: 288px) { #day-name { font-size: 12px; } }
+@media (max-width: 576px) { #day-name { font-size: 14px; } }
+@media (max-width: 768px) { #day-name { font-size: 16px; } }
+@media (max-width: 992px) { #day-name { font-size: 18px; } }
+
+.hours-label {
+    font-size: 18px;
+    fill: black;
+    font: sans-serif;
+}
+@media (max-width: 288px) { .hours-label { font-size: 8px; } }
+@media (max-width: 576px) { .hours-label { font-size: 12px; } }
+@media (max-width: 768px) { .hours-label { font-size: 14px; } }
+@media (max-width: 992px) { .hours-label { font-size: 16px; } }

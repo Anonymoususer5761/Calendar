@@ -3,7 +3,6 @@ function pad(singleDigit) {
     return singleDigit;
 }
 
-
 function setColorMenuColor() {
     document.getElementById('event-form-color-picker').setAttribute('fill', document.getElementById('event-color').value);
 }
@@ -27,7 +26,7 @@ function moveDayLine() {
     svg.setAttribute("y2", y_axis);
     svg.removeAttribute("display");
 }
-selectedDate = document.querySelector('h1').innerHTML;
+selectedDate = document.querySelector('h1').textContent;
 let today = new Date()
 let todayDate = today.toISOString().split('T')[0]
 if (todayDate === selectedDate) {

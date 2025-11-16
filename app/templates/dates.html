@@ -5,87 +5,102 @@
 {% endblock %}
 
 {% block main %}
-    <h1>{{ date }}</h1>
-    <button id="add-event-button">Add Event</button>
-
-    <div id="day-timeline-div">
-        <svg id="day-timeline-svg" width="1500" height="2800" viewBox="0 0 1500 2700">
-
-            <defs>
-                <linearGradient id="day-fill" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="10%" style="stop-color: rgb(236, 236, 236); stop-opacity: 0.1"></stop>
-                    <stop offset="35%" style="stop-color: rgb(0, 0, 150); stop-opacity: 0.05"></stop>
-                    <stop offset="100%" style="stop-color: rgb(255, 255, 255); stop-opacity: 0.15"></stop>
-
-                </linearGradient>
-                <linearGradient id="day-stroke" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="35%" style="stop-color: rgb(12, 25, 100); stop-opacity: 0.65"></stop>
-                    <stop offset="100%" style="stop-color: rgb(0, 0, 0); stop-opacity: 0.85"></stop>
-                </linearGradient>
-            </defs>
-            <text id="day-name" x="750" y="50" dominant-baseline="top" text-anchor="middle" font-size="40" fill="black">{{ day_name }}</text>
-
-            <polyline class="day" points="1000,100 75,100 75,2600 1000,2600"/>
-
-            <line class="hours" x1="75" y1=100 x2="975" y2=100></line>
-            <text x="20" y="109" font-size="18" font="sans-serif" fill="black">23:00</text>
-            <text id="yesterday" x="0" y="159" font-size="14" font="sans-serif" fill="black"></text>
-            <line class="hours" x1="75" y1=200 x2="975" y2=200></line>
-            <text x="20" y="209" font-size="18" font="sans-serif" fill="black">00:00</text>
-            <line class="hours" x1="75" y1=300 x2="975" y2=300></line>
-            <text x="20" y="309" font-size="18" font="sans-serif" fill="black">01:00</text>
-            <line class="hours" x1="75" y1=400 x2="975" y2=400></line>
-            <text x="20" y="409" font-size="18" font="sans-serif" fill="black">02:00</text>
-            <line class="hours" x1="75" y1=500 x2="975" y2=500></line>
-            <text x="20" y="509" font-size="18" font="sans-serif" fill="black">03:00</text>
-            <line class="hours" x1="75" y1=600 x2="975" y2=600></line>
-            <text x="20" y="609" font-size="18" font="sans-serif" fill="black">04:00</text>
-            <line class="hours" x1="75" y1=700 x2="975" y2=700></line>
-            <text x="20" y="709" font-size="18" font="sans-serif" fill="black">05:00</text>
-            <line class="hours" x1="75" y1=800 x2="975" y2=800></line>
-            <text x="20" y="809" font-size="18" font="sans-serif" fill="black">06:00</text>
-            <line class="hours" x1="75" y1=900 x2="975" y2=900></line>
-            <text x="20" y="909" font-size="18" font="sans-serif" fill="black">07:00</text>
-            <line class="hours" x1="75" y1=1000 x2="975" y2=1000></line>
-            <text x="20" y="1009" font-size="18" font="sans-serif" fill="black">08:00</text>
-            <line class="hours" x1="75" y1=1100 x2="975" y2=1100></line>
-            <text x="20" y="1109" font-size="18" font="sans-serif" fill="black">09:00</text>
-            <line class="hours" x1="75" y1=1200 x2="975" y2=1200></line>
-            <text x="20" y="1209" font-size="18" font="sans-serif" fill="black">10:00</text>
-            <line class="hours" x1="75" y1=1300 x2="975" y2=1300></line>
-            <text x="20" y="1309" font-size="18" font="sans-serif" fill="black">11:00</text>
-            <line class="hours" x1="75" y1=1400 x2="975" y2=1400></line>
-            <text x="20" y="1409" font-size="18" font="sans-serif" fill="black">12:00</text>
-            <line class="hours" x1="75" y1=1500 x2="975" y2=1500></line>
-            <text x="20" y="1509" font-size="18" font="sans-serif" fill="black">13:00</text>
-            <line class="hours" x1="75" y1=1600 x2="975" y2=1600></line>
-            <text x="20" y="1609" font-size="18" font="sans-serif" fill="black">14:00</text>
-            <line class="hours" x1="75" y1=1700 x2="975" y2=1700></line>
-            <text x="20" y="1709" font-size="18" font="sans-serif" fill="black">15:00</text>
-            <line class="hours" x1="75" y1=1800 x2="975" y2=1800></line>
-            <text x="20" y="1809" font-size="18" font="sans-serif" fill="black">16:00</text>
-            <line class="hours" x1="75" y1=1900 x2="975" y2=1900></line>
-            <text x="20" y="1909" font-size="18" font="sans-serif" fill="black">17:00</text>
-            <line class="hours" x1="75" y1=2000 x2="975" y2=2000></line>
-            <text x="20" y="2009" font-size="18" font="sans-serif" fill="black">18:00</text>
-            <line class="hours" x1="75" y1=2100 x2="975" y2=2100></line>
-            <text x="20" y="2109" font-size="18" font="sans-serif" fill="black">19:00</text>
-            <line class="hours" x1="75" y1=2200 x2="975" y2=2200></line>
-            <text x="20" y="2209" font-size="18" font="sans-serif" fill="black">20:00</text>
-            <line class="hours" x1="75" y1=2300 x2="975" y2=2300></line>
-            <text x="20" y="2309" font-size="18" font="sans-serif" fill="black">21:00</text>
-            <line class="hours" x1="75" y1=2400 x2="975" y2=2400></line>
-            <text x="20" y="2409" font-size="18" font="sans-serif" fill="black">22:00</text>
-            <line class="hours" x1="75" y1=2500 x2="975" y2=2500></line>
-            <text x="20" y="2509" font-size="18" font="sans-serif" fill="black">23:00</text>
-            <line class="hours" x1="75" y1=2600 x2="975" y2=2600></line>
-            <text x="20" y="2609" font-size="18" font="sans-serif" fill="black">00:00</text>
-
-            <line id="now" x1="75" x2="975" display="none"/>
-
-            {{ event_polylines | safe }}
-        </svg>
+    <div class="container sm"></div>
+        <div class="row">
+            <div class="col-3 sm gx-5 mx-2 my-2">
+                <h1 class="text-secondary">{{ date }}</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-2 gx-5">
+                <button id="add-event-button" class="btn btn-outline-primary">Add Event</button>
+            </div>
+        </div>
     </div>
+    
+    <div class="container">
+        <div class="row">
+            <div id="day-timeline-div" class="col">
+                <svg id="day-timeline-svg" height="2750" width="100%">
+
+                    <defs>
+                        <linearGradient id="day-fill" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="10%" style="stop-color: rgb(236, 236, 236); stop-opacity: 0.1"></stop>
+                            <stop offset="35%" style="stop-color: rgb(0, 0, 150); stop-opacity: 0.05"></stop>
+                            <stop offset="100%" style="stop-color: rgb(255, 255, 255); stop-opacity: 0.15"></stop>
+
+                        </linearGradient>
+                        <linearGradient id="day-stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="35%" style="stop-color: rgb(12, 25, 100); stop-opacity: 0.65"></stop>
+                            <stop offset="100%" style="stop-color: rgb(0, 0, 0); stop-opacity: 0.85"></stop>
+                        </linearGradient>
+                    </defs>
+                    <text id="day-name" x="70%" y="3%" text-anchor="middle" fill="black">{{ day_name }}</text>
+
+                    <polyline class="day" points="1000,100 75,100 75,2600 1000,2600"/>
+
+                    <line class="hours" x1="75" y1=100 x2="975" y2=100></line>
+                    <text class="hours-label" x="20" y="109" >23:00</text>
+                    <text id="yesterday" x="0" y="159"></text>
+                    <line class="hours" x1="75" y1=200 x2="975" y2=200></line>
+                    <text class="hours-label" x="20" y="209" >00:00</text>
+                    <line class="hours" x1="75" y1=300 x2="975" y2=300></line>
+                    <text class="hours-label" x="20" y="309" >01:00</text>
+                    <line class="hours" x1="75" y1=400 x2="975" y2=400></line>
+                    <text class="hours-label" x="20" y="409" >02:00</text>
+                    <line class="hours" x1="75" y1=500 x2="975" y2=500></line>
+                    <text class="hours-label" x="20" y="509" >03:00</text>
+                    <line class="hours" x1="75" y1=600 x2="975" y2=600></line>
+                    <text class="hours-label" x="20" y="609" >04:00</text>
+                    <line class="hours" x1="75" y1=700 x2="975" y2=700></line>
+                    <text class="hours-label" x="20" y="709" >05:00</text>
+                    <line class="hours" x1="75" y1=800 x2="975" y2=800></line>
+                    <text class="hours-label" x="20" y="809" >06:00</text>
+                    <line class="hours" x1="75" y1=900 x2="975" y2=900></line>
+                    <text class="hours-label" x="20" y="909" >07:00</text>
+                    <line class="hours" x1="75" y1=1000 x2="975" y2=1000></line>
+                    <text class="hours-label" x="20" y="1009" >08:00</text>
+                    <line class="hours" x1="75" y1=1100 x2="975" y2=1100></line>
+                    <text class="hours-label" x="20" y="1109" >09:00</text>
+                    <line class="hours" x1="75" y1=1200 x2="975" y2=1200></line>
+                    <text class="hours-label" x="20" y="1209" >10:00</text>
+                    <line class="hours" x1="75" y1=1300 x2="975" y2=1300></line>
+                    <text class="hours-label" x="20" y="1309" >11:00</text>
+                    <line class="hours" x1="75" y1=1400 x2="975" y2=1400></line>
+                    <text class="hours-label" x="20" y="1409" >12:00</text>
+                    <line class="hours" x1="75" y1=1500 x2="975" y2=1500></line>
+                    <text class="hours-label" x="20" y="1509" >13:00</text>
+                    <line class="hours" x1="75" y1=1600 x2="975" y2=1600></line>
+                    <text class="hours-label" x="20" y="1609" >14:00</text>
+                    <line class="hours" x1="75" y1=1700 x2="975" y2=1700></line>
+                    <text class="hours-label" x="20" y="1709" >15:00</text>
+                    <line class="hours" x1="75" y1=1800 x2="975" y2=1800></line>
+                    <text class="hours-label" x="20" y="1809" >16:00</text>
+                    <line class="hours" x1="75" y1=1900 x2="975" y2=1900></line>
+                    <text class="hours-label" x="20" y="1909" >17:00</text>
+                    <line class="hours" x1="75" y1=2000 x2="975" y2=2000></line>
+                    <text class="hours-label" x="20" y="2009" >18:00</text>
+                    <line class="hours" x1="75" y1=2100 x2="975" y2=2100></line>
+                    <text class="hours-label" x="20" y="2109" >19:00</text>
+                    <line class="hours" x1="75" y1=2200 x2="975" y2=2200></line>
+                    <text class="hours-label" x="20" y="2209" >20:00</text>
+                    <line class="hours" x1="75" y1=2300 x2="975" y2=2300></line>
+                    <text class="hours-label" x="20" y="2309" >21:00</text>
+                    <line class="hours" x1="75" y1=2400 x2="975" y2=2400></line>
+                    <text class="hours-label" x="20" y="2409" >22:00</text>
+                    <line class="hours" x1="75" y1=2500 x2="975" y2=2500></line>
+                    <text class="hours-label" x="20" y="2509" >23:00</text>
+                    <line class="hours" x1="75" y1=2600 x2="975" y2=2600></line>
+                    <text class="hours-label" x="20" y="2609" >00:00</text>
+
+                    <line id="now" x1="75" x2="975" display="none"/>
+
+                    {{ event_polylines | safe }}
+                </svg>
+            </div>
+        </div>
+    </div>
+        
 
     {% if current_user.is_authenticated %}
     <div id="add-event-div">
