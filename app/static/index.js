@@ -1,3 +1,6 @@
+const yearDropdown = document.querySelector('.year-dropdown');
+const monthDropdown = document.querySelector('.month-dropdown');
+
 function removeActiveElements(itemCategory) {
     document.querySelectorAll(`.active.${itemCategory}`).forEach(activeElement => {
         if (activeElement.length != 0) {
@@ -8,8 +11,15 @@ function removeActiveElements(itemCategory) {
 document.querySelectorAll('.dropdown-item').forEach(dropdownItem => {
     dropdownItem.addEventListener('click', (event) => {
         let menuType = event.target.classList.contains('years') ? 'years' : 'months'
+        if (menuType === 'years') {
+            yearDropdown.textContent = event.target.textContent;
+        } else {
+            monthDropdown.textContent = event.target.textContent;
+        }
         removeActiveElements(menuType);
         event.target.classList.add('active');
+        month = document.getElementById('current-month');
+        year = document.getElementById('current-year');
     });
 });
 
@@ -142,19 +152,13 @@ async function getCalendar() {
     }
 }
 
-getCalendar().then( () => {
-    // finishCalendar();
-});
-month.addEventListener('change', () => {
-    getCalendar().then( () => {
-        // finishCalendar();
+getCalendar()
+document.querySelectorAll('.dropdown-toggle').forEach(dropdown => {
+    dropdown.addEventListener('change', () => {
+        getCalendar();
     });
 });
-year.addEventListener('change', () => {
-    getCalendar().then( () => {
-        // finishCalendar();
-    });
-});
+
 
 // async function getHolidays(day) {
 //     let response = await fetch(`/api/index/holidays?id=${day.getAttribute('id')}`, {

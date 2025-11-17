@@ -10,8 +10,8 @@
         <div class="row gx-0 mx-0">
             <div class="col-sm-2">
                 <div class="dropdown">
-                    <a class="btn btn-outline-primary dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Year
+                    <a class="btn btn-outline-primary dropdown-toggle year-dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        {{ today.year }}
                     </a>
 
                     <ul class="dropdown-menu years-menu">
@@ -28,8 +28,8 @@
 
             <div class="col">
                 <div class="dropdown">
-                    <a class="btn btn-outline-primary dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Month
+                    <a class="btn btn-outline-primary dropdown-toggle month-dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        {{ today.strftime("%B") }}
                     </a>
 
                     <ul class="dropdown-menu months-menu">
