@@ -40,9 +40,9 @@ document.addEventListener('shown.bs.dropdown', (event) => {
 const daysInAWeek = 7;
 
 let CurrentDate = new Date();
-let currentDay = CurrentDate.getDate();
-let currentMonth = CurrentDate.getMonth() + 1;
-let currentYear = CurrentDate.getFullYear();
+let currentDay = String(CurrentDate.getDate());
+let currentMonth = String(CurrentDate.getMonth() + 1);
+let currentYear = String(CurrentDate.getFullYear());
 
 let month = document.getElementById('current-month');
 let year = document.getElementById('current-year');
@@ -52,6 +52,8 @@ function convertToCSSFormat(category) {
         category = 'gazetted';
     } else if (category === "(R)") {
         category = 'restricted';
+    } else {
+        category = 'none';
     }
     return category;
 }
@@ -60,12 +62,12 @@ function createCalendarElement(elementToCreate, id, extraClasses) {
     switch(elementToCreate) {
         case 'tr':
             const row = document.createElement('tr');
-            row.id = id
+            row.id = id;
             row.classList.add('calendar-tr', ...(extraClasses ?? []));
             return row;
         case 'td':
             const cell = document.createElement('td');
-            cell.id = id
+            cell.id = id;
             cell.classList.add('calendar-td', ...(extraClasses ?? []));
             return cell;
     }
@@ -116,12 +118,12 @@ async function getCalendar() {
         // Prints the date otherwise.
         if (dayOfWeek === date['day_id']) {
             let extraClasses = [];
-            if (date['date'] == currentDay && month.value == currentMonth && year.value == currentYear) {
-                extraClasses = ['calendar-td-data', convertToCSSFormat(date['category'], 'today')];
+            if (date['date'] ===  currentDay && month.getAttribute('value') === currentMonth && year.getAttribute('value') == currentYear) {
+                extraClasses = ['calendar-td-data', convertToCSSFormat(date['category']), 'today'];
             } else {
                 extraClasses = ['calendar-td-data', convertToCSSFormat(date['category'])];
             }
-            let id = toString(date['id']);
+            let id = String(date['id']);
             let cell = createCalendarElement('td', id, extraClasses);
             cell.textContent = date['date'];
             rows[rowIndex].append(cell);

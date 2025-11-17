@@ -42,7 +42,7 @@ def get_calendar(month: int | str, year: int | str):
     db = get_db()
     try:
         calendar = db.execute("""
-            SELECT (calendar.id) AS id, day_id, substr(date(unix_time, 'unixepoch'), -2, 2) AS date, holiday, category, date_id
+            SELECT (calendar.id) AS id, day_id, substr(date(unix_time, 'unixepoch'), -2, 2) AS date, holiday, category
             FROM calendar
             LEFT JOIN indian_holidays
             ON calendar.id = indian_holidays.date_id
@@ -58,7 +58,7 @@ def get_calendar(month: int | str, year: int | str):
     finally:
         db.close()
 
-    dict_calendar = [{"id": date["id"], "day_id": date["day_id"], "date": date["date"], "holiday": date["holiday"], "category": date["category"], "date_id": date["date_id"]} for date in calendar]
+    dict_calendar = [{"id": date["id"], "day_id": date["day_id"], "date": date["date"], "holiday": date["holiday"], "category": date["category"]} for date in calendar]
     return dict_calendar
 
 
