@@ -6,4 +6,5 @@ flask_session/
 *__pycache__/
 *.vscode
 venv/
-*bootstrap*
+node_modules/
+main.min*
