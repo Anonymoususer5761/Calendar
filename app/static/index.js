@@ -13,13 +13,14 @@ document.querySelectorAll('.dropdown-item').forEach(dropdownItem => {
         let menuType = event.target.classList.contains('years') ? 'years' : 'months'
         if (menuType === 'years') {
             yearDropdown.textContent = event.target.textContent;
+            year = event.target;
         } else {
             monthDropdown.textContent = event.target.textContent;
+            month = event.target;
         }
         removeActiveElements(menuType);
         event.target.classList.add('active');
-        month = document.getElementById('current-month');
-        year = document.getElementById('current-year');
+        getCalendar();
     });
 });
 
@@ -62,7 +63,6 @@ function createCalendarElement(elementToCreate, id, extraClasses) {
     switch(elementToCreate) {
         case 'tr':
             const row = document.createElement('tr');
-            row.id = id;
             row.classList.add('calendar-tr', ...(extraClasses ?? []));
             return row;
         case 'td':
@@ -74,7 +74,8 @@ function createCalendarElement(elementToCreate, id, extraClasses) {
 }
 
 async function getCalendar() {
-    const additionalClasses = new Map()
+    const additionalClasses = new Map();
+
     document.querySelector('caption').innerHTML = `${month.textContent} ${year.getAttribute('value')}`;
     let datesResponse = await fetch(`/api/index/dates?month=${month.getAttribute('value')}&year=${year.getAttribute('value')}`, {
         headers: {
@@ -84,6 +85,7 @@ async function getCalendar() {
     let dates = await datesResponse.json();
 
     const tableBody = document.getElementById('calendar-tbody');
+    tableBody.innerHTML = '';
 
     let dayOfWeek = 1;
     let preceedingDate = '00';
@@ -136,7 +138,7 @@ async function getCalendar() {
             }
         }
 
-        if (dayOfWeek <= daysInAWeek) {
+        if (dayOfWeek < daysInAWeek) {
             dayOfWeek++;
         } else {
             rows.push(createCalendarElement('tr'));

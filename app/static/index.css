@@ -6,3 +6,7 @@
 .dropdown-item {
     cursor: pointer;
 }
+
+.calendar-td-data:hover {
+    background-color: rgb(214, 236, 255);
+}
