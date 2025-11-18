@@ -50,9 +50,9 @@ let year = document.getElementById('current-year');
 
 function convertToCSSFormat(category) {
     if (category === "(G)") {
-        category = 'gazetted';
+        category = 'bg-gazetted';
     } else if (category === "(R)") {
-        category = 'restricted';
+        category = 'bg-restricted';
     } else {
         category = 'none';
     }
@@ -121,7 +121,7 @@ async function getCalendar() {
         if (dayOfWeek === date['day_id']) {
             let extraClasses = [];
             if (date['date'] ===  currentDay && month.getAttribute('value') === currentMonth && year.getAttribute('value') == currentYear) {
-                extraClasses = ['calendar-td-data', convertToCSSFormat(date['category']), 'today'];
+                extraClasses = ['calendar-td-data', convertToCSSFormat(date['category']), 'today', 'bg-today'];
             } else {
                 extraClasses = ['calendar-td-data', convertToCSSFormat(date['category'])];
             }

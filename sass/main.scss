@@ -9,6 +9,9 @@ $custom-theme-colors: (
     "quaternary": #B9F4CD,
     "quinary": #E7660A,
     "background": #fafafa,
+    "gazetted": crimson,
+    "restricted": yellowgreen,
+    "today": #00b9f7,
 );
 
 $theme-colors: map-merge($custom-theme-colors, $theme-colors);
