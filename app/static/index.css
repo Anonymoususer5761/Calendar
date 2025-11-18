@@ -19,3 +19,11 @@
 #calendar-thead {
     border-bottom: 2px #000;
 }
+
+.gazetted {
+    background-color: crimson;
+}
+
+.restricted {
+    background-color: yellowgreen;
+}
