@@ -7,6 +7,15 @@
     cursor: pointer;
 }
 
+.calendar-td {
+    width: 14.2857%;
+}
+
 .calendar-td-data:hover {
-    background-color: rgb(214, 236, 255);
+    background-color: rgb(102, 102, 105);
+    color: aliceblue;
+}
+
+#calendar-thead {
+    border-bottom: 2px #000;
 }
