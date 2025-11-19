@@ -7,6 +7,9 @@
     cursor: pointer;
 }
 
+.calendar-th {
+    width: 14.2857%;
+}
 .calendar-td {
     width: 14.2857%;
 }

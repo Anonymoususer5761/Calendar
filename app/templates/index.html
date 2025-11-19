@@ -5,61 +5,56 @@
 {% endblock %}
 
 {% block main %}
-    <div class="container mx-0 my-0 gx-3 gy-3">
-        
-        <div class="row gx-0 mx-0">
-            <div class="col-sm-2">
-                <div class="dropdown">
-                    <a class="btn btn-outline-primary dropdown-toggle year-dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        {{ today.year }}
-                    </a>
+    <div class="d-flex me-1">
+        <div class="dropdown mx-2 px-2 gx-2">
+            <a class="btn btn-sm btn-quaternary dropdown-toggle rounded-pill year-dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                {{ today.year }}
+            </a>
 
-                    <ul class="dropdown-menu years-menu">
-                        {% for year in years %}
-                            {% if today.year == year.year %}
-                                <li><a id="current-year" class="dropdown-item years active" value="{{ year.year }}">{{ year.year }}</a></li>
-                            {% else %}
-                                <li><a class="dropdown-item years" value="{{ year.year }}">{{ year.year }}</a></li>
-                            {% endif %}
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
-
-            <div class="col">
-                <div class="dropdown">
-                    <a class="btn btn-outline-primary dropdown-toggle month-dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        {{ today.strftime("%B") }}
-                    </a>
-
-                    <ul class="dropdown-menu months-menu">
-                        {% for (month_id, month) in menses.items() %}
-                            {% if today.month == month_id %}
-                                <li><a id="current-month" class="dropdown-item months active" value="{{ month_id }}" text="{{ month }}">{{ month }}</a></li>
-                            {% else %}
-                                <li><a class="dropdown-item months" value="{{ month_id }}">{{ month }}</a></li>
-                            {% endif %}
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
+            <ul class="dropdown-menu years-menu">
+                {% for year in years %}
+                    {% if today.year == year.year %}
+                        <li><a id="current-year" class="dropdown-item years active" value="{{ year.year }}">{{ year.year }}</a></li>
+                    {% else %}
+                        <li><a class="dropdown-item years" value="{{ year.year }}">{{ year.year }}</a></li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
         </div>
 
+        <div class="dropdown me-1">
+            <a class="btn btn-sm btn-quaternary dropdown-toggle rounded-pill month-dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                {{ today.strftime("%B") }}
+            </a>
+
+            <ul class="dropdown-menu months-menu">
+                {% for (month_id, month) in menses.items() %}
+                    {% if today.month == month_id %}
+                        <li><a id="current-month" class="dropdown-item months active" value="{{ month_id }}" text="{{ month }}">{{ month }}</a></li>
+                    {% else %}
+                        <li><a class="dropdown-item months" value="{{ month_id }}">{{ month }}</a></li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <div class="container-xxl ms-1">
         <div class="table-responsive">
-            <table class="table-light table-bordered calendar-table table">
+            <table class="table-light table-xxl table-bordered calendar-table table">
 
                     <caption id="calendar-caption" class="caption-top text-center fw-bold">
 
                     </caption>
                 <thead id="calendar-thead">
                     <tr class="calendar-tr">
-                        <th scope="col" class="calendar-th">Monday</th>
-                        <th scope="col" class="calendar-th">Tuesday</th>
-                        <th scope="col" class="calendar-th">Wednesday</th>
-                        <th scope="col" class="calendar-th">Thursday</th>
-                        <th scope="col" class="calendar-th">Friday</th>
-                        <th scope="col" class="calendar-th">Saturday</th>
-                        <th scope="col" class="calendar-th">Sunday</th>
+                        <th scope="col" class="calendar-th text-center">Monday</th>
+                        <th scope="col" class="calendar-th text-center">Tuesday</th>
+                        <th scope="col" class="calendar-th text-center">Wednesday</th>
+                        <th scope="col" class="calendar-th text-center">Thursday</th>
+                        <th scope="col" class="calendar-th text-center">Friday</th>
+                        <th scope="col" class="calendar-th text-center">Saturday</th>
+                        <th scope="col" class="calendar-th text-center">Sunday</th>
                     </tr>
                 </thead>
                 <tbody id="calendar-tbody">
@@ -67,8 +62,8 @@
                 </tbody>
             </table>
         </div>
-
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
     <script src="{{ url_for('static', filename='index.js') }}"></script>
 {% endblock %}

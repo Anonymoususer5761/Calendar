@@ -1,7 +1,11 @@
 /* Entire Webpage */
+:root {
+    --background: #000;
+}
+
 body {
     position: static;
-    background-color: #ffffff;
+    background-color: var(--background);
     color: #1e1e22;
 }
 html, body {
