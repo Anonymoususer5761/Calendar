@@ -7,20 +7,11 @@
     cursor: pointer;
 }
 
-.calendar-th {
-    width: 14.2857%;
-}
-.calendar-td {
-    width: 14.2857%;
-}
-
-.calendar-td-data:hover {
-    background-color: rgb(102, 102, 105);
-    color: aliceblue;
-}
-
-#calendar-thead {
-    border-bottom: 2px #000;
+/* AI Usage Disclaimer: Used ChatGPT to align the rows and columns in this way. */
+.row .calendar-col {
+    flex: 0 0 calc(100% / 7);
+    max-width: calc(100% / 7);
+    text-align: center;
 }
 
 #date-tooltip {

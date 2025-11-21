@@ -56,21 +56,21 @@ function convertToCSSFormat(category) {
     } else if (category === "(R)") {
         category = 'bg-restricted';
     } else {
-        category = 'none';
+        category = 'no-holidays';
     }
     return category;
 }
 
 function createCalendarElement(elementToCreate, id, extraClasses) {
     switch(elementToCreate) {
-        case 'tr':
-            const row = document.createElement('tr');
-            row.classList.add('calendar-tr', ...(extraClasses ?? []));
+        case 'row':
+            const row = document.createElement('div');
+            row.classList.add('row', 'flex-nowrap', 'calendar-row', ...(extraClasses ?? []));
             return row;
-        case 'td':
-            const cell = document.createElement('td');
-            cell.id = id;
-            cell.classList.add('calendar-td', ...(extraClasses ?? []));
+        case 'col':
+            const cell = document.createElement('div');
+            cell.id = id ? id : 'empty-cell'
+            cell.classList.add('col', 'border', 'calendar-col', ...(extraClasses ?? []));
             return cell;
     }
 }
@@ -78,7 +78,7 @@ function createCalendarElement(elementToCreate, id, extraClasses) {
 async function getCalendar() {
     const additionalClasses = new Map();
 
-    document.querySelector('caption').innerHTML = `${month.textContent} ${year.getAttribute('value')}`;
+    document.querySelector('.caption').textContent = `${month.textContent} ${year.getAttribute('value')}`;
     let datesResponse = await fetch(`/api/index/dates?month=${month.getAttribute('value')}&year=${year.getAttribute('value')}`, {
         headers: {
             'Request-Source': 'JS-AJAX',
@@ -86,8 +86,8 @@ async function getCalendar() {
     });
     let dates = await datesResponse.json();
 
-    const tableBody = document.getElementById('calendar-tbody');
-    tableBody.innerHTML = '';
+    const datesContainer = document.getElementById('dates-container');
+    datesContainer.innerHTML = '';
 
     let dayOfWeek = 1;
     let preceedingDate = '00';
@@ -96,7 +96,7 @@ async function getCalendar() {
     for (let date of dates) {
         // If current element is the first.
         if (date['date'] === '01') {
-            rows.push(createCalendarElement('tr'));
+            rows.push(createCalendarElement('row'));
         }
 
         // To differentiate different types of holidays.
@@ -108,12 +108,12 @@ async function getCalendar() {
 
         // Prints empty cells if the starting day of the month and the calendar format do not match.  
         while (dayOfWeek != date['day_id']) {
-            let emptyCell = createCalendarElement('td');
+            let emptyCell = createCalendarElement('col');
             rows[rowIndex].append(emptyCell);
             if (dayOfWeek <= daysInAWeek) {
                 dayOfWeek++;
             } else {
-                rows.push(createCalendarElement('tr'));
+                rows.push(createCalendarElement('row'));
                 rowIndex++;
                 dayOfWeek = 1;
             }
@@ -123,18 +123,18 @@ async function getCalendar() {
         if (dayOfWeek === date['day_id']) {
             let extraClasses = [];
             if (date['date'] ===  currentDay && month.getAttribute('value') === currentMonth && year.getAttribute('value') == currentYear) {
-                extraClasses = ['calendar-td-data', convertToCSSFormat(date['category']), 'today', 'bg-today'];
+                extraClasses = ['calendar-col-data', convertToCSSFormat(date['category']), 'today', 'bg-today'];
             } else {
-                extraClasses = ['calendar-td-data', convertToCSSFormat(date['category'])];
+                extraClasses = ['calendar-col-data', convertToCSSFormat(date['category'])];
             }
             let id = String(date['id']);
-            let cell = createCalendarElement('td', id, extraClasses);
+            let cell = createCalendarElement('col', id, extraClasses);
             cell.textContent = date['date'];
             rows[rowIndex].append(cell);
             if (date['date'] === dates[dates.length -1]['date']) {
                 let range = daysInAWeek - dayOfWeek;
                 for (let i = 0; i < range; i++) {
-                    let emptyCell = createCalendarElement('td');
+                    let emptyCell = createCalendarElement('col');
                     rows[rowIndex].append(emptyCell); 
                 }
             }
@@ -143,14 +143,14 @@ async function getCalendar() {
         if (dayOfWeek < daysInAWeek) {
             dayOfWeek++;
         } else {
-            rows.push(createCalendarElement('tr'));
+            rows.push(createCalendarElement('row'));
             rowIndex++;
             dayOfWeek = 1;
         }
     }
 
     for (let row of rows) {
-        tableBody.append(row);
+        datesContainer.append(row);
     }
 
     for (let additionalClass of additionalClasses.entries()) {
@@ -188,7 +188,7 @@ async function fillDateToolBar(dateCell) {
 }
 
 function addToolbar() {
-    document.querySelectorAll('.calendar-td-data').forEach(date => {
+    document.querySelectorAll('.calendar-col-data').forEach(date => {
         date.addEventListener('mouseover', (event) => {
             fillDateToolBar(event.target);
             dateTooltip.style.display = 'grid';
