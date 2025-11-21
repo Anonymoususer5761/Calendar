@@ -50,11 +50,11 @@ let currentYear = String(CurrentDate.getFullYear());
 let month = document.getElementById('current-month');
 let year = document.getElementById('current-year');
 
-function convertToCSSFormat(category) {
+function toCSSClass(category, prefix) {
     if (category === "(G)") {
-        category = 'bg-gazetted';
+        category = `${prefix}-gazetted`;
     } else if (category === "(R)") {
-        category = 'bg-restricted';
+        category = `${prefix}-restricted`;
     } else {
         category = 'no-holidays';
     }
@@ -101,7 +101,7 @@ async function getCalendar() {
 
         // To differentiate different types of holidays.
         if (preceedingDate === date['date']) {
-            additionalClasses.set(date['id'], convertToCSSFormat(date['category']));
+            additionalClasses.set(date['id'], toCSSClass(date['category'], 'bg'));
             continue;
         }
         preceedingDate = date['date'];
@@ -123,9 +123,9 @@ async function getCalendar() {
         if (dayOfWeek === date['day_id']) {
             let extraClasses = [];
             if (date['date'] ===  currentDay && month.getAttribute('value') === currentMonth && year.getAttribute('value') == currentYear) {
-                extraClasses = ['calendar-col-data', convertToCSSFormat(date['category']), 'today', 'bg-today'];
+                extraClasses = ['calendar-col-data', toCSSClass(date['category'], 'bg'), 'today', 'bg-today'];
             } else {
-                extraClasses = ['calendar-col-data', convertToCSSFormat(date['category'])];
+                extraClasses = ['calendar-col-data', toCSSClass(date['category'], 'bg')];
             }
             let id = String(date['id']);
             let cell = createCalendarElement('col', id, extraClasses);
@@ -154,7 +154,7 @@ async function getCalendar() {
     }
 
     for (let additionalClass of additionalClasses.entries()) {
-        document.getElementById(additionalClass[0]).classList.add(convertToCSSFormat(additionalClass[1]))
+        document.getElementById(additionalClass[0]).classList.add(toCSSClass(additionalClass[1], 'bg'))
     }
 }
 
@@ -174,12 +174,19 @@ async function fillDateToolBar(dateCell) {
     // let events = await getEvents(dateCell.id);
     let todayString = dateCell.classList.contains('today') ? ' | Today' : '';
     dateTitle.textContent = `${year.getAttribute('value')}-${month.getAttribute('value')}-${dateCell.textContent}${todayString}`;
-    holidayParagraph.innerHTML = 'No Holidays';
+    holidayParagraph.textContent = 'No Holidays';
     if (holidays) {
+        holidayParagraph.innerHTML = '';
         let unorderedList = document.createElement('ul');
         for (let holiday of holidays) {
             let listItem = document.createElement('li');
-            listItem.textContent = `${holiday["holiday"]} ${holiday["category"]}`;
+            let spanHoliday = document.createElement('span');
+            spanHoliday.textContent = holiday['holiday'];
+            let spanCategory = document.createElement('span');
+            spanCategory.textContent = ` ${holiday['category']}`;
+            spanCategory.classList.add(toCSSClass(holiday['category'], 'text'))
+            listItem.append(spanHoliday);
+            listItem.append(spanCategory);
             unorderedList.append(listItem);
         }
         holidayParagraph.append(unorderedList);
@@ -188,12 +195,24 @@ async function fillDateToolBar(dateCell) {
 }
 
 function addToolbar() {
+    let tooltipDisplayed = true;
+    let displayStyle = 'grid';
+    let previousCellId = 0;
     document.querySelectorAll('.calendar-col-data').forEach(date => {
-        date.addEventListener('mouseover', (event) => {
+        date.addEventListener('click', (event) => {
+            if (previousCellId === event.target.id) {
+                tooltipDisplayed = tooltipDisplayed ? false : true;
+                displayStyle = tooltipDisplayed ? 'grid' : 'none';
+                dateTooltip.style.display = displayStyle;
+                return;
+            }
             fillDateToolBar(event.target);
-            dateTooltip.style.display = 'grid';
+            previousCellId = event.target.id;
+            dateTooltip.style.display = displayStyle;
+            return;
         });
     });
+
 }
 async function getHolidays(dayId) {
     let response = await fetch(`/api/index/holidays?id=${dayId}`, {
