@@ -95,9 +95,7 @@ def submit_event_form_to_db(form: AddEventForm, user_id: int):
 
 def get_events(date_id, user_id, include_yesterday=True):
     db = get_db()
-    hours = 3600
-    if not include_yesterday:
-        hours = 0
+    hours = 3600 if include_yesterday else 0
     try:
         events = db.execute(f"""
             SELECT (events.id) AS event_id, (events.name) AS event_name, (events.description) AS description, start_time, end_time, (events.color) AS color
@@ -122,7 +120,7 @@ def get_specific_holidays(date_id):
     db = get_db()
     try:
         holidays = db.execute(f"""
-            SELECT holiday, category
+            SELECT DISTINCT (indian_holidays.id) AS id, holiday, category
             FROM calendar 
             JOIN indian_holidays 
                 ON calendar.id = indian_holidays.date_id 
@@ -134,7 +132,7 @@ def get_specific_holidays(date_id):
         db.close()
 
     if holidays:
-        dict_day = [{"holiday": holiday["holiday"], "category": holiday["category"]} for holiday in holidays]
+        dict_day = [{"id": holiday["id"], "holiday": holiday["holiday"], "category": holiday["category"]} for holiday in holidays]
         return dict_day
     return None
 

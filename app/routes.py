@@ -19,9 +19,8 @@ milliseconds_in_second = 1000
 def index():
     menses = get_months()
     years = get_years()
-    holidays = get_holidays()
     today = date.today()
-    return render_template("index.html", menses=menses, years=years, holidays=holidays, today=today)
+    return render_template("index.html", menses=menses, years=years, today=today)
 
 
 @app.route("/dates", methods=["GET", "POST"])
@@ -128,9 +127,17 @@ def api_holidays():
     holidays = get_specific_holidays(date_id)
     return jsonify(holidays)
 
+@app.route('/api/index/events')
+def api_index_events():
+    if request.headers.get("Request-Source") != "JS-AJAX":
+        return redirect(url_for("index"))
+    date_id = int(request.args.get('id'))
+    events = get_events(date_id, current_user.id, include_yesterday=False)
+    return jsonify(events)
+
 
 @app.route("/api/dates/events")
-def api_events():
+def api_dates_events():
     if request.headers.get("Request-Source") != "JS-AJAX":
         return redirect(url_for("index"))
     date_id = request.args.get("date_id")

@@ -22,3 +22,7 @@
 #calendar-thead {
     border-bottom: 2px #000;
 }
+
+#date-tooltip {
+    display: none;
+}

@@ -20,7 +20,9 @@ document.querySelectorAll('.dropdown-item').forEach(dropdownItem => {
         }
         removeActiveElements(menuType);
         event.target.classList.add('active');
-        getCalendar();
+        getCalendar().then(() => {
+            addToolbar();
+        });
     });
 });
 
@@ -113,7 +115,7 @@ async function getCalendar() {
             } else {
                 rows.push(createCalendarElement('tr'));
                 rowIndex++;
-                dayOfWeek = 1
+                dayOfWeek = 1;
             }
         }
 
@@ -156,22 +158,59 @@ async function getCalendar() {
     }
 }
 
-getCalendar()
-document.querySelectorAll('.dropdown-toggle').forEach(dropdown => {
-    dropdown.addEventListener('change', () => {
-        getCalendar();
-    });
+const dateTooltip = document.getElementById('date-tooltip')
+const dateTitle = document.getElementById('date-title');
+const holidayParagraph = document.getElementById('holiday-paragraph');
+const tooltipTitle = document.getElementById('toolbar-title');
+
+getCalendar().then(() => {
+    addToolbar();
 });
 
+async function fillDateToolBar(dateCell) {
+    // const ProductivityHeader = document.getElementById('productivity-header');
+    // const productivityParagraph = document.getElementById('productivity-paragraph');
+    let holidays = await getHolidays(dateCell.id);
+    // let events = await getEvents(dateCell.id);
+    let todayString = dateCell.classList.contains('today') ? ' | Today' : '';
+    dateTitle.textContent = `${year.getAttribute('value')}-${month.getAttribute('value')}-${dateCell.textContent}${todayString}`;
+    holidayParagraph.innerHTML = 'No Holidays';
+    if (holidays) {
+        let unorderedList = document.createElement('ul');
+        for (let holiday of holidays) {
+            let listItem = document.createElement('li');
+            listItem.textContent = `${holiday["holiday"]} ${holiday["category"]}`;
+            unorderedList.append(listItem);
+        }
+        holidayParagraph.append(unorderedList);
+    }
+    return;
+}
 
-// async function getHolidays(day) {
-//     let response = await fetch(`/api/index/holidays?id=${day.getAttribute('id')}`, {
-//         headers: {
-//             'Request-Source': 'JS-AJAX',
-//         }
-//     });
-//     let holidays = await response.json();
-//     let html = '';
+function addToolbar() {
+    document.querySelectorAll('.calendar-td-data').forEach(date => {
+        date.addEventListener('mouseover', (event) => {
+            fillDateToolBar(event.target);
+            dateTooltip.style.display = 'grid';
+        });
+    });
+}
+async function getHolidays(dayId) {
+    let response = await fetch(`/api/index/holidays?id=${dayId}`, {
+        headers: {
+            'Request-Source': 'JS-AJAX',
+        }
+    });
+    return await response.json();
+}
+async function getEvents(dayId) {
+    let response = await fetch(`/api/index/events?id=${dayId}`, {
+        headers: {
+            'Request-Source': 'JS-AJAX',
+        }
+    });
+    return await response.json();
+}
 //     if (holidays) {
 //         for (let holiday of holidays) {
 //             html += `<h1 class="${convertToCSSFormat(holiday["category"])}">${holiday["holiday"]} ${holiday["category"]}</h1>`;
