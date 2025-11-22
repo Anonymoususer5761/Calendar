@@ -3,11 +3,6 @@ import sqlite3
 import os
 import sys
 from datetime import datetime, timedelta
-import json
-
-settings_path = os.path.abspath("app_settings.json")
-with open(settings_path) as settings_file:
-    settings_and_options = json.load(settings_file)["settings"]
 
 days = ("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
 
