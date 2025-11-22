@@ -19,6 +19,9 @@
     color: aliceblue;
 }
 
+#date-title:hover {
+    cursor: pointer;
+}
 #date-tooltip {
     display: none;
 }

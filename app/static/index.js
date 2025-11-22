@@ -162,6 +162,7 @@ const dateTooltip = document.getElementById('date-tooltip')
 const dateTitle = document.getElementById('date-title');
 const holidayParagraph = document.getElementById('holiday-paragraph');
 const tooltipTitle = document.getElementById('toolbar-title');
+const eventsParagraph = document.getElementById('events-paragraph');
 
 getCalendar().then(() => {
     addToolbar();
@@ -171,24 +172,32 @@ async function fillDateToolBar(dateCell) {
     // const ProductivityHeader = document.getElementById('productivity-header');
     // const productivityParagraph = document.getElementById('productivity-paragraph');
     let holidays = await getHolidays(dateCell.id);
-    // let events = await getEvents(dateCell.id);
+    let events = await getEvents(dateCell.id);
     let todayString = dateCell.classList.contains('today') ? ' | Today' : '';
     dateTitle.textContent = `${year.getAttribute('value')}-${month.getAttribute('value')}-${dateCell.textContent}${todayString}`;
+    dateTitle.setAttribute('value', dateCell.id);
     holidayParagraph.innerHTML = '';
         if (holidays) {
-        let unorderedList = document.createElement('ul');
-        for (let holiday of holidays) {
-            let listItem = document.createElement('li');
-            let spanHoliday = document.createElement('span');
-            spanHoliday.textContent = holiday['holiday'];
-            let spanCategory = document.createElement('span');
-            spanCategory.textContent = ` ${holiday['category']}`;
-            spanCategory.classList.add(toCSSClass(holiday['category'], 'text'))
-            listItem.append(spanHoliday);
-            listItem.append(spanCategory);
-            unorderedList.append(listItem);
+            let unorderedList = document.createElement('ul');
+            for (let holiday of holidays) {
+                let listItem = document.createElement('li');
+                let spanHoliday = document.createElement('span');
+                spanHoliday.textContent = holiday['holiday'];
+                let spanCategory = document.createElement('span');
+                spanCategory.textContent = ` ${holiday['category']}`;
+                spanCategory.classList.add(toCSSClass(holiday['category'], 'text'))
+                listItem.append(spanHoliday);
+                listItem.append(spanCategory);
+                unorderedList.append(listItem);
         }
         holidayParagraph.append(unorderedList);
+        if (events) {
+            let unorderedList = document.createElement('ul');
+            for (let userEvent of events) {
+                let listItem = document.createElement('li');
+                listItem.textContent = userEvent['name']
+            }
+        }
     }
     return;
 }
@@ -229,3 +238,8 @@ async function getEvents(dayId) {
     });
     return await response.json();
 }
+
+dateTitle.addEventListener('click', (event) => {
+    let dateId = event.target.getAttribute('value');
+    window.location.href = `/dates?id=${dateId}`
+});
