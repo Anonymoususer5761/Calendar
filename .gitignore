@@ -8,3 +8,4 @@ flask_session/
 venv/
 node_modules/
 main.min*
+*test*
