@@ -1,4 +1,4 @@
-$primary: #28436b;
+$primary: #19251a;
 $secondary: #B9F4CD;
 $light: aliceblue;
 
@@ -6,8 +6,8 @@ $light: aliceblue;
 @import "../node_modules/bootstrap/scss/_variables";
 
 $custom-theme-colors: (
-    "tertiary": #F72585,
-    "quaternary": #B9F4CD,
+    "tertiary": rgb(37, 247, 55),
+    "quaternary": #4550eb,
     "quinary": #3F37C9,
     "header": #28436b,
     "background": #fafafa,

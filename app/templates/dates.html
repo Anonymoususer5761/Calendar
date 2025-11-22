@@ -5,7 +5,25 @@
 {% endblock %}
 
 {% block main %}
-    <div class="container sm"></div>
+    <p class="h1 text-primary">{{ date }}</p>
+
+    <div class="d-flex m-2">
+        <a class="btn btn-sm btn-outline-tertiary rounded" role="button" {% if not current_user.is_authenticated %} data-bs-toggle="modal" data-bs-target="#alert-modal"{% endif %}>
+            Add Event
+        </a>
+    </div>
+    <div id="alert-modal" class="modal fade" tabindex="-1" aria-labelledby="modal-title" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <p id="modal-title" class="h5 modal-title">Login Required</p>
+                    <a class="btn btn-sm btn-tertiary btn-close" role="button" data-bs-dismiss="modal" aria-label="close"></a>
+                </div>
+                <a href="{{ url_for('login') }}" class="btn btn-sm btn-tertiary" role="button">Sign In</a>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="container sm"></div>
         <div class="row">
             <div class="col-3 sm gx-5 mx-2 my-2">
                 <h1 class="text-secondary">{{ date }}</h1>
@@ -16,8 +34,10 @@
                 <button id="add-event-button" class="btn btn-outline-primary">Add Event</button>
             </div>
         </div>
-    </div>
+    </div> -->
     
+    
+
     <div class="container-sm">
         <div class="row">
             <div id="day-timeline-div" class="col">
