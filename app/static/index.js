@@ -172,7 +172,7 @@ async function fillDateToolBar(dateCell) {
     // const ProductivityHeader = document.getElementById('productivity-header');
     // const productivityParagraph = document.getElementById('productivity-paragraph');
     let holidays = await getHolidays(dateCell.id);
-    let events = await getEvents(dateCell.id);
+    // let events = await getEvents(dateCell.id);
     let todayString = dateCell.classList.contains('today') ? ' | Today' : '';
     dateTitle.textContent = `${year.getAttribute('value')}-${month.getAttribute('value')}-${dateCell.textContent}${todayString}`;
     dateTitle.setAttribute('value', dateCell.id);
@@ -191,13 +191,13 @@ async function fillDateToolBar(dateCell) {
                 unorderedList.append(listItem);
         }
         holidayParagraph.append(unorderedList);
-        if (events) {
-            let unorderedList = document.createElement('ul');
-            for (let userEvent of events) {
-                let listItem = document.createElement('li');
-                listItem.textContent = userEvent['name']
-            }
-        }
+        // if (events) {
+        //     let unorderedList = document.createElement('ul');
+        //     for (let userEvent of events) {
+        //         let listItem = document.createElement('li');
+        //         listItem.textContent = userEvent['name']
+        //     }
+        // }
     }
     return;
 }

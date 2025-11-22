@@ -97,6 +97,10 @@ def logout():
 def api_test():
     return render_template("test.html")
 
+@app.route("/test2")
+def api_test2():
+    return render_template("test2.html")
+
 
 # The below routes are APIs
 @app.route("/api/global")
