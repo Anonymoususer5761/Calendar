@@ -195,17 +195,17 @@ async function fillDateToolBar(dateCell) {
 }
 
 function addToolbar() {
-    let tooltipDisplayed = true;
     let displayStyle = 'grid';
     let previousCellId = 0;
     document.querySelectorAll('.calendar-col-data').forEach(date => {
         date.addEventListener('click', (event) => {
             if (previousCellId === event.target.id) {
-                tooltipDisplayed = tooltipDisplayed ? false : true;
-                displayStyle = tooltipDisplayed ? 'grid' : 'none';
+                previousCellId = 0;
+                displayStyle = 'none';
                 dateTooltip.style.display = displayStyle;
                 return;
             }
+            displayStyle = 'grid';
             fillDateToolBar(event.target);
             previousCellId = event.target.id;
             dateTooltip.style.display = displayStyle;
