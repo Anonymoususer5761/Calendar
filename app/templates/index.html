@@ -7,7 +7,7 @@
 {% block main %}
     <div class="d-flex me-1">
         <div class="dropdown mx-2 px-2 gx-2">
-            <a class="btn btn-sm btn-primary dropdown-toggle rounded-pill year-dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <a class="btn btn-sm btn-secondary dropdown-toggle rounded-pill year-dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 {{ today.year }}
             </a>
 
@@ -23,7 +23,7 @@
         </div>
 
         <div class="dropdown me-1">
-            <a class="btn btn-sm btn-primary dropdown-toggle rounded-pill month-dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <a class="btn btn-sm btn-secondary dropdown-toggle rounded-pill month-dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 {{ today.strftime("%B") }}
             </a>
 
@@ -66,14 +66,20 @@
         </div>
     </div>
 
-    <div id="date-tooltip" class="container m-3 border p-0">
-        <p id="date-title" class="h1 border-bottom bg-primary text-center"></p>
-        <p id="events" class="h3">Events</p>
-        <p id="events-paragraph">No Events</p>
-        <p id="productivity-header" class="h3">Productivity</p>
-        <p id="productivity-paragraph">|||||_____ % Productivity</p>
-        <p id="holiday-header" class="h3">Holidays</p>
-        <p id="holiday-paragraph">No Holidays</p>
+    <div class="container-sm justify-content-start ms-1 me-4">
+        <div id="date-container" class="col-10 col-lg-7 m-3 p-0">
+            <div id="date-tooltip" class="card border-1">
+                <div class="card-body">
+                    <p id="date-title" class="h1 bg-light border-0 rounded text-center"></p>
+                    <p id="events" class="h3 lead fw-bold text-header">Events</p>
+                    <p id="events-paragraph"></p>
+                    <p id="productivity-header" class="h3 lead fw-bold text-header">Productivity</p>
+                    <p id="productivity-paragraph"></p>
+                    <p id="holiday-header" class="h3 lead fw-bold text-header">Holidays</p>
+                    <p id="holiday-paragraph"></p>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="{{ url_for('static', filename='index.js') }}"></script>

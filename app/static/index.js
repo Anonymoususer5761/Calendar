@@ -174,9 +174,8 @@ async function fillDateToolBar(dateCell) {
     // let events = await getEvents(dateCell.id);
     let todayString = dateCell.classList.contains('today') ? ' | Today' : '';
     dateTitle.textContent = `${year.getAttribute('value')}-${month.getAttribute('value')}-${dateCell.textContent}${todayString}`;
-    holidayParagraph.textContent = 'No Holidays';
-    if (holidays) {
-        holidayParagraph.innerHTML = '';
+    holidayParagraph.innerHTML = '';
+        if (holidays) {
         let unorderedList = document.createElement('ul');
         for (let holiday of holidays) {
             let listItem = document.createElement('li');

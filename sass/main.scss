@@ -1,14 +1,15 @@
-$primary: #61a2f7a2;
-$secondary: #F4B9E0;
+$primary: #28436b;
+$secondary: #B9F4CD;
 $light: aliceblue;
 
 @import "../node_modules/bootstrap/scss/_functions";
 @import "../node_modules/bootstrap/scss/_variables";
 
 $custom-theme-colors: (
-    "tertiary": #F4EAB9,
+    "tertiary": #F72585,
     "quaternary": #B9F4CD,
-    "quinary": #E7660A,
+    "quinary": #3F37C9,
+    "header": #28436b,
     "background": #fafafa,
     "gazetted": crimson,
     "restricted": yellowgreen,
