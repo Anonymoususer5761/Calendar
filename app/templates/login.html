@@ -17,7 +17,7 @@
                         <span id="basic-addon1" class="input-group-text">
                             <i class="bi bi-person"></i>
                         </span>
-                        {{ form.username(class="form-control", placeholder="Please type your username") }}<br>
+                        {{ form.username(class="form-control", placeholder="Please type your username", autocomplete="off") }}<br>
                     </div>
                     </div>
                     {% for error in form.username.errors %}
@@ -31,7 +31,7 @@
                         <span id="basic-addon1" class="input-group-text">
                             <i class="bi bi-lock"></i>
                         </span>
-                        {{ form.password(class="form-control", placeholder="Enter your password") }}<br>
+                        {{ form.password(class="form-control", placeholder="Enter your password", autocomplete="off") }}<br>
                     </div>
                     {% for error in form.password.errors %}
                         <span style="color: red;">{{ error }}</span>
@@ -39,7 +39,7 @@
                 </div>
 
                 <div class="form-check my-3">
-                    {{ form.remember_me(class="form-check-input") }}{{ form.remember_me.label(class="form-check-label") }}
+                    {{ form.remember_me(class="form-check-input") }}{{ form.remember_me.label(class="form-check-label", autocomplete="off") }}
                 </div>
 
                 <div class="my-3">
