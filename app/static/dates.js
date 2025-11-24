@@ -5,6 +5,7 @@ function pad(singleDigit) {
 
 const millisecondsInADay = 86400000;
 const pixelsInTimeline = 2400;
+const pixelsByMilliseconds = pixelsInTimeline / millisecondsInADay;
 
 function displayNowLine() {
     let nowLine = document.querySelector('.now-line');
@@ -12,7 +13,7 @@ function displayNowLine() {
     let dayStart = new Date();
     dayStart.setHours(0, 0, 0, 0);
     let time = now.getTime() - dayStart.getTime();
-    let y_axis = (time / millisecondsInADay) * pixelsInTimeline
+    let y_axis = time * pixelsByMilliseconds;
     nowLine.setAttribute('y1', y_axis);
     nowLine.setAttribute('y2', y_axis);
     nowLine.style.display = 'block';
@@ -24,16 +25,6 @@ let todayDate = today.toISOString().split('T')[0];
 if (todayDate === selectedDate) {
     document.addEventListener('DOMContentLoaded', displayNowLine);
     setInterval(displayNowLine, 1000);
-}
-
-function setColorMenuColor() {
-    document.getElementById('event-form-color-picker').setAttribute('fill', document.getElementById('event-color').value);
-}
-
-if (document.getElementById('event-form-color-picker')) {
-    let eventColorMenu = document.getElementById('event-color');
-    document.addEventListener('DOMContentLoaded', setColorMenuColor);
-    eventColorMenu.addEventListener('change', setColorMenuColor);
 }
 
 // Events imported from Fetch API.
