@@ -17,3 +17,13 @@
 .hours-line {
     stroke: #00000077;
 }
+
+.now-line {
+    stroke: #00b9f7;
+    stroke-width: 1.25px;
+    display: none;
+    z-index: 10;
+}
+.now-line:hover {
+    stroke: #1e80ff;
+}

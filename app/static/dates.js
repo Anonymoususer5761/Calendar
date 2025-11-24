@@ -3,6 +3,29 @@ function pad(singleDigit) {
     return singleDigit;
 }
 
+const millisecondsInADay = 86400000;
+const pixelsInTimeline = 2400;
+
+function displayNowLine() {
+    let nowLine = document.querySelector('.now-line');
+    let now = new Date();
+    let dayStart = new Date();
+    dayStart.setHours(0, 0, 0, 0);
+    let time = now.getTime() - dayStart.getTime();
+    let y_axis = (time / millisecondsInADay) * pixelsInTimeline
+    nowLine.setAttribute('y1', y_axis);
+    nowLine.setAttribute('y2', y_axis);
+    nowLine.style.display = 'block';
+}
+
+selectedDate = document.getElementById('selected-date').textContent;
+let today = new Date();
+let todayDate = today.toISOString().split('T')[0];
+if (todayDate === selectedDate) {
+    document.addEventListener('DOMContentLoaded', displayNowLine);
+    setInterval(displayNowLine, 1000);
+}
+
 function setColorMenuColor() {
     document.getElementById('event-form-color-picker').setAttribute('fill', document.getElementById('event-color').value);
 }
@@ -11,27 +34,6 @@ if (document.getElementById('event-form-color-picker')) {
     let eventColorMenu = document.getElementById('event-color');
     document.addEventListener('DOMContentLoaded', setColorMenuColor);
     eventColorMenu.addEventListener('change', setColorMenuColor);
-}
-
-// Used ChatGPT to fix a bug where time wouldn't not update dynamically.
-function moveDayLine() {
-    let svg = document.getElementById('now');
-    let now = new Date();
-    let dayStart = new Date();
-    dayStart.setHours(0, 0, 0, 0);
-    let time = now.getTime() - dayStart.getTime()
-    let offset = 200 // 00:00 Starts at y=200px.
-    let y_axis = (time / 36000) + offset; // 36000 = milliseconds in a day (86.4M) / scale of svg in pixels (2400).
-    svg.setAttribute("y1", y_axis);
-    svg.setAttribute("y2", y_axis);
-    svg.removeAttribute("display");
-}
-selectedDate = document.querySelector('h1').textContent;
-let today = new Date()
-let todayDate = today.toISOString().split('T')[0]
-if (todayDate === selectedDate) {
-    document.addEventListener('DOMContentLoaded', moveDayLine())
-    setInterval(moveDayLine, 1000);
 }
 
 // Events imported from Fetch API.

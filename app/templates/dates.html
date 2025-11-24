@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block main %}
-    <p class="h1 text-primary">{{ date }}</p>
+    <p id="selected-date" class="h1 text-primary">{{ date }}</p>
 
     <div class="d-flex m-2">
         <a class="btn btn-sm btn-outline-tertiary rounded" role="button" {% if not current_user.is_authenticated %} data-bs-toggle="modal" data-bs-target="#alert-modal"{% endif %}>
@@ -81,7 +81,7 @@
                     <line class="hours-line" x1="0" y1="2100" x2="100%" y2="2100"></line>
                     <line class="hours-line" x1="0" y1="2200" x2="100%" y2="2200"></line>
                     <line class="hours-line" x1="0" y1="2300" x2="100%" y2="2300"></line>
-                    <line id="today" x1="0" y1="0" x2="100%" y2="2300"></line>
+                    <line class="now-line" x1="0" y1="50" x2="100%" y2="50"></line>
                 </svg>
             </div>
         </div>
