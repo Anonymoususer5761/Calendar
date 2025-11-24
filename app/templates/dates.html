@@ -23,22 +23,122 @@
             </div>
         </div>
     </div>
-    <!-- <div class="container sm"></div>
-        <div class="row">
-            <div class="col-3 sm gx-5 mx-2 my-2">
-                <h1 class="text-secondary">{{ date }}</h1>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-2 gx-5">
-                <button id="add-event-button" class="btn btn-outline-primary">Add Event</button>
-            </div>
-        </div>
-    </div> -->
-    
-    
 
-    <div class="container-sm">
+    <div class="container-sm my-5 ms-3 me-5">
+        <div class="row justify-content-center">
+            <div class="day-name text-center">{{ day_name }}</div>
+        </div>
+        <div class="row">
+            <svg class="col-1 row ms-0 me-1 ps-2 pe-0 hours-row-svg" height="2500" width="100%">
+                <text class="hours-label" x="25%" y="22">00:00</text>
+                <text class="hours-label" x="25%" y="122">01:00</text>
+                <text class="hours-label" x="25%" y="222">02:00</text>
+                <text class="hours-label" x="25%" y="322">03:00</text>
+                <text class="hours-label" x="25%" y="422">04:00</text>
+                <text class="hours-label" x="25%" y="522">05:00</text>
+                <text class="hours-label" x="25%" y="622">06:00</text>
+                <text class="hours-label" x="25%" y="722">07:00</text>
+                <text class="hours-label" x="25%" y="822">08:00</text>
+                <text class="hours-label" x="25%" y="922">09:00</text>
+                <text class="hours-label" x="25%" y="1022">10:00</text>
+                <text class="hours-label" x="25%" y="1122">11:00</text>
+                <text class="hours-label" x="25%" y="1222">12:00</text>
+                <text class="hours-label" x="25%" y="1322">13:00</text>
+                <text class="hours-label" x="25%" y="1422">14:00</text>
+                <text class="hours-label" x="25%" y="1522">15:00</text>
+                <text class="hours-label" x="25%" y="1622">16:00</text>
+                <text class="hours-label" x="25%" y="1722">17:00</text>
+                <text class="hours-label" x="25%" y="1822">18:00</text>
+                <text class="hours-label" x="25%" y="1922">19:00</text>
+                <text class="hours-label" x="25%" y="2022">20:00</text>
+                <text class="hours-label" x="25%" y="2122">21:00</text>
+                <text class="hours-label" x="25%" y="2222">22:00</text>
+                <text class="hours-label" x="25%" y="2322">23:00</text>
+                <text class="hours-label" x="25%" y="2422">00:00</text>
+            </svg>
+            <!-- <div class="col-1 row mx-2 hours-row">
+                <div class="hours p-0">00:00</div>
+                <div class="hours p-0">01:00</div>
+                <div class="hours p-0">02:00</div>
+                <div class="hours p-0">03:00</div>
+                <div class="hours p-0">04:00</div>
+                <div class="hours p-0">05:00</div>
+                <div class="hours p-0">06:00</div>
+                <div class="hours p-0">07:00</div>
+                <div class="hours p-0">08:00</div>
+                <div class="hours p-0">09:00</div>
+                <div class="hours p-0">10:00</div>
+                <div class="hours p-0">11:00</div>
+                <div class="hours p-0">12:00</div>
+                <div class="hours p-0">13:00</div>
+                <div class="hours p-0">14:00</div>
+                <div class="hours p-0">15:00</div>
+                <div class="hours p-0">16:00</div>
+                <div class="hours p-0">17:00</div>
+                <div class="hours p-0">18:00</div>
+                <div class="hours p-0">19:00</div>
+                <div class="hours p-0">20:00</div>
+                <div class="hours p-0">21:00</div>
+                <div class="hours p-0">22:00</div>
+                <div class="hours p-0">23:00</div>
+                <div class="hours p-0">24:00</div>
+            </div> -->
+            <div id="day-timeline" class="col-10 p-0 ms-0 mt-3 pe-5">
+                <svg class="hours-line-svg" height="2500" width="100%">
+                    <line class="hours-line" x1="0" y1="200" x2="100%" y2="200"></line>
+                    <line class="hours-line" x1="0" y1="300" x2="100%" y2="300"></line>
+                    <line class="hours-line" x1="0" y1="400" x2="100%" y2="400"></line>
+                    <line class="hours-line" x1="0" y1="100" x2="100%" y2="100"></line>
+                    <line class="hours-line" x1="0" y1="500" x2="100%" y2="500"></line>
+                    <line class="hours-line" x1="0" y1="600" x2="100%" y2="600"></line>
+                    <line class="hours-line" x1="0" y1="700" x2="100%" y2="700"></line>
+                    <line class="hours-line" x1="0" y1="800" x2="100%" y2="800"></line>
+                    <line class="hours-line" x1="0" y1="900" x2="100%" y2="900"></line>
+                    <line class="hours-line" x1="0" y1="1000" x2="100%" y2="1000"></line>
+                    <line class="hours-line" x1="0" y1="1100" x2="100%" y2="1100"></line>
+                    <line class="hours-line" x1="0" y1="1200" x2="100%" y2="1200"></line>
+                    <line class="hours-line" x1="0" y1="1300" x2="100%" y2="1300"></line>
+                    <line class="hours-line" x1="0" y1="1400" x2="100%" y2="1400"></line>
+                    <line class="hours-line" x1="0" y1="1500" x2="100%" y2="1500"></line>
+                    <line class="hours-line" x1="0" y1="1600" x2="100%" y2="1600"></line>
+                    <line class="hours-line" x1="0" y1="1700" x2="100%" y2="1700"></line>
+                    <line class="hours-line" x1="0" y1="1800" x2="100%" y2="1800"></line>
+                    <line class="hours-line" x1="0" y1="1900" x2="100%" y2="1900"></line>
+                    <line class="hours-line" x1="0" y1="2000" x2="100%" y2="2000"></line>
+                    <line class="hours-line" x1="0" y1="2100" x2="100%" y2="2100"></line>
+                    <line class="hours-line" x1="0" y1="2200" x2="100%" y2="2200"></line>
+                    <line class="hours-line" x1="0" y1="2300" x2="100%" y2="2300"></line>
+                </svg>
+                <!-- <div class="hours-line p-0"></div>
+                <div class="hours-line p-0"></div>
+                <div class="hours-line p-0"></div>
+                <div class="hours-line p-0"></div>
+                <div class="hours-line p-0"></div>
+                <div class="hours-line p-0"></div>
+                <div class="hours-line p-0"></div>
+                <div class="hours-line p-0"></div>
+                <div class="hours-line p-0"></div>
+                <div class="hours-line p-0"></div>
+                <div class="hours-line p-0"></div>
+                <div class="hours-line p-0"></div>
+                <div class="hours-line p-0"></div>
+                <div class="hours-line p-0"></div>
+                <div class="hours-line p-0"></div>
+                <div class="hours-line p-0"></div>
+                <div class="hours-line p-0"></div>
+                <div class="hours-line p-0"></div>
+                <div class="hours-line p-0"></div>
+                <div class="hours-line p-0"></div>
+                <div class="hours-line p-0"></div>
+                <div class="hours-line p-0"></div>
+                <div class="hours-line p-0"></div>
+                <div class="hours-line p-0"></div>
+                <div class="hours-line p-0"></div> -->
+            </div>
+        </div>
+    </div>
+
+    <!-- <div class="container-sm">
         <div class="row">
             <div id="day-timeline-div" class="col">
                 <svg id="day-timeline-svg" height="2750" width="100%">
@@ -57,7 +157,7 @@
                     </defs>
                     <text id="day-name" x="70%" y="3%" text-anchor="middle" fill="black">{{ day_name }}</text>
 
-                    <polyline class="day" points="1000,100 75,100 75,2600 1000,2600"/>
+                    <polyline class="day" points="1000,100 75,100 75,22500 1000,22500"/>
 
                     <line class="hours" x1="75" y1=100 x2="975" y2=100></line>
                     <text class="hours-label" x="20" y="109" >23:00</text>
@@ -70,7 +170,7 @@
                     <text class="hours-label" x="20" y="409" >02:00</text>
                     <line class="hours" x1="75" y1=500 x2="975" y2=500></line>
                     <text class="hours-label" x="20" y="509" >03:00</text>
-                    <line class="hours" x1="75" y1=600 x2="975" y2=600></line>
+                    <line class="hours" x1="75" y1=2500 x2="975" y2=2500></line>
                     <text class="hours-label" x="20" y="609" >04:00</text>
                     <line class="hours" x1="75" y1=700 x2="975" y2=700></line>
                     <text class="hours-label" x="20" y="709" >05:00</text>
@@ -90,7 +190,7 @@
                     <text class="hours-label" x="20" y="1409" >12:00</text>
                     <line class="hours" x1="75" y1=1500 x2="975" y2=1500></line>
                     <text class="hours-label" x="20" y="1509" >13:00</text>
-                    <line class="hours" x1="75" y1=1600 x2="975" y2=1600></line>
+                    <line class="hours" x1="75" y1=12500 x2="975" y2=12500></line>
                     <text class="hours-label" x="20" y="1609" >14:00</text>
                     <line class="hours" x1="75" y1=1700 x2="975" y2=1700></line>
                     <text class="hours-label" x="20" y="1709" >15:00</text>
@@ -110,7 +210,7 @@
                     <text class="hours-label" x="20" y="2409" >22:00</text>
                     <line class="hours" x1="75" y1=2500 x2="975" y2=2500></line>
                     <text class="hours-label" x="20" y="2509" >23:00</text>
-                    <line class="hours" x1="75" y1=2600 x2="975" y2=2600></line>
+                    <line class="hours" x1="75" y1=22500 x2="975" y2=22500></line>
                     <text class="hours-label" x="20" y="2609" >00:00</text>
 
                     <line id="now" x1="75" x2="975" display="none"/>
@@ -119,7 +219,7 @@
                 </svg>
             </div>
         </div>
-    </div>
+    </div> -->
         
 
     {% if current_user.is_authenticated %}

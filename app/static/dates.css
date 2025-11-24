@@ -1,35 +1,29 @@
+#day-timeline {
+    height: 2400px;
+    border: 1px solid grey;
+    border-right: 0px;
+    background-image: linear-gradient(
+        to bottom right,
+        rgba(236, 236, 236, 0.1) 10%,
+        rgba(0, 0, 150, 0.05) 35%,
+        rgba(255, 255, 255, 0.15) 100%
+    );
+}
+
+.hours-label {
+    font-size: clamp(0.4rem, 1.25vw, 1.5rem);
+}
+
+.hours-line {
+    stroke: #00000077;
+}
 .day {
     fill: url(#day-fill);
     stroke: url(#day-stroke);
     stroke-width: 2px;
 }
 
-.hours {
-    stroke: rgb(66, 33, 66);
-    stroke-width: 2px;
-    opacity: 0.1
-}
-
 #day-timeline-svg {
     width: 100%;
     overflow-x: scroll;
 }
-
-/* AI Usage Disclaimer: User AI to write media queries. */
-#day-name {
-    font-size: 24px;
-}
-@media (max-width: 288px) { #day-name { font-size: 12px; } }
-@media (max-width: 576px) { #day-name { font-size: 14px; } }
-@media (max-width: 768px) { #day-name { font-size: 16px; } }
-@media (max-width: 992px) { #day-name { font-size: 18px; } }
-
-.hours-label {
-    font-size: 18px;
-    fill: black;
-    font: sans-serif;
-}
-@media (max-width: 288px) { .hours-label { font-size: 8px; } }
-@media (max-width: 576px) { .hours-label { font-size: 12px; } }
-@media (max-width: 768px) { .hours-label { font-size: 14px; } }
-@media (max-width: 992px) { .hours-label { font-size: 16px; } }
