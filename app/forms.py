@@ -20,7 +20,7 @@ class RegistrationForm(FlaskForm):
 
 
 class AddEventForm(FlaskForm):
-    name = StringField("Event", validators=[DataRequired()], render_kw={"placeholder": "Event Time"})
+    name = StringField("Event", validators=[DataRequired()], render_kw={"placeholder": "Event Name"})
     description = TextAreaField("Description", render_kw={"placeholder": "Event Description"})
     start_time = DateTimeLocalField("From", validators=[DataRequired()])
     end_time = DateTimeLocalField("To", validators=[DataRequired()])

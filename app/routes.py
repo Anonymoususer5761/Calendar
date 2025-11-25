@@ -2,7 +2,7 @@ from app import app
 from app.calendar_db import *
 from app.forms import LoginForm, RegistrationForm, AddEventForm, SettingsForm, PomodoroSettingsForm
 from app.user import sign_in_user, register_user
-from app.pytemplates import get_events_and_format_events_svg
+from app.pytemplates import get_svg_polylines
 from app.helpers import update_dictionary
 
 from flask import render_template, request, redirect, url_for, flash, jsonify, session
@@ -41,7 +41,10 @@ def dates():
     
     date = get_date(date_id)
     add_event_form.start_time.default = f"{date} 00:00"
-    return render_template("dates.html", add_event_form=add_event_form, date=date)
+    svg_polylines = ""
+    if current_user.is_authenticated:
+        svg_polylines = get_svg_polylines(date_id, current_user.id)
+    return render_template("dates.html", add_event_form=add_event_form, svg_polylines=svg_polylines, date=date)
 
 @app.route("/clock")
 @app.route("/clock/stopwatch")

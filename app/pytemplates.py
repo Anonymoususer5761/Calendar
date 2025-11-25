@@ -3,10 +3,13 @@ from app.calendar_db import get_events
 from datetime import timedelta
 
 SECONDS_IN_DAY = 86400
-SCALE = 36 # 36 = 86400 (number of seconds in a day) / 2400 (the difference in pixels between 00:00 and 24:00 is exactly 2400px, i.e., 2600 - 200).
-OFFSET = 200 # The timeline starts at y=200px.
+PIXELS_IN_TIMELINE = 2500
+SCALE = SECONDS_IN_DAY / PIXELS_IN_TIMELINE
 
-def get_events_and_format_events_svg(date_id: int | str, user_id: int | str) -> str:
+SECONDS_IN_HOUR = 3600
+ONE_DAY_IN_PIXELS = 2400
+
+def get_svg_polylines(date_id: int | str, user_id: int | str) -> str:
     date_id = int(date_id)
     events = get_events(date_id, user_id)
 
@@ -17,26 +20,25 @@ def get_events_and_format_events_svg(date_id: int | str, user_id: int | str) -> 
         if len(events) <= 9:
             increment = 100
         else:
-            increment = 925 / len(events)
+            increment = 600 / len(events)
         x1 = x2 + increment
         for event in events:
             start = timedelta(seconds=event["start_time"])
             end = timedelta(seconds=event["end_time"])
-            y1 = 100
-            possible_y1 = start.seconds / SCALE + OFFSET
+            y1 = 0
+            possible_y1 = start.seconds / SCALE
             y2 = 2599
-            possible_y2 = end.seconds / SCALE + OFFSET
+            possible_y2 = end.seconds / SCALE
             if start.days == date.days:
                 y1 = possible_y1
-            elif start - date >= timedelta(seconds=3600):
-                y1 = possible_y1 - 2400
+            elif start - date >= timedelta(seconds=SECONDS_IN_HOUR):
+                y1 = possible_y1 - ONE_DAY_IN_PIXELS
             if end.days == date.days:
                 y2 = possible_y2
-            elif end - date <= timedelta(seconds=3600):
-                y2 = possible_y2 - 2400
+            elif end - date <= timedelta(seconds=SECONDS_IN_HOUR):
+                y2 = possible_y2 - ONE_DAY_IN_PIXELS
             html.append(f'<polyline value="{event["id"]}" class="custom-lines" points="{x1},{y1} {x2},{y1} {x2},{y2} {x1},{y2}" fill={event["color"]} stroke={event["color"]} opacity="0.35" stroke-width="2px"></polyline>')
             x1 += increment
             x2 += increment
-        return events, ''.join(html)
-    else:
-        return "No Events Today", ""
+        return ''.join(html)
+    return False
