@@ -8,21 +8,57 @@
     <p id="selected-date" class="h1 text-primary">{{ date }}</p>
 
     <div class="d-flex m-2">
-        <a class="btn btn-sm btn-outline-tertiary rounded" role="button" {% if not current_user.is_authenticated %} data-bs-toggle="modal" data-bs-target="#alert-modal"{% endif %}>
+        <a class="btn btn-sm btn-outline-tertiary rounded" role="button" data-bs-toggle="modal" {% if current_user.is_authenticated %} data-bs-target="#add-event-modal" {% else %} data-bs-target="#alert-modal"{% endif %}>
             Add Event
         </a>
     </div>
-    <div id="alert-modal" class="modal fade" tabindex="-1" aria-labelledby="modal-title" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <p id="modal-title" class="h5 modal-title">Login Required</p>
-                    <a class="btn btn-sm btn-tertiary btn-close" role="button" data-bs-dismiss="modal" aria-label="close"></a>
+    {% if current_user.is_authenticated %}
+        <div id="add-event-modal" class="modal fade" tabindex="-1" aria-label="add-event" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form class="p-3" action="" method="post">
+                        <a class="btn btn-sm btn-tertiary btn-close" role="button" data-bs-dismiss="modal" aria-label="close"></a>
+                        {{ add_event_form.hidden_tag() }}
+                        <div>
+                            {{ add_event_form.name.label(class="form-label") }}
+                            {{ add_event_form.name(class="form-control", autocomplete="off") }}
+                        </div>
+                        <div>
+                            {{ add_event_form.description.label(class="form-label") }}
+                            {{ add_event_form.description(class="form-control", autocomplete="off") }}
+                        </div>
+                        <div>
+                            {{ add_event_form.start_time.label(class="form-label") }}
+                            {{ add_event_form.start_time(class="form-control", value=add_event_form.start_time.default) }}
+                        </div>
+                        <div>
+                            {{ add_event_form.end_time.label(class="form-label") }}
+                            {{ add_event_form.end_time(class="form-control",value=add_event_form.start_time.default) }}
+                        </div>
+                        <div>
+                            {{ add_event_form.event_color.label(class="form-label") }}
+                            {{ add_event_form.event_color(id="colorInput", class="form-control form-control-color", type="color", value="#99c1f1", title="Color") }}
+                        </div>
+                        <div class="m-3">
+                            {{ add_event_form.submit(class="btn btn-tertiary") }}
+                        </div>
+                    </form>
                 </div>
-                <a href="{{ url_for('login') }}" class="btn btn-sm btn-tertiary" role="button">Sign In</a>
             </div>
         </div>
-    </div>
+    {% else %}
+        <div id="alert-modal" class="modal fade" tabindex="-1" aria-labelledby="modal-title" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <p id="modal-title" class="h5 modal-title">Login Required</p>
+                        <a class="btn btn-sm btn-tertiary btn-close" role="button" data-bs-dismiss="modal" aria-label="close"></a>
+                    </div>
+                    <a href="{{ url_for('login') }}" class="btn btn-sm btn-tertiary" role="button">Sign In</a>
+                </div>
+            </div>
+        </div>
+    {% endif %}
 
     <div class="container-sm my-5 ms-3 me-5">
         <div class="row justify-content-center">
@@ -87,48 +123,4 @@
         </div>
     </div>
 
-    {% if current_user.is_authenticated %}
-    <div id="add-event-div">
-        <form action="" method="post">
-            <button type="button" class="close-add-event-form">X</button>
-            {{ add_event_form.hidden_tag() }}
-            <p>
-                {{ add_event_form.name.label }}<br>
-                {{ add_event_form.name(size=32) }}<br>
-            </p>
-            <p>
-                {{ add_event_form.description.label }}<br>
-                {{ add_event_form.description(size=64) }}
-            </p>
-            <p>
-                {{ add_event_form.start_time.label }}
-                {{ add_event_form.start_time(value=add_event_form.start_time.default) }}
-            </p>
-                {{ add_event_form.end_time.label }}
-                {{ add_event_form.end_time(value=add_event_form.start_time.default) }}
-            <p>
-                {{ add_event_form.event_color.label }}
-                {{ add_event_form.event_color(id="event-color") }}
-                <svg width="30" height="25">
-                    <rect id="event-form-color-picker" fill="red" x="15" y="15" width="30" height="12.5"></rect>
-                </svg>
-            </p>
-            <p>
-                {{ add_event_form.submit() }}
-            </p>
-        </form>
-    </div>
-    {% endif %}
-
-    {% if events %}
-        {% for event in events %}
-            <div id="event-popup-{{ event.id }}" class="event-popup card text-bg-primary mb-3" style="--popup-color: {{ event.color }}; max-width: 18rem">
-                <h1 class="event-popup-name">{{ event.name }}</h1>
-                <p class="event-popup-desc">{{ event.desc }}</p>
-                <p class="event-popup-start">{{ event.start_time }}</p>
-                <p class="event-popup-end">{{ event.end_time }}</p>
-            </div>
-        {% endfor %}
-    {% endif %}
-    <script src="{{ url_for('static', filename='dates.js') }}"></script>
 {% endblock main %}

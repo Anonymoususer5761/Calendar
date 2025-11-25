@@ -24,7 +24,7 @@ class AddEventForm(FlaskForm):
     description = TextAreaField("Description", render_kw={"placeholder": "Event Description"})
     start_time = DateTimeLocalField("From", validators=[DataRequired()])
     end_time = DateTimeLocalField("To", validators=[DataRequired()])
-    event_color = SelectField("Color", choices=color_choices)
+    event_color = StringField("Color Picker", validators=[DataRequired()])
     submit = SubmitField("Add Event")
 
 
