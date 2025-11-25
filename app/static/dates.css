@@ -1,5 +1,5 @@
 #day-timeline {
-    height: 2400px;
+    height: 2500px;
     border: 1px solid grey;
     border-right: 0px;
     background-image: linear-gradient(
@@ -26,4 +26,8 @@
 }
 .now-line:hover {
     stroke: #1e80ff;
+}
+
+.yesterday {
+    font-size: 0.45rem;
 }
