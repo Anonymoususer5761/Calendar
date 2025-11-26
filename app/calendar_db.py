@@ -3,6 +3,7 @@ from app.helpers import get_color_hex, pad_digit
 from app.forms import AddEventForm
 
 from datetime import datetime
+import re
 
 def get_years():
     db = get_db()
@@ -80,9 +81,6 @@ def submit_event_form_to_db(form: AddEventForm, user_id: int):
     start_time = form.start_time.data
     end_time = form.end_time.data
     color = form.event_color.data
-
-    if start_time > end_time:
-        return False
 
     db = get_db()
     db.execute("""INSERT INTO events(name, description, start_time, end_time, color, user_id) VALUES (?, ?, unixepoch(?), unixepoch(?), ?, ?)""",

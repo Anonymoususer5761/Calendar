@@ -1,8 +1,8 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, DateTimeLocalField, SelectField, IntegerField
-from wtforms.validators import DataRequired, EqualTo, Email, NumberRange
+from wtforms.validators import DataRequired, EqualTo, Email, NumberRange, ValidationError
 
-from app.helpers import color_choices
+from app.helpers import COLOR_HEX_RE
 
 class LoginForm(FlaskForm):
     username = StringField("Username", validators=[DataRequired()])
@@ -26,6 +26,14 @@ class AddEventForm(FlaskForm):
     end_time = DateTimeLocalField("To", validators=[DataRequired()])
     event_color = StringField("Color Picker", validators=[DataRequired()])
     submit = SubmitField("Add Event")
+
+    def validate_event_color(self, event_color):
+        if not (COLOR_HEX_RE.fullmatch(event_color.data)):
+            raise ValidationError("Invalid color!")
+        
+    def validate_end_time(self, end_time):
+        if self.start_time.data > end_time.data:
+            raise ValidationError("The event cannot end before it begins.")
 
 
 class SettingsForm(FlaskForm):

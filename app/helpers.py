@@ -4,6 +4,9 @@ from app.database_manager import get_db
 
 from datetime import datetime
 import random
+import re
+
+COLOR_HEX_RE = re.compile(r"^#[a-f0-9]{6}$|^#[a-f0-9]{3}$", re.IGNORECASE)
 
 color_choices = (("#ff0000", "Red"), ("#0000ff", "Blue"), ("#00ff00", "Green"), ("#ffff00", "Yellow"), ("#800080", "Purple"))
 
