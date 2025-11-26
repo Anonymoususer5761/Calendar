@@ -8,37 +8,33 @@ SCALE = SECONDS_IN_DAY / PIXELS_IN_TIMELINE
 
 SECONDS_IN_HOUR = 3600
 ONE_DAY_IN_PIXELS = 2400
+DAY_START_IN_PIXELS = 100
 
-def get_svg_polylines(date_id: int | str, user_id: int | str) -> str:
+def get_event_svg(date_id: int | str, user_id: int | str) -> str:
     date_id = int(date_id)
     events = get_events(date_id, user_id)
 
     if events:
-        date = timedelta(days=date_id - 1)
+        selected_date = timedelta(days=date_id - 1)
         html = []
-        x2 = 75
-        if len(events) <= 9:
-            increment = 100
-        else:
-            increment = 600 / len(events)
-        x1 = x2 + increment
+        x1_percent = 0
+        width_increment = 10
+        if len(events) > 10:
+            width_increment = 100 / len(events)
+        x2_percent = width_increment
         for event in events:
-            start = timedelta(seconds=event["start_time"])
-            end = timedelta(seconds=event["end_time"])
+            event_start = timedelta(seconds=event["start_time"])
+            event_end = timedelta(seconds=event["end_time"])
             y1 = 0
-            possible_y1 = start.seconds / SCALE
-            y2 = 2599
-            possible_y2 = end.seconds / SCALE
-            if start.days == date.days:
-                y1 = possible_y1
-            elif start - date >= timedelta(seconds=SECONDS_IN_HOUR):
-                y1 = possible_y1 - ONE_DAY_IN_PIXELS
-            if end.days == date.days:
-                y2 = possible_y2
-            elif end - date <= timedelta(seconds=SECONDS_IN_HOUR):
-                y2 = possible_y2 - ONE_DAY_IN_PIXELS
-            html.append(f'<polyline value="{event["id"]}" class="custom-lines" points="{x1},{y1} {x2},{y1} {x2},{y2} {x1},{y2}" fill={event["color"]} stroke={event["color"]} opacity="0.35" stroke-width="2px"></polyline>')
-            x1 += increment
-            x2 += increment
+            if event_start.days == selected_date.days:
+                y1 = event_start.seconds / SCALE + DAY_START_IN_PIXELS
+            elif event_start - selected_date >= timedelta(seconds=SECONDS_IN_HOUR):
+                y1 = event_start.seconds / SCALE + DAY_START_IN_PIXELS - ONE_DAY_IN_PIXELS
+            if event_end.days == selected_date.days:
+                y2 = event_end.seconds / SCALE + DAY_START_IN_PIXELS
+            elif event_end - selected_date <= timedelta(seconds=SECONDS_IN_HOUR):
+                y2 = event_end.seconds / SCALE + DAY_START_IN_PIXELS - ONE_DAY_IN_PIXELS
+            html.append(f'<rect value={event["id"]} class="event-rects" x="{x1_percent}%" y="{y1}" width="{x2_percent}%" height="{y2}" fill="{event["color"]}"></rect>')
+            x1_percent += width_increment
         return ''.join(html)
-    return False
+    return ""

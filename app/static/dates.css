@@ -31,3 +31,11 @@
 .yesterday {
     font-size: 0.45rem;
 }
+
+.event-rects {
+    position: relative;
+    z-index: 9;
+    opacity: 0.35;
+    stroke-width: 2px;
+    stroke: black;
+}
