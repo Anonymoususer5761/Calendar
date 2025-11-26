@@ -88,5 +88,8 @@
             </div>
         </div>
     </div>
-
 {% endblock main %}
+
+{% block script %}
+    <script src="{{ url_for('static', filename='dates.js') }}"></script>
+{% endblock %}

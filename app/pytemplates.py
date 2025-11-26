@@ -34,7 +34,10 @@ def get_event_svg(date_id: int | str, user_id: int | str) -> str:
                 y2 = event_end.seconds / SCALE + DAY_START_IN_PIXELS
             elif event_end - selected_date <= timedelta(seconds=SECONDS_IN_HOUR):
                 y2 = event_end.seconds / SCALE + DAY_START_IN_PIXELS - ONE_DAY_IN_PIXELS
-            html.append(f'<rect value={event["id"]} class="event-rects" x="{x1_percent}%" y="{y1}" width="{x2_percent}%" height="{y2}" fill="{event["color"]}"></rect>')
+            html.append(
+                f'<rect value={event["id"]} class="event-rects" x="{x1_percent}%" y="{y1}" width="{x2_percent}%" height="{y2}" fill="{event["color"]}"\
+                data-bs-toggle="modal" data-bs-target="#event_info_modal"></rect>'
+            )
             x1_percent += width_increment
         return ''.join(html)
     return ""

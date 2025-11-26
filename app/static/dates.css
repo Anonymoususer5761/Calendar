@@ -22,7 +22,6 @@
     stroke: #00b9f7;
     stroke-width: 1.25px;
     display: none;
-    z-index: 10;
 }
 .now-line:hover {
     stroke: #1e80ff;
@@ -34,8 +33,11 @@
 
 .event-rects {
     position: relative;
-    z-index: 9;
     opacity: 0.35;
     stroke-width: 2px;
     stroke: black;
+}
+
+.event-rects:hover {
+    opacity: 0.6;
 }
