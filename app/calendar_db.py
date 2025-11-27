@@ -114,6 +114,27 @@ def get_events(date_id, user_id, include_yesterday=True):
     return None
 
 
+def get_event(event_id: int | str, user_id: int | str) -> None:
+    db = get_db()
+    try:
+        event = db.execute("""
+        SELECT name, description, start_time, end_time, color
+        FROM events
+        JOIN users
+        ON users.id = user_id
+        WHERE events.id = ?
+        AND
+        user_id = ?            
+    """,
+            (event_id, user_id)
+        ).fetchone()
+    finally:
+        db.close()
+
+    event_dict = {"name": event["name"], "desc": event["description"], "start": event["start_time"], "end": event["end_time"], "color": event["color"]}
+    return event_dict
+
+
 def get_specific_holidays(date_id):
     db = get_db()
     try:

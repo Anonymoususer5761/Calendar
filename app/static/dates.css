@@ -28,7 +28,7 @@
 }
 
 .yesterday {
-    font-size: 0.45rem;
+    font-size: 0.3rem;
 }
 
 .event-rects {
@@ -40,4 +40,10 @@
 
 .event-rects:hover {
     opacity: 0.6;
+}
+
+.tooltip-event {
+    color: white;
+    background-color: #1f1f1f;
+    border-radius: 3px;
 }

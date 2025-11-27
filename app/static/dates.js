@@ -1,11 +1,40 @@
+const millisecondsInADay = 86400000;
+const pixelsInTimeline = 2400;
+const scale = pixelsInTimeline / millisecondsInADay;
+
+const millisecondsInSecond = 1000;
+
 function pad(singleDigit) {
     singleDigit = singleDigit.toString().padStart(2, '0');
     return singleDigit;
 }
 
-const millisecondsInADay = 86400000;
-const pixelsInTimeline = 2400;
-const scale = pixelsInTimeline / millisecondsInADay;
+function formatTimestampDifference(timestamp) {
+    const unixEpochStartYear = 1970;
+    timestamp = parseInt(timestamp);
+    let date = new Date(timestamp);
+    const dateTimeObject = {
+        minutes: date.getUTCMinutes() != 0 ? `${date.getUTCMinutes()}Minutes` : '',
+        hours: date.getUTCHours() != 0 ? `${date.getUTCHours()}Hours:` : '',
+        days: date.getUTCDate() -1 != 0 ? `${date.getUTCDate() - 1}Days` : '',
+        months: date.getUTCMonth() != 0 ? `${date.getUTCMonth()}Months` : '',
+        years: date.getUTCFullYear() - unixEpochStartYear != 0 ? `${date.getUTCFullYear() - unixEpochStartYear}Years` : '',
+    }
+    let returnString = `${dateTimeObject.years} ${dateTimeObject.months} ${dateTimeObject.days}, ${dateTimeObject.hours}${dateTimeObject.minutes}`;
+    if (returnString === '  , ') {
+        return false;
+    }
+    return returnString;
+}
+
+// Used ChatGPT because I couldn't figure out that I had to convert the timestamp into milliseconds.
+function formatDateTime(timestamp) {
+    timestamp = parseInt(timestamp);
+    let date = new Date(timestamp);
+    let datetime = date.toISOString();
+    datetime = datetime.replace('T', ' ').split('.')[0].slice(0, 16);
+    return datetime;
+}
 
 function displayNowLine() {
     let nowLine = document.querySelector('.now-line');
@@ -27,19 +56,42 @@ if (todayDate === selectedDate) {
     setInterval(displayNowLine, 1000);
 }
 
-// Used ChatGPT because I couldn't figure out that I had to convert the timestamp into milliseconds.
-function formatDateTime(timestamp) {
-    timestamp = parseInt(timestamp);
-    let date = new Date(timestamp);
-    let datetime = date.toISOString();
-    datetime = datetime.replace('T', ' ').split('.')[0].slice(0, 16);
-    return datetime;
+async function displayEventTooltip(event, eventId) {
+    let response = await fetch(`/api/dates/event?event_id=${eventId}`, {
+        headers: {
+            'Request-Source': 'JS-AJAX',
+        }
+    });
+    serverEvent = await response.json();
+    let eventRect = event.target.getBoundingClientRect();
+    let yCenter = Math.floor((eventRect.bottom - eventRect.top) / 2);
+    let xLeftPlusPadding = Math.floor(eventRect.left + 10);
+    let tooltip = document.createElement('div');
+    tooltip.classList.add('tooltip-event');
+    let eventTitle = document.createElement('div');
+    eventTitle.classList.add('h1');
+    eventTitle.textContent = serverEvent['name'];
+    tooltip.append(eventTitle);
+    let eventDuration = document.createElement('div');
+    eventDuration.classList.add('p');
+    let duration = formatTimestampDifference(serverEvent['end'] - serverEvent['start']);
+    if (duration) {
+        eventDuration.textContent = `Event Duration: ${duration}`;
+        tooltip.append(eventDuration);
+    }
+    let eventTimings = document.createElement('div');
+    eventTimings.textContent = `Start: ${formatDateTime(serverEvent['start'] * millisecondsInSecond)}\n End: ${formatDateTime(serverEvent['end'] * millisecondsInSecond)}`
+    eventTimings.classList.add('p');
+    tooltip.append(eventTimings);
+    let dayTimeline = document.getElementById('event-tooltip-container');
+    dayTimeline.append(tooltip);
+    return true;
 }
 
 document.querySelectorAll('.event-rects').forEach(rect => {
-    rect.addEventListener('click', () => {
-        event_id = rect.getAttribute('value');
-        displayEventTooltip(event_id).then(returnValue => {
+    rect.addEventListener('click', (event) => {
+        let eventId = rect.getAttribute('value');
+        displayEventTooltip(event, eventId).then(returnValue => {
             if (returnValue) {
                 // pass;
             }

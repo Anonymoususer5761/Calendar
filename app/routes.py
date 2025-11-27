@@ -149,6 +149,14 @@ def api_dates_events():
     events = get_events(date_id, current_user.id)
     return jsonify(events)
 
+@app.route("/api/dates/event")
+def api_dates_event():
+    if request.headers.get("Request-Source") != "JS-AJAX":
+        return redirect(url_for("index"))
+    event_id = request.args.get("event_id")
+    event = get_event(event_id, current_user.id)
+    return jsonify(event)
+
 
 @app.route("/api/clock/stopwatch/initialize")
 @app.route("/api/clock/stopwatch/reset")
