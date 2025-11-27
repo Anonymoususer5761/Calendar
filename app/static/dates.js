@@ -74,7 +74,7 @@ async function displayEventTooltip(event, eventId) {
     tooltip.append(eventTitle);
     let eventDuration = document.createElement('div');
     eventDuration.classList.add('p');
-    let duration = formatTimestampDifference(serverEvent['end'] - serverEvent['start']);
+    let duration = formatTimestampDifference((serverEvent['end'] - serverEvent['start']) * 1000);
     if (duration) {
         eventDuration.textContent = `Event Duration: ${duration}`;
         tooltip.append(eventDuration);
