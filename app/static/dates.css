@@ -43,10 +43,16 @@
     cursor: pointer;
 }
 
+#relative-row {
+    position: relative;
+}
+
 #event-details-popup {
     border-radius: 3px;
     height: fit-content;
     padding: 5px;
+    z-index: 100;
+    width: 18rem;
 }
 
 .change-date-arrow {

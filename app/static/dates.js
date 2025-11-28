@@ -60,9 +60,13 @@ async function displayEventTooltip(event, eventId) {
         }
     });
     serverEvent = await response.json();
+    // AI Usage Disclaimer: Required some help to understand how to set the x and y coordinates of the popup.
+    const popup = document.getElementById('event-details-popup');
     let eventRect = event.target.getBoundingClientRect();
-    let yCenter = Math.floor((eventRect.bottom - eventRect.top) / 2);
-    let xLeftPlusPadding = Math.floor(eventRect.left + 10);
+    let yMouse = event.pageY;
+    let xRightPlusPadding = Math.floor(eventRect.right + 10);
+    popup.style.top = `${yMouse}px`;
+    popup.style.left = `${xRightPlusPadding}px`;
     const eventTitle = document.getElementById('event-title');
     eventTitle.textContent = serverEvent['name'];
     const description = document.getElementById('description-card');
