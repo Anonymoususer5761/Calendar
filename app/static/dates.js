@@ -18,7 +18,7 @@ function formatTimestampDifference(timestamp) {
         hours: date.getUTCHours() != 0 ? `${date.getUTCHours()} hours` : '',
         days: date.getUTCDate() -1 != 0 ? `${date.getUTCDate() - 1} days` : '',
         months: date.getUTCMonth() != 0 ? `${date.getUTCMonth()} months` : '',
-        years: date.getUTCFullYear() - unixEpochStartYear != 0 ? `${date.getUTCFullYear() - unixEpochStartYear}years` : '',
+        years: date.getUTCFullYear() - unixEpochStartYear != 0 ? `${date.getUTCFullYear() - unixEpochStartYear} years` : '',
     }
     let returnString = `${dateTimeObject.years} ${dateTimeObject.months} ${dateTimeObject.days} ${dateTimeObject.hours} ${dateTimeObject.minutes}`;
     return returnString.trim();
@@ -53,6 +53,7 @@ if (todayDate === selectedDate) {
     setInterval(displayNowLine, 1000);
 }
 
+const popup = document.getElementById('event-details-popup');
 async function displayEventTooltip(event, eventId) {
     let response = await fetch(`/api/dates/event?event_id=${eventId}`, {
         headers: {
@@ -61,7 +62,6 @@ async function displayEventTooltip(event, eventId) {
     });
     serverEvent = await response.json();
     // AI Usage Disclaimer: Required some help to understand how to set the x and y coordinates of the popup.
-    const popup = document.getElementById('event-details-popup');
     let eventRect = event.target.getBoundingClientRect();
     let yMouse = event.pageY;
     let xRightPlusPadding = Math.floor(eventRect.right + 10);
@@ -75,16 +75,24 @@ async function displayEventTooltip(event, eventId) {
     duration.textContent = formatTimestampDifference((serverEvent['end'] - serverEvent['start']) * 1000);
     const timings = document.getElementById('timings');
     timings.textContent = formatDateTime(serverEvent['start'] * 1000) + ' - ' + formatDateTime(serverEvent['end'] * 1000);
+    popup.style.display = 'inline';
 }
 
-document.querySelectorAll('.event-rects').forEach(rect => {
-    rect.addEventListener('click', (event) => {
-        let eventId = rect.getAttribute('value');
-        displayEventTooltip(event, eventId).then(returnValue => {
-            if (returnValue) {
-                // pass;
-            }
-        });
+document.querySelectorAll('.event-rects').forEach(async rect => {
+    rect.addEventListener('click', async (event) => {
+        let popupDisplay = false;
+        let previousPopupId = 0;
+        let eventId = 0;
+        eventId = parseInt(rect.getAttribute('value'));
+        if (!popupDisplay || previousPopupId != eventId) {
+            await displayEventTooltip(event, eventId)
+            popupDisplay = true;
+            previousPopupId = eventId;
+        } else {
+            popup.style.display = 'none';
+            popupDisplay = false;
+            previousPopupId = 0;
+        }
     });
 });
 
