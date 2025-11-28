@@ -1,6 +1,6 @@
-$primary: #006D77;
-$secondary: #E29578;
-$light: #F8F9FA;
+$primary: #1F4037;
+$secondary: #FFBE0B;
+$light: #FFFFFF;
 
 $enable-gradients: true;
 
@@ -8,10 +8,9 @@ $enable-gradients: true;
 @import "../node_modules/bootstrap/scss/_variables";
 
 $custom-theme-colors: (
-    "tertiary": #83C5BE,
-    "quaternary": #F4F4F9,
-    "quinary": #00B5AD,
-    "header": #28436b,
+    "tertiary": #709775,
+    "quaternary": #FCFCF5,
+    "quinary": #FB5607,
     "background": #fafafa,
     "gazetted": crimson,
     "restricted": yellowgreen,
