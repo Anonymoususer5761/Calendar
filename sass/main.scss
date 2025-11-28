@@ -1,6 +1,6 @@
-$primary: #19251a;
-$secondary: #B9F4CD;
-$light: aliceblue;
+$primary: #006D77;
+$secondary: #E29578;
+$light: #F8F9FA;
 
 $enable-gradients: true;
 
@@ -8,9 +8,9 @@ $enable-gradients: true;
 @import "../node_modules/bootstrap/scss/_variables";
 
 $custom-theme-colors: (
-    "tertiary": rgb(37, 247, 55),
-    "quaternary": #458deb,
-    "quinary": #3F37C9,
+    "tertiary": #83C5BE,
+    "quaternary": #F4F4F9,
+    "quinary": #00B5AD,
     "header": #28436b,
     "background": #fafafa,
     "gazetted": crimson,

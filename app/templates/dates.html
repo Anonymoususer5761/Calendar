@@ -8,11 +8,11 @@
 {% block main %}
     <p id="selected-date" class="h1 text-primary" value="{{ date_id }}">
         <span class="change-date-arrow">
-            <i id="go-back" class="bi bi-arrow-left-short text-quaternary"></i>
+            <i id="go-back" class="bi bi-arrow-left-short text-secondary"></i>
         </span>
         {{ date }}
         <span class="change-date-arrow">
-            <i id="go-forward" class="bi bi-arrow-right-short text-quaternary"></i>
+            <i id="go-forward" class="bi bi-arrow-right-short text-secondary"></i>
         </span>
     </p>
 
@@ -95,10 +95,33 @@
                     </g>
                 </svg>
             </div>
-            <div id="event-tooltip-container" class="container col-2">
-                
+            <!-- AI Usage Disclaimer: I used Gemini to style this div element and its children. -->
+            <div id="event-details-popup" class="col-4 ms-2 mt-2 rounded bg-light">
+                <div class="card-header bg-primary text-white d-flex rounded justify-content-between align-items-center py-2 px-3">
+                    <small class="text-uppercase fw-bold">Events</small>
+                </div>
+
+                <div class="card-body">
+                    <h5 id="event-title" class="card-title fw-bold text-dark mb-2"></h5>
+                    
+                    <p id="description-card" class="card-text text-muted small border-bottom pb-2 mb-3"></p>
+
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex align-items-center px-0 py-1">
+                            <i class="bi bi-clock-history text-secondary me-2"></i>
+                            <span id="duration" class="card-link fw-semibold text-primary small"></span>
+                        </li>
+                        
+                        <li class="list-group-item d-flex align-items-start px-0 py-1">
+                            <i class="bi bi-calendar-range text-secondary me-2 mt-1"></i>
+                            <span id="timings" class="card-link text-wrap small"></span>
+                        </li>
+                    </ul>
+
+                </div>
             </div>
         </div>
+
     </div>
 {% endblock main %}
 

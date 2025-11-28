@@ -14,17 +14,14 @@ function formatTimestampDifference(timestamp) {
     timestamp = parseInt(timestamp);
     let date = new Date(timestamp);
     const dateTimeObject = {
-        minutes: date.getUTCMinutes() != 0 ? `${date.getUTCMinutes()}Minutes` : '',
-        hours: date.getUTCHours() != 0 ? `${date.getUTCHours()}Hours:` : '',
-        days: date.getUTCDate() -1 != 0 ? `${date.getUTCDate() - 1}Days` : '',
-        months: date.getUTCMonth() != 0 ? `${date.getUTCMonth()}Months` : '',
-        years: date.getUTCFullYear() - unixEpochStartYear != 0 ? `${date.getUTCFullYear() - unixEpochStartYear}Years` : '',
+        minutes: date.getUTCMinutes() != 0 ? `${date.getUTCMinutes()} minutes` : '',
+        hours: date.getUTCHours() != 0 ? `${date.getUTCHours()} hours` : '',
+        days: date.getUTCDate() -1 != 0 ? `${date.getUTCDate() - 1} days` : '',
+        months: date.getUTCMonth() != 0 ? `${date.getUTCMonth()} months` : '',
+        years: date.getUTCFullYear() - unixEpochStartYear != 0 ? `${date.getUTCFullYear() - unixEpochStartYear}years` : '',
     }
-    let returnString = `${dateTimeObject.years} ${dateTimeObject.months} ${dateTimeObject.days}, ${dateTimeObject.hours}${dateTimeObject.minutes}`;
-    if (returnString === '  , ') {
-        return false;
-    }
-    return returnString;
+    let returnString = `${dateTimeObject.years} ${dateTimeObject.months} ${dateTimeObject.days} ${dateTimeObject.hours} ${dateTimeObject.minutes}`;
+    return returnString.trim();
 }
 
 // Used ChatGPT because I couldn't figure out that I had to convert the timestamp into milliseconds.
@@ -66,26 +63,14 @@ async function displayEventTooltip(event, eventId) {
     let eventRect = event.target.getBoundingClientRect();
     let yCenter = Math.floor((eventRect.bottom - eventRect.top) / 2);
     let xLeftPlusPadding = Math.floor(eventRect.left + 10);
-    let tooltip = document.createElement('div');
-    tooltip.classList.add('tooltip-event');
-    let eventTitle = document.createElement('div');
-    eventTitle.classList.add('h1');
+    const eventTitle = document.getElementById('event-title');
     eventTitle.textContent = serverEvent['name'];
-    tooltip.append(eventTitle);
-    let eventDuration = document.createElement('div');
-    eventDuration.classList.add('p');
-    let duration = formatTimestampDifference((serverEvent['end'] - serverEvent['start']) * 1000);
-    if (duration) {
-        eventDuration.textContent = `Event Duration: ${duration}`;
-        tooltip.append(eventDuration);
-    }
-    let eventTimings = document.createElement('div');
-    eventTimings.textContent = `Start: ${formatDateTime(serverEvent['start'] * millisecondsInSecond)}\n End: ${formatDateTime(serverEvent['end'] * millisecondsInSecond)}`
-    eventTimings.classList.add('p');
-    tooltip.append(eventTimings);
-    let dayTimeline = document.getElementById('event-tooltip-container');
-    dayTimeline.append(tooltip);
-    return true;
+    const description = document.getElementById('description-card');
+    description.textContent = serverEvent['desc'];
+    const duration = document.getElementById('duration');
+    duration.textContent = formatTimestampDifference((serverEvent['end'] - serverEvent['start']) * 1000);
+    const timings = document.getElementById('timings');
+    timings.textContent = formatDateTime(serverEvent['start'] * 1000) + ' - ' + formatDateTime(serverEvent['end'] * 1000);
 }
 
 document.querySelectorAll('.event-rects').forEach(rect => {
