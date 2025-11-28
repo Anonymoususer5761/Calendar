@@ -44,7 +44,7 @@ def dates():
     event_rects = ""
     if current_user.is_authenticated:
         event_rects = get_event_svg(date_id, current_user.id)
-    return render_template("dates.html", add_event_form=add_event_form, event_rects=event_rects, date=date)
+    return render_template("dates.html", add_event_form=add_event_form, event_rects=event_rects, date=date, date_id=date_id)
 
 @app.route("/clock")
 @app.route("/clock/stopwatch")

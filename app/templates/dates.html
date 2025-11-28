@@ -2,10 +2,19 @@
 
 {% block style %}
     <link rel="stylesheet" href="{{ url_for('static', filename='dates.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 {% endblock %}
 
 {% block main %}
-    <p id="selected-date" class="h1 text-primary">{{ date }}</p>
+    <p id="selected-date" class="h1 text-primary" value="{{ date_id }}">
+        <span class="change-date-arrow">
+            <i id="go-back" class="bi bi-arrow-left-short text-quaternary"></i>
+        </span>
+        {{ date }}
+        <span class="change-date-arrow">
+            <i id="go-forward" class="bi bi-arrow-right-short text-quaternary"></i>
+        </span>
+    </p>
 
     <div class="d-flex m-2">
         <a class="btn btn-sm btn-outline-tertiary rounded" role="button" data-bs-toggle="modal" {% if current_user.is_authenticated %} data-bs-target="#add-event-modal" {% else %} data-bs-target="#alert-modal"{% endif %}>

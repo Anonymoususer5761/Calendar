@@ -46,3 +46,12 @@
     background-color: #1f1f1f;
     border-radius: 3px;
 }
+
+.change-date-arrow {
+    background-color: #fafafa;
+    border-radius: 50px;
+}
+
+.change-date-arrow:hover {
+    background-color: aliceblue;
+}

@@ -99,6 +99,14 @@ document.querySelectorAll('.event-rects').forEach(rect => {
     });
 });
 
+document.querySelectorAll('.change-date-arrow').forEach(arrow => {
+    arrow.addEventListener('click', (event) => {
+        let date_id = parseInt(document.getElementById('selected-date').getAttribute('value'));
+        date_id = event.target.id === 'go-forward' ? date_id + 1 : date_id - 1;
+        window.location.href = window.location.href.split('=')[0] + `=${date_id}`;
+    });
+});
+
 // let eventPopupStarts = document.getElementsByClassName('event-popup-start');
 // let eventPopupEnds = document.getElementsByClassName('event-popup-end');
 // let convertToMilliseconds = 1000
