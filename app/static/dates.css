@@ -28,17 +28,19 @@
 }
 
 .yesterday {
-    font-size: 0.3rem;
+    font-size: clamp(0.35rem, 0.9vw, 1.35rem)
 }
 
 .event-rects {
     position: relative;
     opacity: 0.35;
     stroke-width: 3px;
+    stroke: black;
 }
 
 .event-rects:hover {
     opacity: 0.6;
+    cursor: pointer;
 }
 
 .tooltip-event {
@@ -54,4 +56,5 @@
 
 .change-date-arrow:hover {
     background-color: aliceblue;
+    cursor: pointer;
 }
