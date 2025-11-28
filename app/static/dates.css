@@ -34,8 +34,7 @@
 .event-rects {
     position: relative;
     opacity: 0.35;
-    stroke-width: 2px;
-    stroke: black;
+    stroke-width: 3px;
 }
 
 .event-rects:hover {
