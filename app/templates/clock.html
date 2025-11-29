@@ -2,24 +2,33 @@
 
 {% block style %}
     <link rel="stylesheet" href="{{ url_for('static', filename='clock.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     {% block subpage_style %}
 
     {% endblock %}
 {% endblock %}
 
 {% block main %}
-    <div id="clock">
-        <ul id="clock-options">
-            <li>
-                <a id="clock-options-stopwatch" href="{{ url_for('stopwatch') }}">Stopwatch</a>
-            </li>
-            <li>
-                <a id="clock-options-pomodoro" href="{{ url_for('pomodoro') }}">Pomodoro</a>
-            </li>
-        </ul>
-    {% block clock %}
-
-    {% endblock %}
+    <div id="container clock card">
+        <div class="card-body">
+            <div id="clock-options" class="d-flex flex-row justify-content-center p-3">
+                <span class="p-2">
+                    <a id="clock-options-stopwatch" href="{{ url_for('stopwatch') }}">
+                        <i class="bi bi-stopwatch"></i>
+                        Stopwatch
+                    </a>
+                </span>
+                <span class="p-2">
+                    <a id="clock-options-pomodoro" class="p-3" href="{{ url_for('pomodoro') }}">
+                        <img src="../static/assets/pomodoro-technique.png" alt="pomodoro png" style="width: 18px; height: 18px;">
+                        Pomodoro
+                    </a>
+                </span>
+            </div>
+            {% block clock %}
+    
+            {% endblock %}
+        </div>
     </div>
 
     {% block subpage_main %}
