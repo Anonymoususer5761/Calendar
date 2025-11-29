@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block main %}
-    <div id="container clock card">
+    <div id="clock" class="container-lg m-3 card">
         <div class="card-body">
             <div id="clock-options" class="d-flex flex-row justify-content-center p-3">
                 <span class="p-2">
@@ -25,9 +25,11 @@
                     </a>
                 </span>
             </div>
-            {% block clock %}
-    
-            {% endblock %}
+            <div id="inner-clock-div">
+                {% block clock %}
+        
+                {% endblock %}
+            </div>
         </div>
     </div>
 

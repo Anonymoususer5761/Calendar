@@ -1,0 +1,32 @@
+:root {
+    --clock-font: monospace;
+}
+
+.timer {
+    font-style: var(--clock-font);
+}
+
+.btn {
+    color: #F8F9FA;
+}
+
+.btn:hover {
+    box-shadow: aliceblue 2px 2px 2px 2px;
+}
+
+#start-button:hover {
+    color: aliceblue;
+    background-color: #4edd0c;
+}
+#pause-button:hover {
+    color: aliceblue;
+    background-color: #f12409;
+}
+#lap-button:hover {
+    color: aliceblue;
+    background-color: #34a4ff;
+}
+#reset-button:hover {
+    color: aliceblue;
+    background-color: #ff7301;
+}

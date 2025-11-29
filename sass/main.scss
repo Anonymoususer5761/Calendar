@@ -16,6 +16,10 @@ $custom-theme-colors: (
     "gazetted": crimson,
     "restricted": yellowgreen,
     "today": #00b9f7,
+    "start": rgb(16, 224, 68),
+    "stop": rgb(214, 32, 19),
+    "lap": #52adf7,
+    "reset": #e47012,
 );
 
 $theme-colors: map-merge($custom-theme-colors, $theme-colors);
