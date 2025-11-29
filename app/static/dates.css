@@ -65,3 +65,19 @@
     background-color: aliceblue;
     cursor: pointer;
 }
+
+.form-control {
+    background-color: #FCFCF5;
+    border: 0;
+    border-radius: 0;
+    border-bottom: 1px solid #F8F9FA;
+}
+.form-control:focus {
+    background-color: #FCFCF5;
+    border: 0 solid #FCFCF5;
+    box-shadow: #FCFCF5 0px 0px 0px 0px;
+}
+.form-control:hover {
+    border: 0 solid #FCFCF5;
+}
+

@@ -77,15 +77,14 @@ async function displayEventTooltip(event, eventId) {
     timings.textContent = formatDateTime(serverEvent['start'] * 1000) + ' - ' + formatDateTime(serverEvent['end'] * 1000);
     popup.style.display = 'inline';
 }
-
+let popupDisplay = false;
+let previousPopupId = 0;
+let eventId = 0;
 document.querySelectorAll('.event-rects').forEach(async rect => {
     rect.addEventListener('click', async (event) => {
-        let popupDisplay = false;
-        let previousPopupId = 0;
-        let eventId = 0;
         eventId = parseInt(rect.getAttribute('value'));
         if (!popupDisplay || previousPopupId != eventId) {
-            await displayEventTooltip(event, eventId)
+            await displayEventTooltip(event, eventId);
             popupDisplay = true;
             previousPopupId = eventId;
         } else {

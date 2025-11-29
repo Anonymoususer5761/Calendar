@@ -20,8 +20,8 @@ class RegistrationForm(FlaskForm):
 
 
 class AddEventForm(FlaskForm):
-    name = StringField("Event", validators=[DataRequired()], render_kw={"placeholder": "Event Name"})
-    description = TextAreaField("Description", render_kw={"placeholder": "Event Description"})
+    name = StringField("Event", validators=[DataRequired()])
+    description = TextAreaField("Description")
     start_time = DateTimeLocalField("From", validators=[DataRequired()])
     end_time = DateTimeLocalField("To", validators=[DataRequired()])
     event_color = StringField("Color Picker", validators=[DataRequired()])

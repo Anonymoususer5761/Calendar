@@ -24,34 +24,44 @@
     {% if current_user.is_authenticated %}
         <div id="add-event-modal" class="modal fade" tabindex="-1" aria-label="add-event" aria-hidden="true">
             <div class="modal-dialog">
-                <div class="modal-content">
-                    <form class="p-3" action="" method="post">
-                        <a class="btn btn-sm btn-secondary btn-close" role="button" data-bs-dismiss="modal" aria-label="close"></a>
-                        {{ add_event_form.hidden_tag() }}
-                        <div>
-                            {{ add_event_form.name.label(class="form-label") }}
-                            {{ add_event_form.name(class="form-control", autocomplete="off") }}
-                        </div>
-                        <div>
-                            {{ add_event_form.description.label(class="form-label") }}
-                            {{ add_event_form.description(class="form-control", autocomplete="off") }}
-                        </div>
-                        <div>
-                            {{ add_event_form.start_time.label(class="form-label") }}
-                            {{ add_event_form.start_time(class="form-control", value=add_event_form.start_time.default) }}
-                        </div>
-                        <div>
-                            {{ add_event_form.end_time.label(class="form-label") }}
-                            {{ add_event_form.end_time(class="form-control",value=add_event_form.start_time.default) }}
-                        </div>
-                        <div>
-                            {{ add_event_form.event_color.label(class="form-label") }}
-                            {{ add_event_form.event_color(id="colorInput", class="form-control form-control-color", type="color", value="#99c1f1", title="Color") }}
-                        </div>
-                        <div class="m-3">
-                            {{ add_event_form.submit(class="btn btn-secondary") }}
-                        </div>
-                    </form>
+                <div class="modal-content bg-quaternary">
+                    <div class="modal-header bg-header text-light">
+                        <p id="modal-title" class="h5 modal-title text-uppercase">
+                            <span>
+                                <i class="bi bi-calendar4-event"></i>
+                            </span>
+                            Add an Event
+                        </p>
+                        <a class="btn btn-sm btn-secondary btn-close bg-light" role="button" data-bs-dismiss="modal" aria-label="close"></a>
+                    </div>
+                    <div class="form d-flex align-items-between justify-content-center">
+                        <form class="p-3" action="" method="post" style="width: 100%;">
+                            {{ add_event_form.hidden_tag() }}
+                            <div class="m-2">
+                                {{ add_event_form.name.label(class="form-label h1 small fw-bold") }}
+                                {{ add_event_form.name(class="form-control border-bottom", autocomplete="off", autofocus=autofocus) }}
+                            </div>
+                            <div class="m-2">
+                                {{ add_event_form.description.label(class="form-label small fw-bold") }}
+                                {{ add_event_form.description(class="form-control border-bottom", autocomplete="off") }}
+                            </div>
+                            <div class="m-2">
+                                {{ add_event_form.start_time.label(class="form-label small fw-bold") }}
+                                {{ add_event_form.start_time(class="form-control", value=add_event_form.start_time.default) }}
+                            </div>
+                            <div class="m-2">
+                                {{ add_event_form.end_time.label(class="form-label small fw-bold") }}
+                                {{ add_event_form.end_time(class="form-control",value=add_event_form.start_time.default) }}
+                            </div>
+                        <div class="m-2">
+                                {{ add_event_form.event_color.label(class="form-label small fw-bold") }}
+                                {{ add_event_form.event_color(id="colorInput", class="form-control form-control-color", type="color", value="#99c1f1", title="Color") }}
+                            </div>
+                            <div class="m-3">
+                                {{ add_event_form.submit(class="btn btn-secondary btn-flex small") }}
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -100,7 +110,7 @@
 
     <!-- AI Usage Disclaimer: I used Gemini to style this div element and its children. -->
     <div id="event-details-popup" class="ms-2 mt-2 rounded bg-light position-absolute">
-        <div class="card-header bg-primary text-white d-flex rounded justify-content-between align-items-center py-2 px-3">
+        <div class="card-header bg-primary text-white d-flex rounded align-items-center py-2 px-3">
             <small class="text-uppercase fw-bold">Events</small>
         </div>
 
