@@ -1,8 +1,11 @@
 from app.database_manager import get_db
 from app import login_manager
 
+from flask import session
 from flask_login import UserMixin, login_user
 from werkzeug.security import generate_password_hash, check_password_hash
+
+from datetime import timedelta
 
 class User(UserMixin):
 
@@ -40,6 +43,8 @@ class User(UserMixin):
 def sign_in_user(form):
     db = get_db()
 
+    session.permanent = form.remember_me.data
+
     try:
         user = db.execute(
             "SELECT * FROM users WHERE username = ?", (
@@ -56,7 +61,7 @@ def sign_in_user(form):
                     password_hash=user["password_hash"],
                 )
 
-                if login_user(user):
+                if login_user(user, remember=form.remember_me.data, duration=timedelta(days=365000)):
                     return True, f"You have been successfully logged in as {user.username}."
 
                 return False, "Sorry! Something went wrong."
