@@ -92,6 +92,10 @@ def logout():
     logout_user()
     return redirect(url_for('index'))
 
+@app.route('/about')
+def about():
+    return render_template("about.html")
+
 
 # This is only supposed to exist during development
 @app.route("/test")
