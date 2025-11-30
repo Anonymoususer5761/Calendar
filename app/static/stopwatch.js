@@ -1,7 +1,7 @@
 const mainTimer = document.getElementById('main-timer');
 const splitTimer = document.getElementById('split-timer');
 const startButton = document.getElementById('start-button');
-const pauseButton = document.getElementById('pause-button');
+const pauseButton = document.getElementById('stop-button');
 const resetButton = document.getElementById('reset-button');
 
 const lapCounter = document.getElementById('lap-counter');
@@ -228,6 +228,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     );
                 }
             }
+            updateClockOptions();
             stopwatch.updateDisplay();
         }
     });

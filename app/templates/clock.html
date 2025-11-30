@@ -11,7 +11,7 @@
 {% block main %}
     <div id="clock" class="container-lg m-3 card">
         <div class="card-body">
-            <div id="clock-options" class="d-flex flex-row justify-content-center p-3">
+            <div id="clock-options" class="d-flex flex-row justify-content-center p-2">
                 <span class="p-2">
                     <a id="clock-options-stopwatch" href="{{ url_for('stopwatch') }}">
                         <i class="bi bi-stopwatch"></i>
@@ -19,7 +19,7 @@
                     </a>
                 </span>
                 <span class="p-2">
-                    <a id="clock-options-pomodoro" class="p-3" href="{{ url_for('pomodoro') }}">
+                    <a id="clock-options-pomodoro" href="{{ url_for('pomodoro') }}">
                         <img src="../static/assets/pomodoro-technique.png" alt="pomodoro png" style="width: 18px; height: 18px;">
                         Pomodoro
                     </a>

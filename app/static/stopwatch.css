@@ -19,3 +19,10 @@ tr {
 table, th, td {
   text-align: center;
 }
+
+#main-timer {
+    font-size: clamp(0.75rem, 3vw, 3rem);
+}
+#split-timer {
+    font-size: clamp(0.5rem, 2vw, 2rem);
+}

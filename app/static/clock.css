@@ -25,7 +25,7 @@
 #pause-button {
     display: none;
 }
-#pause-button:hover {
+#stop-button:hover {
     color: aliceblue;
     background-color: #f12409;
 }
