@@ -1,3 +1,3 @@
 #pomodoro-timer {
-    font-size: clamp(0.75rem, 3vw, 3rem);
+    font-size: clamp(0.75rem, 5vh, 5rem);
 }

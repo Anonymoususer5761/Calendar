@@ -5,45 +5,56 @@
 {% endblock %}
 
 {% block additional_options %}
-    <i class="bi bi-gear"></i>
+    <span class="p-2 clock-option" type="button" data-bs-toggle="modal" data-bs-target="#pomodoro-settings-menu">
+        <i class="bi bi-gear"></i>
+    </span>
 {% endblock %}
 
 {% block clock %}
-    <div id="timers" class="d-flex flex-column align-items-center">
+    <div id="timers" class="d-flex flex-column align-items-center p-4">
         <p id="pomodoro-timer" class="timer fw-bold">00:00:00.000</p>
     </div>
     <div class="d-flex justify-content-center buttons">
-        <button id="start-button" class="clock-button btn btn-start btn-sm mx-1">Start</button>
-        <button id="stop-button" class="clock-button btn btn-stop btn-sm mx-1">Pause</button>
-        <button id="reset-button" class="clock-button btn btn-reset btn-sm mx-1">Reset</button>
+        <button id="start-button" class="clock-button btn btn-start btn-lg mx-1">Start</button>
+        <button id="stop-button" class="clock-button btn btn-stop btn-lg mx-1">Pause</button>
+        <button id="reset-button" class="clock-button btn btn-reset btn-lg mx-1">Reset</button>
     </div>
 {% endblock %}
 
 {% block subpage_main %}
-    <div id="pomodoro-settings-menu">
-        <button id="pomodoro-settings-menu-close-button">close</button>
-        <form action="" method="post">
-            {{ form.hidden_tag() }}
-            <p>
-                {{ form.pomodoro_duration.label }}<br>
-                {{ form.pomodoro_duration() }}
-            </p>
-            <p>
-                {{ form.short_break.label }}<br>
-                {{ form.short_break() }}
-            </p>
-            <p>
-                {{ form.long_break.label }}<br>
-                {{ form.long_break() }}
-            </p>
-            <p>
-                {{ form.long_break_interval.label }}<br>
-                {{ form.long_break_interval() }}
-            </p>
-            <p>
-                {{ form.submit() }}
-            </p>
-        </form>
+    <div id="pomodoro-settings-menu" class="modal fade" tabindex="-1" aria-labelledby="modal-title">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="pomodoro-settings-label">Pomodoro Settings</h1>
+                    <a type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></a>                   
+                </div>
+                <div class="modal-body">
+                    <form action="" method="post">
+                        {{ form.hidden_tag() }}
+                        <p>
+                            {{ form.pomodoro_duration.label(class="form-label") }}<br>
+                            {{ form.pomodoro_duration(class="form-control") }}
+                        </p>
+                        <p>
+                            {{ form.short_break.label(class="form-label") }}<br>
+                            {{ form.short_break(class="form-control") }}
+                        </p>
+                        <p>
+                            {{ form.long_break.label(class="form-label") }}<br>
+                            {{ form.long_break(class="form-control") }}
+                        </p>
+                        <p>
+                            {{ form.long_break_interval.label(class="form-label") }}<br>
+                            {{ form.long_break_interval(class="form-control") }}
+                        </p>
+                        <p>
+                            {{ form.submit(class="btn btn-quaternary") }}
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}
 

@@ -9,32 +9,28 @@
 {% endblock %}
 
 {% block main %}
-    <div id="clock" class="container-lg m-3 card">
+    <div id="clock" class="container-fluid m-3 card d-flex justify-content-center">
         <div class="card-body">
-            <div id="clock-options" class="d-flex flex-row justify-content-center p-2">
-                <span class="p-2">
+            <div id="clock-options" class="d-flex flex-row align-items-center justify-content-center px-2 pt-0 pb-2 mt-0">
+                <span class="p-2 clock-option">
                     <a id="clock-options-stopwatch" href="{{ url_for('stopwatch') }}">
                         <i class="bi bi-stopwatch"></i>
                         Stopwatch
                     </a>
                 </span>
-                <span class="p-2">
+                <span class="p-2 clock-option">
                     <a id="clock-options-pomodoro" href="{{ url_for('pomodoro') }}">
                         <img src="../static/assets/pomodoro-technique.png" alt="pomodoro png" style="width: 18px; height: 18px;">
                         Pomodoro
                     </a>
                 </span>
-                 <span class="p-2">
-                     {% block additional_options %}
-     
-                     {% endblock %}
-                 </span>
-            </div>
-            <div id="inner-clock-div">
-                {% block clock %}
-        
+                {% block additional_options %}
+
                 {% endblock %}
             </div>
+            {% block clock %}
+    
+            {% endblock %}
         </div>
     </div>
 

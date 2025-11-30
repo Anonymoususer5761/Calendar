@@ -1,5 +1,6 @@
 :root {
     --clock-font: monospace;
+    --page-font: clamp(0.5rem, 2.5vh, 6rem);
 }
 
 #clock {
@@ -39,4 +40,9 @@
 #reset-button:hover {
     color: aliceblue;
     background-color: #ff7301;
+}
+
+.clock-option {
+    cursor: pointer;
+    font-size: var(--page-font)
 }
