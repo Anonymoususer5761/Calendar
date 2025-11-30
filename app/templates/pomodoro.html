@@ -4,12 +4,11 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='pomodoro.css') }}">
 {% endblock %}
 
+{% block additional_options %}
+    <i class="bi bi-gear"></i>
+{% endblock %}
+
 {% block clock %}
-    <div class="d-flex justify-content-end">
-        <p id="pomodoro-settings-button">
-            <i class="bi bi-gear"></i>
-        </p>
-    </div>
     <div id="timers" class="d-flex flex-column align-items-center">
         <p id="pomodoro-timer" class="timer fw-bold">00:00:00.000</p>
     </div>
