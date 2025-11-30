@@ -15,22 +15,26 @@
         <button id="lap-button" class="btn btn-lap btn-sm mx-1">Lap</button>
         <button id="reset-button" class="btn btn-reset btn-sm mx-1">Reset</button>
     </div>
-
-    <table id="lap-counter">
-        <thead>
+    <div class="container-lg my-2">
+        <table id="lap-counter" class="table table-hover">
             <caption>
 
             </caption>
-            <tr>
-                <th>Lap</th>
-                <th>Time</th>
-                <th>Total</th>
-            </tr>
-        </thead>
-        <tbody id="lap-counter-table-body">
+            <thead class="thead">
+                <tr>
+                    <th scope="col" class="colmn">Lap</th>
+                    <th scope="col" class="colmn">Time</th>
+                    <th scope="col" class="colmn">Total</th>
+                </tr>
+            </thead>
+            <tbody id="lap-counter-table-body">
 
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+
+{% block subpage_main %}
 {% endblock %}
 
 {% block subpage_script %}

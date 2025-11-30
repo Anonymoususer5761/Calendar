@@ -2,6 +2,10 @@
     --clock-font: monospace;
 }
 
+#clock {
+    width: 95%;
+}
+
 .timer {
     font-style: var(--clock-font);
 }
@@ -18,9 +22,15 @@
     color: aliceblue;
     background-color: #4edd0c;
 }
+#pause-button {
+    display: none;
+}
 #pause-button:hover {
     color: aliceblue;
     background-color: #f12409;
+}
+#lap-button {
+    display: none;
 }
 #lap-button:hover {
     color: aliceblue;
