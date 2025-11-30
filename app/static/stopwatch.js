@@ -217,7 +217,7 @@ document.addEventListener('DOMContentLoaded', () => {
             stopwatch.currentLapTime = serverStopwatch.lap_times[stopwatch.lapCount].lapTime;
             stopwatch.secondaryTimerString = formatTimeValue(stopwatch.elapsedTime - serverStopwatch.lap_times[stopwatch.lapCount].totalTime, hideHours=false);
             if (serverStopwatch.lap_times.length > 1) {
-                lapCounter.removeAttribute('style');
+                lapCounter.style.display = 'table';
                 for (let i = 1; i < serverStopwatch.lap_times.length; i++) {
                     lapTableBody.prepend(
                         formatLapTable(
