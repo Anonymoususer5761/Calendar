@@ -96,6 +96,12 @@ def register_user(form):
                     generate_password_hash(form.password.data),
                 )
             )
+            user_id = cursor.lastrowid
+            cursor.execute(
+                "INSERT INTO pomodoro_settings (user_id) VALUES (?)", (
+                    user_id,
+                )
+            )
 
             db.commit()
 

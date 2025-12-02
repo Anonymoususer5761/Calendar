@@ -50,3 +50,18 @@ CREATE TABLE IF NOT EXISTS "indian_holidays" (
         PRIMARY KEY("id"),
         FOREIGN KEY("date_id") REFERENCES "calendar"("id")
 );
+
+CREATE TABLE IF NOT EXISTS "pomodoro_settings" (
+    "id" INTEGER,
+    "pomodoro_duration" INTEGER NOT NULL DEFAULT 25,
+    "short_break" INTEGER NOT NULL DEFAULT 5,
+    "long_break" INTEGER NOT NULL DEFAULT 15,
+    "long_break_interval" INTEGER NOT NULL DEFAULT 4,
+    "user_id" INTEGER,
+    PRIMARY KEY("id"),
+    FOREIGN KEY("user_id") REFERENCES "users"("id")
+);
+
+CREATE INDEX IF NOT EXISTS "pomodoro_settings_index" ON "pomodoro_settings" (
+    "id", "user_id"
+);

@@ -55,6 +55,15 @@ def stopwatch():
 @app.route("/clock/pomodoro", methods=["GET", "POST"])
 def pomodoro():
     form = PomodoroSettingsForm()
+    api_pomodoro_settings(bypass_verification=True)
+    if form.validate_on_submit():
+        if current_user.is_authenticated:
+            submit_pomodoro_settings_to_db(form, current_user.id)
+        return(redirect(url_for("pomodoro")))
+    form.pomodoro_duration.data = session["pomodoro_settings"]["pomodoro_duration"]
+    form.short_break.data = session["pomodoro_settings"]["short_break"]
+    form.long_break.data = session["pomodoro_settings"]["long_break"]
+    form.long_break_interval.data = session["pomodoro_settings"]["long_break_interval"]
     return render_template("pomodoro.html", form=form)
 
 
@@ -269,6 +278,29 @@ def api_pomodoro_initialize(bypass_verification=False):
         "_exists": False,
     }
     return jsonify(True)
+
+@app.route('/api/clock/pomodoro/initiliaze_settings')
+def api_pomodoro_settings(bypass_verification=False):
+    if not bypass_verification:
+        if request.headers.get("Request-Source") != "JS-AJAX":
+            return redirect(url_for("clock"))
+
+    if current_user.is_authenticated:
+        pomodoro_values = get_pomodoro_values(current_user.id)
+        session["pomodoro_settings"] = {
+            "pomodoro_duration": pomodoro_values["pomodoro_duration"],
+            "short_break": pomodoro_values["short_break"],
+            "long_break": pomodoro_values["long_break"],
+            "long_break_interval": pomodoro_values["long_break_interval"],
+        }
+        return session["pomodoro_settings"]
+    session["pomodoro_settings"] = {
+        "pomodoro_duration": 25,
+        "short_break": 5,
+        "long_break": 15,
+        "long_break_interval": 4,
+    }
+    return session["pomodoro_settings"]
 
 @app.route("/api/clock/pomodoro/start")
 def api_pomodoro_start():

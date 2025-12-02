@@ -50,5 +50,5 @@ class PomodoroSettingsForm(FlaskForm):
     submit = SubmitField("Save")
 
     def validate_long_break(self, long_break):
-        if self.short_break > long_break:
+        if self.short_break.data > long_break.data:
             raise ValidationError("The short break cannot be longer than the long break.")

@@ -155,3 +155,31 @@ def get_specific_holidays(date_id):
         return dict_day
     return None
 
+
+def submit_pomodoro_settings_to_db(form, user_id):
+    pomodoro_duration = form.pomodoro_duration.data
+    short_break = form.short_break.data
+    long_break = form.long_break.data
+    long_break_interval = form.long_break_interval.data
+
+    db = get_db()
+    try:
+        db.execute("""UPDATE pomodoro_settings
+        SET pomodoro_duration = ?, short_break = ?, long_break = ?, long_break_interval = ? 
+        WHERE user_id = ?""", (pomodoro_duration, short_break, long_break, long_break_interval, user_id,))
+        db.commit()
+    finally:
+        db.close()
+
+    return True
+
+def get_pomodoro_values(user_id):
+    db = get_db()
+
+    try:
+        pomodoro_values = db.execute("""SELECT pomodoro_duration, short_break, long_break, long_break_interval
+        FROM pomodoro_settings
+        WHERE user_id = ?""", (user_id,)).fetchone()
+    finally:
+        db.close()
+    return pomodoro_values
