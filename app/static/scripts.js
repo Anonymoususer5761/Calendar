@@ -14,29 +14,25 @@ isAuthenticated().then(auth => {
     authorised = auth;
 });
 
-// Code related to the navbar:
+function padNumber(number, toPad) {
+    return String(number).padStart(toPad, '0');
+}
+
 function updateDatetime(datetime) {
     let now = new Date()
-    datetime['datetime-date'].innerHTML = now.getDate().toString().padStart(2, '0');;
-    datetime['datetime-month'].innerHTML = (now.getMonth() + 1).toString().padStart(2, '0');
-    datetime['datetime-year'].innerHTML = now.getFullYear().toString().padStart(4, '0');;
-    datetime['datetime-time'].innerHTML = `${now.getHours()}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}`;
+    datetime['datetime-date'].innerHTML = padNumber(now.getDate(), 2);;
+    datetime['datetime-month'].innerHTML = padNumber(now.getMonth() + 1, 2);
+    datetime['datetime-year'].innerHTML = padNumber(now.getFullYear(), 4);
+    datetime['datetime-time'].innerHTML = `${padNumber(now.getHours(), 2)}:${padNumber(now.getMinutes(), 2)}:${padNumber(now.getSeconds(), 2)}`;
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    // I had to look up an easy way to dynamically change link style on Stack Overflow, but the answer was in JQuery, so I asked ChatGPT to convert it to normal JavaScript.
-    document.querySelectorAll(`a[href*='${location.pathname}']`).forEach(a => {
-        a.classList.add('current')
-    });
     let datetimeDiv = document.getElementById('datetime');
-    datetimeDivElements = datetimeDiv.children;
+    let datetimeDivElements = datetimeDiv.children;
     updateDatetime(datetimeDivElements)
     setInterval(() => {
         updateDatetime(datetimeDivElements);
     }, 1000);
 });
 
-// Code used for imporving readability and maintainability:
-function padNumber(number, toPad) {
-    return String(number).padStart(toPad, '0');
-}
+

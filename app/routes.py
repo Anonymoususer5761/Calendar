@@ -285,7 +285,6 @@ def api_pomodoro_start():
         paused = False,
         _exists = True,
     )
-    # print(f'Duration: {session["pomodoro"]["session_duration"]}')
     return jsonify(session["pomodoro"])
 
 @app.route("/api/clock/pomodoro/stop")
@@ -322,8 +321,6 @@ def api_switch_session():
         session_counter = session_counter,
         break_counter = break_counter,
     )
-    print(f'SESSION: {session["pomodoro"]["session_counter"]}!!!!!!!!!!!')
-    print(f'BREAK: {session["pomodoro"]["break_counter"]}!!!!!!!!!!!')
     return jsonify(True)
 
 @app.route("/api/clock/pomodoro/remaining_duration")
