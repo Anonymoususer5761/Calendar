@@ -35,13 +35,11 @@ class Pomodoro {
                 if (this.remainingDuration <= 0) {
                     if (!this.breakTime) {
                         this.sessionCounter++;
-                        console.log("session: " + this.sessionCounter);
                         this.sessionDuration = this.sessionCounter % this.longBreakInterval === 0 ? this.longBreakDuration : this.shortBreakDuration;
                         this.startTime = Date.now();
                         this.breakTime = true;
                     } else {
                         this.breakCounter++;
-                        console.log("break: " + this.breakCounter);
                         this.sessionDuration = this.pomodoroDuration;
                         this.startTime = Date.now();
                         this.breakTime = false;
@@ -122,7 +120,6 @@ class Pomodoro {
                 });
                 return;
             case 'switch_session':
-                console.log("duration: " + this.sessionDuration);
                 await fetch(`/api/clock/pomodoro/${apiRoute}?start_time=${this.startTime}&session_duration=${this.sessionDuration}&break_time=${this.breakTime}&`, {
                     headers: {
                         "Request-Source": "JS-AJAX",
