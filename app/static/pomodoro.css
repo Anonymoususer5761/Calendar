@@ -2,3 +2,22 @@
     font-family: var(--clock-font);
     font-size: clamp(0.75rem, 5vh, 5rem);
 }
+
+#stop-button {
+    display: none;
+}
+
+.form-control {
+    background-color: #fcfcf5;
+    border: 0;
+    border-radius: 0;
+    border-bottom: 1px solid #f8f9fa;
+}
+.form-control:focus {
+    background-color: #FCFCF5;
+    border: 0 solid #FCFCF5;
+    box-shadow: #FCFCF5 0px 0px 0px 0px;
+}
+.form-control:hover {
+    border: 0 solid #FCFCF5;
+}

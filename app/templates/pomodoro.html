@@ -25,9 +25,9 @@
     <div id="pomodoro-settings-menu" class="modal fade" tabindex="-1" aria-labelledby="modal-title">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header bg-header text-light">
                     <h1 class="modal-title fs-5" id="pomodoro-settings-label">Pomodoro Settings</h1>
-                    <a type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></a>                   
+                    <a type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></a>                   
                 </div>
                 <div class="modal-body">
                     <form action="" method="post">
@@ -37,19 +37,19 @@
                             {{ form.pomodoro_duration(class="form-control") }}
                         </p>
                         <p>
-                            {{ form.short_break.label(class="form-label") }}<br>
-                            {{ form.short_break(class="form-control") }}
+                            {{ form.short_break.label(class="form-label h1 small fw-bold") }}<br>
+                            {{ form.short_break(class="form-control border-bottom") }}
                         </p>
                         <p>
-                            {{ form.long_break.label(class="form-label") }}<br>
-                            {{ form.long_break(class="form-control") }}
+                            {{ form.long_break.label(class="form-label h1 small fw-bold") }}<br>
+                            {{ form.long_break(class="form-control border-bottom") }}
                         </p>
                         <p>
-                            {{ form.long_break_interval.label(class="form-label") }}<br>
-                            {{ form.long_break_interval(class="form-control") }}
+                            {{ form.long_break_interval.label(class="form-label h1 small fw-bold") }}<br>
+                            {{ form.long_break_interval(class="form-control border-bottom") }}
                         </p>
                         <p>
-                            {{ form.submit(class="btn btn-quaternary") }}
+                            {{ form.submit(class="btn btn-secondary save-pomodoro-settings-button") }}
                         </p>
                     </form>
                 </div>

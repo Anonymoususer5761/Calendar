@@ -183,13 +183,12 @@ pomodoro.syncWithServer().then(serverPomodoro => {
     }
 });
 
-const pomodoroSettingsButton = document.getElementById('pomodoro-settings-button');
-const pomodoroSettingsMenu = document.getElementById('pomodoro-settings-menu');
-const pomodoroSettingsMenuCloseButton = document.getElementById('pomodoro-settings-menu-close-button');
-pomodoroSettingsButton.addEventListener('click', () => {
-    pomodoroSettingsMenu.style.display = 'block';
-});
-pomodoroSettingsMenuCloseButton.addEventListener('click', () => {
-    pomodoroSettingsMenu.style.display= 'none';
-});
-
+const saveButton = document.querySelector('.save-pomodoro-settings-button');
+function togglePomodoroSettings() {
+    if (!pomodoro.paused) {
+        saveButton.classList.add('disabled');
+    } else {
+        saveButton.removeAttribute('disabled');
+    }
+}
+document.addEventListener('DOMContentLoaded', togglePomodoroSettings);

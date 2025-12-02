@@ -48,3 +48,7 @@ class PomodoroSettingsForm(FlaskForm):
     long_break = IntegerField("Long Break", validators=[DataRequired(), NumberRange(min=1)], default=15)
     long_break_interval = IntegerField("Long Break Interval", validators=[DataRequired(), NumberRange(min=1)], default=4)
     submit = SubmitField("Save")
+
+    def validate_long_break(self, long_break):
+        if self.short_break > long_break:
+            raise ValidationError("The short break cannot be longer than the long break.")
