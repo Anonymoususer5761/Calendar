@@ -147,19 +147,32 @@ let pomodoro = new Pomodoro(
 pomodoro.updateDisplay()
 pomodoro.updateClockBackground();
 
+const saveButton = document.querySelector('.save-pomodoro-settings-button');
+function togglePomodoroSettings() {
+    if (!pomodoro.paused) {
+        saveButton.classList.add('disabled');
+    } else {
+        saveButton.removeAttribute('disabled');
+    }
+}
+document.addEventListener('DOMContentLoaded', togglePomodoroSettings);
+
 startButton.addEventListener('click', () => {
     pomodoro.startTime = Date.now() - pomodoro.pausedAt;
     pomodoro.startTimer();
     pomodoro.updateClockOptions();
+    togglePomodoroSettings();
 });
 pauseButton.addEventListener('click', () => {
     pomodoro.stopTimer();
     pomodoro.updateClockOptions();
+    togglePomodoroSettings();
 });
 resetButton.addEventListener('click', () => {
     pomodoro.resetTimer();
     pomodoro.updateDisplay();
     pomodoro.updateClockOptions();
+    togglePomodoroSettings();
 });
 
 pomodoro.syncWithServer().then(serverPomodoro => {
@@ -179,13 +192,3 @@ pomodoro.syncWithServer().then(serverPomodoro => {
         pomodoro.updateClockBackground();
     }
 });
-
-const saveButton = document.querySelector('.save-pomodoro-settings-button');
-function togglePomodoroSettings() {
-    if (!pomodoro.paused) {
-        saveButton.classList.add('disabled');
-    } else {
-        saveButton.removeAttribute('disabled');
-    }
-}
-document.addEventListener('DOMContentLoaded', togglePomodoroSettings);

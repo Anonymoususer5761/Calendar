@@ -57,9 +57,12 @@ def pomodoro():
     form = PomodoroSettingsForm()
     api_pomodoro_settings(bypass_verification=True)
     if form.validate_on_submit():
-        if current_user.is_authenticated:
-            submit_pomodoro_settings_to_db(form, current_user.id)
-        return(redirect(url_for("pomodoro")))
+        if session["pomodoro"]["paused"]:
+            if current_user.is_authenticated:
+                submit_pomodoro_settings_to_db(form, current_user.id)
+            return(redirect(url_for("pomodoro")))
+        flash("Cannot update when pomodoro is not paused.")
+        return redirect(url_for('pomodoro'))
     form.pomodoro_duration.data = session["pomodoro_settings"]["pomodoro_duration"]
     form.short_break.data = session["pomodoro_settings"]["short_break"]
     form.long_break.data = session["pomodoro_settings"]["long_break"]
