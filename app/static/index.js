@@ -122,7 +122,7 @@ async function getCalendar() {
         // Prints the date otherwise.
         if (dayOfWeek === date['day_id']) {
             let extraClasses = [];
-            if (date['date'] ===  currentDay && month.getAttribute('value') === currentMonth && year.getAttribute('value') == currentYear) {
+            if (date['date'] ===  padNumber(currentDay, 2) && month.getAttribute('value') === currentMonth && year.getAttribute('value') == currentYear) {
                 extraClasses = ['calendar-col-data', toCSSClass(date['category'], 'bg'), 'today', 'bg-today'];
             } else {
                 extraClasses = ['calendar-col-data', toCSSClass(date['category'], 'bg')];
