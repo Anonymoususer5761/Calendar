@@ -1,3 +1,4 @@
 #pomodoro-timer {
+    font-family: var(--clock-font);
     font-size: clamp(0.75rem, 5vh, 5rem);
 }

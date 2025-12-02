@@ -17,12 +17,18 @@ tr {
 }
 
 table, th, td {
-  text-align: center;
+    text-align: center;
+}
+
+td {
+    font-family: var(--clock-font);
 }
 
 #main-timer {
+    font-family: var(--clock-font);
     font-size: clamp(0.75rem, 5vh, 5rem);
 }
 #split-timer {
+    font-family: var(--clock-font);
     font-size: clamp(0.5rem, 3vh, 3rem);
 }

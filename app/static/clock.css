@@ -1,5 +1,10 @@
+@font-face {
+    font-family: "digital-7";
+    src: url('/static/assets/digital-7/digital-7.ttf') format('truetype');
+}
+
 :root {
-    --clock-font: monospace;
+    --clock-font: 'digital-7', monospace;
     --page-font: clamp(0.5rem, 2.5vh, 6rem);
 }
 
