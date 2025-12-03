@@ -17,6 +17,7 @@
 .calendar-col-data:hover {
     background-color:  rgb(102, 102, 105);
     color: aliceblue;
+    cursor: pointer;
 }
 
 #date-title:hover {
@@ -24,4 +25,8 @@
 }
 #date-tooltip {
     display: none;
+}
+
+.event-list-item {
+    cursor: pointer;
 }

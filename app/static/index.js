@@ -169,35 +169,40 @@ getCalendar().then(() => {
 });
 
 async function fillDateToolBar(dateCell) {
-    // const ProductivityHeader = document.getElementById('productivity-header');
-    // const productivityParagraph = document.getElementById('productivity-paragraph');
     let holidays = await getHolidays(dateCell.id);
-    // let events = await getEvents(dateCell.id);
     let todayString = dateCell.classList.contains('today') ? ' | Today' : '';
     dateTitle.textContent = `${year.getAttribute('value')}-${month.getAttribute('value')}-${dateCell.textContent}${todayString}`;
     dateTitle.setAttribute('value', dateCell.id);
     holidayParagraph.innerHTML = '';
-        if (holidays) {
-            let unorderedList = document.createElement('ul');
-            for (let holiday of holidays) {
-                let listItem = document.createElement('li');
-                let spanHoliday = document.createElement('span');
-                spanHoliday.textContent = holiday['holiday'];
-                let spanCategory = document.createElement('span');
-                spanCategory.textContent = ` ${holiday['category']}`;
-                spanCategory.classList.add(toCSSClass(holiday['category'], 'text'))
-                listItem.append(spanHoliday);
-                listItem.append(spanCategory);
-                unorderedList.append(listItem);
+    if (holidays) {
+        let unorderedList = document.createElement('ul');
+        for (let holiday of holidays) {
+            let listItem = document.createElement('li');
+            let spanHoliday = document.createElement('span');
+            spanHoliday.textContent = holiday['holiday'];
+            let spanCategory = document.createElement('span');
+            spanCategory.textContent = ` ${holiday['category']}`;
+            spanCategory.classList.add(toCSSClass(holiday['category'], 'text'))
+            listItem.append(spanHoliday);
+            listItem.append(spanCategory);
+            unorderedList.append(listItem);
         }
         holidayParagraph.append(unorderedList);
-        // if (events) {
-        //     let unorderedList = document.createElement('ul');
-        //     for (let userEvent of events) {
-        //         let listItem = document.createElement('li');
-        //         listItem.textContent = userEvent['name']
-        //     }
-        // }
+    }
+
+    let events = await getEvents(dateCell.id);
+    eventsParagraph.innerHTML = '';
+    if (events) {
+        let unorderedList = document.createElement('ul');
+        for (let userEvent of events) {
+            let listItem = document.createElement('li');
+            listItem.setAttribute('value', dateCell.id);
+            listItem.classList.add('event-list-item');
+            listItem.textContent = userEvent['name'];
+            listItem.addEventListener('click', goToDate);
+            unorderedList.append(listItem);
+        }
+        eventsParagraph.append(unorderedList);
     }
     return;
 }
@@ -239,7 +244,9 @@ async function getEvents(dayId) {
     return await response.json();
 }
 
-dateTitle.addEventListener('click', (event) => {
+function goToDate(event) {
     let dateId = event.target.getAttribute('value');
     window.location.href = `/dates?id=${dateId}`
-});
+}
+
+dateTitle.addEventListener('click', goToDate);

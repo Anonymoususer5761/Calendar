@@ -53,9 +53,9 @@
             <div class="weekday border calendar-col">Sunday</div>
         </div>
         <div class="row flex-nowrap d-flex d-sm-none">
+            <div class="weekday border fs-6 calendar-col">Mon</div>
             <div class="weekday border fs-6 calendar-col">Tue</div>
             <div class="weekday border fs-6 calendar-col">Wed</div>
-            <div class="weekday border fs-6 calendar-col">Mon</div>
             <div class="weekday border fs-6 calendar-col">Thu</div>
             <div class="weekday border fs-6 calendar-col">Fri</div>
             <div class="weekday border fs-6 calendar-col">Sat</div>
@@ -70,13 +70,17 @@
         <div id="date-container" class="col-10 col-lg-7 m-3 p-0">
             <div id="date-tooltip" class="card border-1">
                 <div class="card-body">
-                    <p id="date-title" class="h1 bg-light border-0 rounded text-center"></p>
-                    <p id="events" class="h3 lead fw-bold text-header">Events</p>
-                    <p id="events-paragraph"></p>
-                    <p id="productivity-header" class="h3 lead fw-bold text-header">Productivity</p>
-                    <p id="productivity-paragraph"></p>
-                    <p id="holiday-header" class="h3 lead fw-bold text-header">Holidays</p>
-                    <p id="holiday-paragraph"></p>
+                    
+                    <p id="date-title" class="card-title h1 bg-light border-0 rounded text-center"></p>
+                    
+                    <p id="events" class="card-subtitle h3 lead fw-bold text-header mt-3 mb-2">Events</p>
+                    
+                    <p id="events-paragraph" class="card-text"></p>
+                    
+                    <p id="holiday-header" class="card-subtitle h3 lead fw-bold text-header mt-4 mb-2">Holidays</p>
+                    
+                    <p id="holiday-paragraph" class="card-text"></p>
+
                 </div>
             </div>
         </div>
