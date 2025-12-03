@@ -21,6 +21,9 @@ function formatTimestampDifference(timestamp) {
         years: date.getUTCFullYear() - unixEpochStartYear != 0 ? `${date.getUTCFullYear() - unixEpochStartYear} years` : '',
     }
     let returnString = `${dateTimeObject.years} ${dateTimeObject.months} ${dateTimeObject.days} ${dateTimeObject.hours} ${dateTimeObject.minutes}`;
+    if (returnString.trim() === '') {
+        return '-';
+    }
     return returnString.trim();
 }
 

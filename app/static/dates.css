@@ -81,3 +81,8 @@
     border: 0 solid #FCFCF5;
 }
 
+.edit-icon {
+    margin-left: 0px;
+    cursor: pointer;
+}
+
