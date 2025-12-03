@@ -57,7 +57,8 @@ if (todayDate === selectedDate) {
 }
 
 const popup = document.getElementById('event-details-popup');
-async function displayEventTooltip(event, eventId) {
+const popupHeader = document.querySelector('.card-header');
+async function displayEventTooltip(event, eventId, colorValue) {
     let response = await fetch(`/api/dates/event?event_id=${eventId}`, {
         headers: {
             'Request-Source': 'JS-AJAX',
@@ -78,16 +79,19 @@ async function displayEventTooltip(event, eventId) {
     duration.textContent = formatTimestampDifference((serverEvent['end'] - serverEvent['start']) * 1000);
     const timings = document.getElementById('timings');
     timings.textContent = formatDateTime(serverEvent['start'] * 1000) + ' - ' + formatDateTime(serverEvent['end'] * 1000);
+    popupHeader.style.backgroundColor = colorValue;
     popup.style.display = 'inline';
 }
 let popupDisplay = false;
 let previousPopupId = 0;
 let eventId = 0;
+let colorValue = '';
 document.querySelectorAll('.event-rects').forEach(async rect => {
     rect.addEventListener('click', async (event) => {
         eventId = parseInt(rect.getAttribute('value'));
         if (!popupDisplay || previousPopupId != eventId) {
-            await displayEventTooltip(event, eventId);
+            let colorValue = rect.getAttribute('color-value')
+            await displayEventTooltip(event, eventId, colorValue);
             popupDisplay = true;
             previousPopupId = eventId;
         } else {

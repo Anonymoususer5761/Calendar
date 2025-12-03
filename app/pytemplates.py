@@ -38,7 +38,7 @@ def get_event_svg(date_id: int | str, user_id: int | str) -> str:
             if y2 == 0:
                 y2 = 1
             html.append(
-                f'<rect value={event["id"]} class="event-rects" x="{x1_percent}%" y="{y1}" width="{x2_percent}%" height="{y2}" fill="{event["color"]}"></rect>'
+                f'<rect value="{event["id"]}" color-value="{event["color"]}"class="event-rects" x="{x1_percent}%" y="{y1}" width="{x2_percent}%" height="{y2}" fill="{event["color"]}" stroke="{event["color"]}"></rect>'
             )
             x1_percent += width_increment
         return ''.join(html)
