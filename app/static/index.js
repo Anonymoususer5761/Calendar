@@ -67,6 +67,9 @@ document.querySelectorAll('.arrows').forEach(changeMonthButton => {
             year = newActiveYearElement;
             monthDropdown.textContent = newActiveMonthElement.textContent;
             month = newActiveMonthElement;
+            getCalendar().then(() => {
+                addToolbar();
+            });
             return;
         }
         monthValue += changeValueBy;
@@ -75,6 +78,9 @@ document.querySelectorAll('.arrows').forEach(changeMonthButton => {
         newActiveMonthElement.classList.add('active');
         monthDropdown.textContent = newActiveMonthElement.textContent;
         month = newActiveMonthElement;
+        getCalendar().then(() => {
+            addToolbar();
+        });
         return;
     });
 });
