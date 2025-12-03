@@ -40,11 +40,12 @@ def dates():
         return redirect(url_for("index"))
     
     date = get_date(date_id)
+    day_name = get_day_name(date_id)
     add_event_form.start_time.default = f"{date} 00:00"
     event_rects = ""
     if current_user.is_authenticated:
         event_rects = get_event_svg(date_id, current_user.id)
-    return render_template("dates.html", add_event_form=add_event_form, event_rects=event_rects, date=date, date_id=date_id)
+    return render_template("dates.html", add_event_form=add_event_form, event_rects=event_rects, date=date, date_id=date_id, day_name=day_name)
 
 @app.route("/clock")
 @app.route("/clock/stopwatch")

@@ -16,11 +16,6 @@
         </span>
     </p>
 
-    <div class="d-flex m-2">
-        <a class="btn btn-sm btn-outline-secondary rounded" role="button" data-bs-toggle="modal" {% if current_user.is_authenticated %} data-bs-target="#add-event-modal" {% else %} data-bs-target="#alert-modal"{% endif %}>
-            Add Event
-        </a>
-    </div>
     {% if current_user.is_authenticated %}
         <div id="add-event-modal" class="modal fade" tabindex="-1" aria-labelledby="modal-title" aria-hidden="true">
             <div class="modal-dialog">
@@ -80,13 +75,18 @@
     {% endif %}
 
     <div class="container-fluid my-5 ms-3 me-5">
+        <div class="d-flex m-2">
+            <a class="btn btn-sm btn-outline-secondary rounded mx-5 my-0" role="button" data-bs-toggle="modal" {% if current_user.is_authenticated %} data-bs-target="#add-event-modal" {% else %} data-bs-target="#alert-modal"{% endif %}>
+                Add Event
+            </a>
+        </div>
         <div class="row justify-content-center">
-            <div class="day-name text-center">{{ day_name }}</div>
+            <div id="day-name" class="day-name text-center">{{ day_name }}</div>
         </div>
         <div id="relative-row" class="row">
             <svg class="col-2 col-sm-1 row m-0 p-0 hours-row-svg" height="2600" width="100%">
                 <text class="hours-label" x="37.5%" y="22">23:00</text>
-                <text class="yesterday" x="37.5%" y="67">Yesterday</text>
+                <text id="yesterday" class="yesterday" x="37.5%" y="67">Yesterday</text>
                 {% for i in range(24) %}
                     <text class="hours-label" x="37.5%" y="{{ i * 100 + 122 }}">{{ "{:02d}".format(i) }}:00</text>
                 {% endfor %}
