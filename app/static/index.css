@@ -30,3 +30,7 @@
 .event-list-item {
     cursor: pointer;
 }
+
+.arrows {
+    cursor: pointer;
+}

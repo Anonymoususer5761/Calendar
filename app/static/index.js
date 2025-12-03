@@ -8,9 +8,10 @@ function removeActiveElements(itemCategory) {
         }
     });
 }
-document.querySelectorAll('.dropdown-item').forEach(dropdownItem => {
+const dropdownItems = document.querySelectorAll('.dropdown-item')
+dropdownItems.forEach(dropdownItem => {
     dropdownItem.addEventListener('click', (event) => {
-        let menuType = event.target.classList.contains('years') ? 'years' : 'months'
+        let menuType = event.target.getAttribute('type');
         if (menuType === 'years') {
             yearDropdown.textContent = event.target.textContent;
             year = event.target;
@@ -39,6 +40,44 @@ document.addEventListener('shown.bs.dropdown', (event) => {
         );
     }
 })
+
+const previousButton = document.getElementById('previous-month');
+const nextButton = document.getElementById('next-month');
+const noOfMonths = 12;
+const janIndex = 1;
+const decIndex = 12;
+
+document.querySelectorAll('.arrows').forEach(changeMonthButton => {
+    let changeValueBy = changeMonthButton.id === 'next-month' ? 1 : -1;
+    changeMonthButton.addEventListener('click', () => {
+        let activeMonthItem = monthDropdown.parentElement.querySelector('.dropdown-menu').querySelector('.active');
+        let monthValue = parseInt(activeMonthItem.getAttribute('value'));
+        if (monthValue + changeValueBy > noOfMonths || monthValue + changeValueBy < janIndex) {
+            let activeYearItem = yearDropdown.parentElement.querySelector('.dropdown-menu').querySelector('.active');
+            let yearValue = parseInt(activeYearItem.getAttribute('value')); 
+            monthValue = changeValueBy > 0 ? janIndex : decIndex;
+            yearValue += changeValueBy;
+            removeActiveElements('years');
+            removeActiveElements('months');
+            let newActiveYearElement = document.querySelector(`.year-${yearValue}`);
+            newActiveYearElement.classList.add('active');
+            let newActiveMonthElement = document.querySelector(`.month-${monthValue}`);
+            newActiveMonthElement.classList.add('active');
+            yearDropdown.textContent = newActiveYearElement.textContent;
+            year = newActiveYearElement;
+            monthDropdown.textContent = newActiveMonthElement.textContent;
+            month = newActiveMonthElement;
+            return;
+        }
+        monthValue += changeValueBy;
+        removeActiveElements('months');
+        let newActiveMonthElement = document.querySelector(`.month-${monthValue}`);
+        newActiveMonthElement.classList.add('active');
+        monthDropdown.textContent = newActiveMonthElement.textContent;
+        month = newActiveMonthElement;
+        return;
+    });
+});
 
 const daysInAWeek = 7;
 

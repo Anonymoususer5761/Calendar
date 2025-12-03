@@ -2,21 +2,22 @@
 
 {% block style %}
     <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 {% endblock %}
 
 {% block main %}
     <div class="d-flex me-1">
         <div class="dropdown mx-2 px-2 gx-2">
-            <a class="btn btn-sm btn-secondary dropdown-toggle rounded-pill year-dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <a class="year-button btn btn-sm btn-secondary dropdown-toggle rounded-pill year-dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 {{ today.year }}
             </a>
 
             <ul class="dropdown-menu years-menu">
                 {% for year in years %}
                     {% if today.year == year.year %}
-                        <li><a id="current-year" class="dropdown-item years active" value="{{ year.year }}">{{ year.year }}</a></li>
+                        <li><a id="current-year" class="year-{{year.year}} dropdown-item years active" type="years" value="{{ year.year }}">{{ year.year }}</a></li>
                     {% else %}
-                        <li><a class="dropdown-item years" value="{{ year.year }}">{{ year.year }}</a></li>
+                        <li><a class="year-{{year.year}} dropdown-item years" type="years" value="{{ year.year }}">{{ year.year }}</a></li>
                     {% endif %}
                 {% endfor %}
             </ul>
@@ -30,9 +31,9 @@
             <ul class="dropdown-menu months-menu">
                 {% for (month_id, month) in menses.items() %}
                     {% if today.month == month_id %}
-                        <li><a id="current-month" class="dropdown-item months active" value="{{ month_id }}" text="{{ month }}">{{ month }}</a></li>
+                        <li><a id="current-month" class="month-{{month_id}} dropdown-item months active" type="months" value="{{ month_id }}" text="{{ month }}">{{ month }}</a></li>
                     {% else %}
-                        <li><a class="dropdown-item months" value="{{ month_id }}">{{ month }}</a></li>
+                        <li><a class="month-{{month_id}} dropdown-item months" type="months" value="{{ month_id }}">{{ month }}</a></li>
                     {% endif %}
                 {% endfor %}
             </ul>
@@ -40,9 +41,15 @@
     </div>
 
     <div class="container-md ms-1 my-3 border">
-        <p class="h2 caption">
-
-        </p>
+        <div class="caption-div d-flex justify-content-between">
+            <p class="h2 caption">
+                        
+            </p>
+            <div class="arrow-icons py-2 text-secondary">
+                <i id="previous-month" class="arrows bi bi-caret-left"></i>
+                <i id="next-month" class="arrows bi bi-caret-right"></i>
+            </div>
+        </div>
         <div class="row flex-nowrap d-none d-sm-flex">
             <div class="weekday border calendar-col">Monday</div>
             <div class="weekday border calendar-col">Tuesday</div>
