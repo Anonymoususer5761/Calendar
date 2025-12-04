@@ -1,6 +1,6 @@
 from app import app
 from app.calendar_db import *
-from app.forms import LoginForm, RegistrationForm, AddEventForm, SettingsForm, PomodoroSettingsForm
+from app.forms import LoginForm, RegistrationForm, AddEventForm, EditEventForm, SettingsForm, PomodoroSettingsForm
 from app.user import sign_in_user, register_user
 from app.pytemplates import get_event_svg
 from app.helpers import update_dictionary
@@ -26,6 +26,7 @@ def index():
 @app.route("/dates", methods=["GET", "POST"])
 def dates():
     add_event_form = AddEventForm()
+    edit_event_form = EditEventForm()
 
     date_id = request.args.get("id")
 
@@ -45,7 +46,7 @@ def dates():
     event_rects = ""
     if current_user.is_authenticated:
         event_rects = get_event_svg(date_id, current_user.id)
-    return render_template("dates.html", add_event_form=add_event_form, event_rects=event_rects, date=date, date_id=date_id, day_name=day_name)
+    return render_template("dates.html", add_event_form=add_event_form, edit_event_form=edit_event_form, event_rects=event_rects, date=date, date_id=date_id, day_name=day_name)
 
 @app.route("/clock")
 @app.route("/clock/stopwatch")

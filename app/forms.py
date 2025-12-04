@@ -34,7 +34,22 @@ class AddEventForm(FlaskForm):
     def validate_end_time(self, end_time):
         if self.start_time.data > end_time.data:
             raise ValidationError("The event cannot end before it begins.")
+        
+class EditEventForm(FlaskForm):
+    name = StringField("Event", validators=[DataRequired()])
+    description = TextAreaField("Description")
+    start_time = DateTimeLocalField("From", validators=[DataRequired()])
+    end_time = DateTimeLocalField("To", validators=[DataRequired()])
+    event_color = StringField("Color Picker", validators=[DataRequired()])
+    submit = SubmitField("Edit Event")
 
+    def validate_event_color(self, event_color):
+        if not (COLOR_HEX_RE.fullmatch(event_color.data)):
+            raise ValidationError("Invalid color!")
+        
+    def validate_end_time(self, end_time):
+        if self.start_time.data > end_time.data:
+            raise ValidationError("The event cannot end before it begins.")
 
 class SettingsForm(FlaskForm):
     color_mode = BooleanField("Dark Mode")

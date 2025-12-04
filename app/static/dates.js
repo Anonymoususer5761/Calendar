@@ -121,3 +121,6 @@ let previousDay = {
 }
 
 document.getElementById('yesterday').textContent = previousDay[document.getElementById('day-name').innerHTML.trim()]
+
+// const editIcon = document.getElementById('edit-icon');
+// editIcon.addEventListener('click', ())

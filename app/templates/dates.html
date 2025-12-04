@@ -114,7 +114,7 @@
             <div class="d-flex align-items-center flex-start">
                 <small class="text-uppercase fw-bold">Events</small>
             </div>
-            <div><i class="edit-icon bi bi-pen"></i></div>
+            <div id="edit-icon" role="button" data-bs-toggle="modal" data-bs-target="#edit-event-modal"><i class="edit-icon bi bi-pen"></i></div>
         </div>
 
         <div class="card-body">
@@ -133,6 +133,47 @@
                     <span id="timings" class="card-link text-wrap small"></span>
                 </li>
             </ul>
+        </div>
+    </div>
+
+    <div id="edit-event-modal" class="modal fade" tabindex="-1" aria-labelledby="modal-title" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content bg-quaternary">
+                <div class="modal-header bg-header">
+                    <div id="modal-title" class="h5 modal-title text-white text-uppercase">
+                        Edit Event
+                    </div>
+                    <a class="btn btn-sm btn-secondary btn-close bg-light" role="button" data-bs-dismiss="modal" aria-label="close"></a>
+                </div>
+                <div class="form d-flex align-items-between justify-content-center"></div>
+                    <form class="p-3" action="" method="post" style="width: 100%;">
+                        {{ edit_event_form.hidden_tag() }}
+                        <div class="m-2">
+                            {{ edit_event_form.name.label(class="form-label h1 small fw-bold") }}
+                            {{ edit_event_form.name(class="form-control border-bottom", autocomplete="off", autofocus=autofocus) }}
+                        </div>
+                        <div class="m-2">
+                            {{ edit_event_form.description.label(class="form-label small fw-bold") }}
+                            {{ edit_event_form.description(class="form-control border-bottom", autocomplete="off") }}
+                        </div>
+                        <div class="m-2">
+                            {{ edit_event_form.start_time.label(class="form-label small fw-bold") }}
+                            {{ edit_event_form.start_time(class="form-control", value=add_event_form.start_time.default) }}
+                        </div>
+                        <div class="m-2">
+                            {{ edit_event_form.end_time.label(class="form-label small fw-bold") }}
+                            {{ edit_event_form.end_time(class="form-control",value=add_event_form.start_time.default) }}
+                        </div>
+                    <div class="m-2">
+                            {{ edit_event_form.event_color.label(class="form-label small fw-bold") }}
+                            {{ edit_event_form.event_color(id="colorInput", class="form-control form-control-color", type="color", value="#99c1f1", title="Color") }}
+                        </div>
+                        <div class="m-3">
+                            {{ edit_event_form.submit(class="btn btn-secondary btn-flex small") }}
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 
