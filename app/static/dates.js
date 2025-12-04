@@ -58,13 +58,41 @@ if (todayDate === selectedDate) {
 
 const popup = document.getElementById('event-details-popup');
 const popupHeader = document.querySelector('.card-header');
+const editIcon = document.getElementById('edit-icon');
+
+function setNewColor() {
+  const colorInput = document.getElementById('colorInput');
+  
+  // Set the color to a new value (e.g., green)
+  colorInput.value = '#4CAF50'; 
+  
+  // Optional: Log the new value to the console
+  console.log('New color set to:', colorInput.value);
+}
+setNewColor();
+
+// AI USAGE DISCLAIMER: The code itself is not AI generated, but the idea to use an object was suggested by ChatGPT
+function fillEditForm(serverEvent) {
+    const editEventFormEl = {
+        name:  document.getElementById('edit_name'),
+        desc:  document.getElementById('edit_description'),
+        start:  document.getElementById('edit_start_time'),
+        end:    document.getElementById('edit_end_time'),
+        color: document.getElementById('colorInput'),
+    }
+    editEventFormEl.name.value = serverEvent['name'];
+    editEventFormEl.desc.value = serverEvent['desc'];
+    editEventFormEl.start.value = formatDateTime(serverEvent['start']);
+    editEventFormEl.end.value = formatDateTime(serverEvent['end']);
+}
+
 async function displayEventTooltip(event, eventId, colorValue) {
     let response = await fetch(`/api/dates/event?event_id=${eventId}`, {
         headers: {
             'Request-Source': 'JS-AJAX',
         }
     });
-    serverEvent = await response.json();
+    const serverEvent = await response.json();
     // AI Usage Disclaimer: Required some help to understand how to set the x and y coordinates of the popup.
     let eventRect = event.target.getBoundingClientRect();
     let yMouse = event.pageY;
@@ -79,6 +107,8 @@ async function displayEventTooltip(event, eventId, colorValue) {
     duration.textContent = formatTimestampDifference((serverEvent['end'] - serverEvent['start']) * 1000);
     const timings = document.getElementById('timings');
     timings.textContent = formatDateTime(serverEvent['start'] * 1000) + ' - ' + formatDateTime(serverEvent['end'] * 1000);
+    editIcon.setAttribute('value', serverEvent['desc']);
+    fillEditForm(serverEvent);
     popupHeader.style.backgroundColor = colorValue;
     popup.style.display = 'inline';
 }
@@ -121,6 +151,3 @@ let previousDay = {
 }
 
 document.getElementById('yesterday').textContent = previousDay[document.getElementById('day-name').innerHTML.trim()]
-
-// const editIcon = document.getElementById('edit-icon');
-// editIcon.addEventListener('click', ())
