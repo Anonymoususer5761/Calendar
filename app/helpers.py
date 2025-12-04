@@ -8,7 +8,7 @@ import re
 
 COLOR_HEX_RE = re.compile(r"^#[a-f0-9]{6}$|^#[a-f0-9]{3}$", re.IGNORECASE)
 
-color_choices = (("#ff0000", "Red"), ("#0000ff", "Blue"), ("#00ff00", "Green"), ("#ffff00", "Yellow"), ("#800080", "Purple"))
+color_choices = (("#ff0000", "Red"), ("#0000ff", "Blue"), ("#00ff00", "Green"), ("#ffff00", "Yellow"), ("#808080", "Grey"))
 
 def date_to_id(date: str) -> int:
     """Expects a date string in YYYY-MM-DD format"""

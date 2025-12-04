@@ -60,31 +60,40 @@ const popup = document.getElementById('event-details-popup');
 const popupHeader = document.querySelector('.card-header');
 const editIcon = document.getElementById('edit-icon');
 
-function setNewColor() {
-  const colorInput = document.getElementById('colorInput');
-  
-  // Set the color to a new value (e.g., green)
-  colorInput.value = '#4CAF50'; 
-  
-  // Optional: Log the new value to the console
-  console.log('New color set to:', colorInput.value);
-}
-setNewColor();
-
 // AI USAGE DISCLAIMER: The code itself is not AI generated, but the idea to use an object was suggested by ChatGPT
+const editEventFormEl = {
+    name:  document.getElementById('edit_name'),
+    desc:  document.getElementById('edit_description'),
+    start:  document.getElementById('edit_start_time'),
+    end:    document.getElementById('edit_end_time'),
+    color: document.getElementById('edit_event_color'),
+    colorDisplay: document.getElementById('edit_event_color_display'),
+}
+const addEventFormEl = {
+    color: document.getElementById('event_color'),
+    colorDisplay: document.getElementById('event_color_display'),
+}
 function fillEditForm(serverEvent) {
-    const editEventFormEl = {
-        name:  document.getElementById('edit_name'),
-        desc:  document.getElementById('edit_description'),
-        start:  document.getElementById('edit_start_time'),
-        end:    document.getElementById('edit_end_time'),
-        color: document.getElementById('colorInput'),
-    }
     editEventFormEl.name.value = serverEvent['name'];
     editEventFormEl.desc.value = serverEvent['desc'];
     editEventFormEl.start.value = formatDateTime(serverEvent['start']);
     editEventFormEl.end.value = formatDateTime(serverEvent['end']);
 }
+
+editEventFormEl.color.addEventListener('change', (event) => {
+    displaySelectedColor(event.target, editEventFormEl.colorDisplay);
+});
+function displaySelectedColor(target, display) {
+    display.style.backgroundColor = target.value;
+}
+addEventFormEl.color.addEventListener('change', (event) => {
+    displaySelectedColor(event.target, addEventFormEl.colorDisplay);
+});
+editEventFormEl.color.addEventListener('change', (event) => {
+    displaySelectedColor(event.target, editEventFormEl.colorDisplay);
+});
+displaySelectedColor(editEventFormEl.color, editEventFormEl.colorDisplay);
+displaySelectedColor(addEventFormEl.color, addEventFormEl.colorDisplay);
 
 async function displayEventTooltip(event, eventId, colorValue) {
     let response = await fetch(`/api/dates/event?event_id=${eventId}`, {

@@ -48,9 +48,16 @@
                                 {{ add_event_form.end_time.label(class="form-label small fw-bold") }}
                                 {{ add_event_form.end_time(class="form-control",value=add_event_form.start_time.default) }}
                             </div>
-                        <div class="m-2">
-                                {{ add_event_form.event_color.label(class="form-label small fw-bold") }}
-                                {{ add_event_form.event_color(id="colorInput", class="form-control form-control-color", type="color", value="#99c1f1", title="Color") }}
+                            <div class="m-2">
+                                {{ add_event_form.event_color.label(id="color-label", class="form-label small fw-bold") }}
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-9 color-picker">
+                                            {{ add_event_form.event_color(class="form-control form-select", style="background-color: #ffffff; border: 1px solid grey;") }}
+                                        </div>
+                                        <div id="event_color_display" class="color-display col-1" style="background-color: red;"></div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="m-3">
                                 {{ add_event_form.submit(class="btn btn-secondary btn-flex small") }}
@@ -164,9 +171,16 @@
                             {{ edit_event_form.edit_end_time.label(id="edit-end-label", class="form-label small fw-bold") }}
                             {{ edit_event_form.edit_end_time(class="form-control",value=add_event_form.start_time.default) }}
                         </div>
-                    <div class="m-2">
+                        <div class="m-2">
                             {{ edit_event_form.edit_event_color.label(id="edit-color-label", class="form-label small fw-bold") }}
-                            {{ edit_event_form.edit_event_color(id="colorInput", class="form-control form-control-color", type="color", value="#99c1f1", title="Color") }}
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-9 color-picker">
+                                        {{ edit_event_form.edit_event_color(class="form-control form-select", style="background-color: #ffffff; border: 1px solid grey;") }}
+                                    </div>
+                                    <div id="edit_event_color_display" class="col-1" style="background-color: red;"></div>
+                                </div>
+                            </div>
                         </div>
                         <div class="m-3">
                             {{ edit_event_form.submit(class="btn btn-secondary btn-flex small") }}

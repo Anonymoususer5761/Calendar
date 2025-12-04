@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, DateTimeLocalField, SelectField, IntegerField
 from wtforms.validators import DataRequired, EqualTo, Email, NumberRange, ValidationError
 
-from app.helpers import COLOR_HEX_RE
+from app.helpers import color_choices
 
 class LoginForm(FlaskForm):
     username = StringField("Username", validators=[DataRequired()])
@@ -24,12 +24,12 @@ class AddEventForm(FlaskForm):
     description = TextAreaField("Description")
     start_time = DateTimeLocalField("From", validators=[DataRequired()])
     end_time = DateTimeLocalField("To", validators=[DataRequired()])
-    event_color = StringField("Color Picker", validators=[DataRequired()])
+    event_color = SelectField("Color Picker", choices=color_choices, validators=[DataRequired()])
     submit = SubmitField("Add Event")
 
     def validate_event_color(self, event_color):
-        if not (COLOR_HEX_RE.fullmatch(event_color.data)):
-            raise ValidationError("Invalid color!")
+        if not event_color.data in color_choices:
+            raise ValidationError("Invalid color.")
         
     def validate_end_time(self, end_time):
         if self.start_time.data > end_time.data:
@@ -40,12 +40,12 @@ class EditEventForm(FlaskForm):
     edit_description = TextAreaField("Description")
     edit_start_time = DateTimeLocalField("From", validators=[DataRequired()])
     edit_end_time = DateTimeLocalField("To", validators=[DataRequired()])
-    edit_event_color = StringField("Color Picker", validators=[DataRequired()])
-    submit = SubmitField("Edit Event")
+    edit_event_color = SelectField("Color Picker", choices=color_choices, validators=[DataRequired()])
+    submit = SubmitField("Add Event")
 
-    def validate_event_color(self, event_color):
-        if not (COLOR_HEX_RE.fullmatch(event_color.data)):
-            raise ValidationError("Invalid color!")
+    def validate_event_color(self, edit_event_color):
+        if not edit_event_color.data in color_choices:
+            raise ValidationError("Invalid color.")
         
     def validate_end_time(self, end_time):
         if self.start_time.data > end_time.data:
