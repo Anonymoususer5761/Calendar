@@ -31,13 +31,13 @@ def dates():
     date_id = request.args.get("id")
 
     if add_event_form.validate_on_submit():
-        if add_event_form.submit_to_db(current_user.id):
+        if add_event_form.submit_to_db():
             flash("Event has been successfully added to the calendar.")
             return redirect(url_for("dates", id=date_id))
         flash("Sorry! An unknown error has occurred.")
         return redirect(url_for("dates", id=date_id))
     if edit_event_form.validate_on_submit():
-        if edit_event_form.submit_to_db(current_user.id):
+        if edit_event_form.submit_to_db():
             flash("Successfully edited event.")
             return redirect(url_for("dates", id=date_id))
         flash("Sorry! Something went wrong...")

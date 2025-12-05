@@ -26,7 +26,32 @@ class AddEventForm(FlaskForm):
     start_time = DateTimeLocalField("From", validators=[DataRequired()])
     end_time = DateTimeLocalField("To", validators=[DataRequired()])
     event_color = SelectField("Color Picker", choices=color_choices, validators=[DataRequired()])
+    user_id_add_event = HiddenField("User ID", validators=[DataRequired()])
     submit = SubmitField("Add Event")
+
+    def validate_user_id(self, user_id_add_event):
+        db = get_db()
+        try:
+            valid_user_ids = db.execute("""SELECT id FROM users""").fetchall()
+        finally:
+            db.close()
+        for valid_user_id in valid_user_ids:
+            if user_id_add_event == valid_user_id["id"]:
+                return True
+        raise ValidationError("User tokey not recongnized...") 
+
+    def validate_name(self, name):
+        db = get_db()
+        try:
+            already_exists = db.execute("""SELECT name FROM events WHERE user_id = ? AND name = ?""",
+                (self.user_id_add_event.data, name.data,)           
+            ).fetchone()
+        finally:
+            db.close()
+        if already_exists:
+            raise ValidationError("You have another event by the same name")
+
+    
 
     def validate_event_color(self, event_color):
         is_valid = event_color.data in (hex_code for hex_code, color in color_choices)
@@ -37,11 +62,11 @@ class AddEventForm(FlaskForm):
         if self.start_time.data > end_time.data:
             raise ValidationError("The event cannot end before it begins.")
 
-    def submit_to_db(self, user_id):
+    def submit_to_db(self):
         db = get_db()
         try:
             db.execute("""INSERT INTO events(name, description, start_time, end_time, color, user_id) VALUES (?, ?, unixepoch(?), unixepoch(?), ?, ?)""",
-                (self.name.data, self.description.data, self.start_time.data, self.end_time.data, self.event_color.data, user_id,)           
+                (self.name.data, self.description.data, self.start_time.data, self.end_time.data, self.event_color.data, self.user_id_add_event.data,)           
             )
         finally:
             db.commit()
@@ -55,8 +80,29 @@ class EditEventForm(FlaskForm):
     edit_start_time = DateTimeLocalField("From", validators=[DataRequired()])
     edit_end_time = DateTimeLocalField("To", validators=[DataRequired()])
     edit_event_color = SelectField("Color Picker", choices=color_choices, validators=[DataRequired()])
-    event_id = HiddenField("Event ID", validators=[DataRequired()])
+    edit_user_id = HiddenField("User ID", validators=[DataRequired()])
+    edit_event_id = HiddenField("Event ID", validators=[DataRequired()])
     submit = SubmitField("Add Event")
+
+    def validate_user_id(self, edit_user_id):
+        db = get_db()
+        try:
+            is_valid = db.execute("""SELECT id FROM users WHERE id = ?""", (edit_user_id,)).fetchone()
+        finally:
+            db.close()
+        if not is_valid:
+            raise ValidationError("User token not recongnized...")
+    
+    def validate_edit_event_id(self, edit_event_id):
+        db = get_db()
+        try:
+            is_valid = db.execute("""SELECT id FROM events WHERE user_id = ? AND id = ?""",
+                (self.edit_user_id.data, edit_event_id.data)
+            ).fetchall()
+        finally:
+            db.close()
+        if not is_valid:
+            raise ValidationError("Invalid event ID!")
 
     def validate_event_color(self, event_color):
         is_valid = event_color.data in (hex_code for hex_code, color in color_choices)
@@ -67,17 +113,11 @@ class EditEventForm(FlaskForm):
         if self.start_time.data > end_time.data:
             raise ValidationError("The event cannot end before it begins.")
         
-    def submit_to_db(self, user_id):
+    def submit_to_db(self):
         db = get_db()
         try:
-            event_exists = db.execute("""SELECT id FROM events WHERE user_id = ? and id = ?""",
-                (user_id, self.event_id.data)           
-            ).fetchone()
-            if not event_exists:
-                raise ValidationError("Error! Could not find event.")
-            
             db.execute("""UPDATE events SET name = ?, description = ?, start_time = unixepoch(?), end_time = unixepoch(?), color = ? WHERE id = ?""",
-                (self.edit_name.data, self.edit_description.data, self.edit_start_time.data, self.edit_end_time.data, self.edit_event_color.data, self.event_id.data,)           
+                (self.edit_name.data, self.edit_description.data, self.edit_start_time.data, self.edit_end_time.data, self.edit_event_color.data, self.edit_event_id.data,)           
             )
         finally:
             db.commit()

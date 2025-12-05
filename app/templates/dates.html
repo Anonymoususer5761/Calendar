@@ -31,7 +31,8 @@
                     </div>
                     <div class="form d-flex align-items-between justify-content-center">
                         <form class="p-3" action="" method="post" style="width: 100%;">
-                            {{ add_event_form.hidden_tag() }}
+                            {{ add_event_form.csrf_token() }}
+                            {{ add_event_form.user_id_add_event(value=current_user.id) }}
                             <div class="m-2">
                                 {{ add_event_form.name.label(class="form-label h1 small fw-bold") }}
                                 {{ add_event_form.name(class="form-control border-bottom", autocomplete="off", autofocus=autofocus) }}
@@ -154,8 +155,9 @@
                 </div>
                 <div class="form d-flex align-items-between justify-content-center"></div>
                     <form class="p-3" action="" method="post" style="width: 100%;">
-                        {{ edit_event_form.hidden_tag() }}
-                        {{ edit_event_form.event_id() }}
+                        {{ edit_event_form.csrf_token() }}
+                        {{ edit_event_form.edit_user_id(value=current_user.id) }}
+                        {{ edit_event_form.edit_event_id() }}
                         <div class="m-2">
                             {{ edit_event_form.edit_name.label(id="edit-name-label", class="form-label h1 small fw-bold") }}
                             {{ edit_event_form.edit_name(class="form-control border-bottom", autocomplete="off", autofocus=autofocus) }}

@@ -62,7 +62,7 @@ const editIcon = document.getElementById('edit-icon');
 
 // AI USAGE DISCLAIMER: The code itself is not AI generated, but the idea to use an object was suggested by ChatGPT
 const editEventFormEl = {
-    id: document.getElementById('event_id'),
+    id: document.getElementById('edit_event_id'),
     name:  document.getElementById('edit_name'),
     desc:  document.getElementById('edit_description'),
     start:  document.getElementById('edit_start_time'),
@@ -79,7 +79,7 @@ function fillEditForm(serverEvent) {
     editEventFormEl.desc.value = serverEvent['desc'];
     editEventFormEl.start.value = formatDateTime(serverEvent['start'] * 1000);
     editEventFormEl.end.value = formatDateTime(serverEvent['end'] * 1000);
-    editEventFormEl.id.value = serverEvent['id']
+    editEventFormEl.id.value = serverEvent['id'];
 }
 
 editEventFormEl.color.addEventListener('change', (event) => {
