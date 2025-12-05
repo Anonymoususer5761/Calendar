@@ -118,7 +118,7 @@ def get_event(event_id: int | str, user_id: int | str) -> None:
     db = get_db()
     try:
         event = db.execute("""
-        SELECT name, description, start_time, end_time, color
+        SELECT events.id AS id, name, description, start_time, end_time, color
         FROM events
         JOIN users
         ON users.id = user_id
@@ -131,7 +131,7 @@ def get_event(event_id: int | str, user_id: int | str) -> None:
     finally:
         db.close()
 
-    event_dict = {"name": event["name"], "desc": event["description"], "start": event["start_time"], "end": event["end_time"], "color": event["color"]}
+    event_dict = {"id": event["id"], "name": event["name"], "desc": event["description"], "start": event["start_time"], "end": event["end_time"], "color": event["color"]}
     return event_dict
 
 

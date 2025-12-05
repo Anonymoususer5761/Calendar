@@ -1,8 +1,9 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, DateTimeLocalField, SelectField, IntegerField
+from wtforms import HiddenField, StringField, PasswordField, BooleanField, SubmitField, TextAreaField, DateTimeLocalField, SelectField, IntegerField
 from wtforms.validators import DataRequired, EqualTo, Email, NumberRange, ValidationError
 
 from app.helpers import color_choices
+from app.database_manager import get_db
 
 class LoginForm(FlaskForm):
     username = StringField("Username", validators=[DataRequired()])
@@ -28,12 +29,25 @@ class AddEventForm(FlaskForm):
     submit = SubmitField("Add Event")
 
     def validate_event_color(self, event_color):
-        if not event_color.data in color_choices:
+        is_valid = event_color.data in (hex_code for hex_code, color in color_choices)
+        if not is_valid:
             raise ValidationError("Invalid color.")
         
     def validate_end_time(self, end_time):
         if self.start_time.data > end_time.data:
             raise ValidationError("The event cannot end before it begins.")
+
+    def submit_to_db(self, user_id):
+        db = get_db()
+        try:
+            db.execute("""INSERT INTO events(name, description, start_time, end_time, color, user_id) VALUES (?, ?, unixepoch(?), unixepoch(?), ?, ?)""",
+                (self.name.data, self.description.data, self.start_time.data, self.end_time.data, self.event_color.data, user_id,)           
+            )
+        finally:
+            db.commit()
+            db.close()
+        return True
+
         
 class EditEventForm(FlaskForm):
     edit_name = StringField("Event", validators=[DataRequired()])
@@ -41,15 +55,34 @@ class EditEventForm(FlaskForm):
     edit_start_time = DateTimeLocalField("From", validators=[DataRequired()])
     edit_end_time = DateTimeLocalField("To", validators=[DataRequired()])
     edit_event_color = SelectField("Color Picker", choices=color_choices, validators=[DataRequired()])
+    event_id = HiddenField("Event ID", validators=[DataRequired()])
     submit = SubmitField("Add Event")
 
-    def validate_event_color(self, edit_event_color):
-        if not edit_event_color.data in color_choices:
+    def validate_event_color(self, event_color):
+        is_valid = event_color.data in (hex_code for hex_code, color in color_choices)
+        if not is_valid:
             raise ValidationError("Invalid color.")
         
     def validate_end_time(self, end_time):
         if self.start_time.data > end_time.data:
             raise ValidationError("The event cannot end before it begins.")
+        
+    def submit_to_db(self, user_id):
+        db = get_db()
+        try:
+            event_exists = db.execute("""SELECT id FROM events WHERE user_id = ? and id = ?""",
+                (user_id, self.event_id.data)           
+            ).fetchone()
+            if not event_exists:
+                raise ValidationError("Error! Could not find event.")
+            
+            db.execute("""UPDATE events SET name = ?, description = ?, start_time = unixepoch(?), end_time = unixepoch(?), color = ? WHERE id = ?""",
+                (self.edit_name.data, self.edit_description.data, self.edit_start_time.data, self.edit_end_time.data, self.edit_event_color.data, self.event_id.data,)           
+            )
+        finally:
+            db.commit()
+            db.close()
+        return True
 
 class SettingsForm(FlaskForm):
     color_mode = BooleanField("Dark Mode")

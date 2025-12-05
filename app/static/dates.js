@@ -62,6 +62,7 @@ const editIcon = document.getElementById('edit-icon');
 
 // AI USAGE DISCLAIMER: The code itself is not AI generated, but the idea to use an object was suggested by ChatGPT
 const editEventFormEl = {
+    id: document.getElementById('event_id'),
     name:  document.getElementById('edit_name'),
     desc:  document.getElementById('edit_description'),
     start:  document.getElementById('edit_start_time'),
@@ -76,8 +77,9 @@ const addEventFormEl = {
 function fillEditForm(serverEvent) {
     editEventFormEl.name.value = serverEvent['name'];
     editEventFormEl.desc.value = serverEvent['desc'];
-    editEventFormEl.start.value = formatDateTime(serverEvent['start']);
-    editEventFormEl.end.value = formatDateTime(serverEvent['end']);
+    editEventFormEl.start.value = formatDateTime(serverEvent['start'] * 1000);
+    editEventFormEl.end.value = formatDateTime(serverEvent['end'] * 1000);
+    editEventFormEl.id.value = serverEvent['id']
 }
 
 editEventFormEl.color.addEventListener('change', (event) => {
@@ -116,7 +118,7 @@ async function displayEventTooltip(event, eventId, colorValue) {
     duration.textContent = formatTimestampDifference((serverEvent['end'] - serverEvent['start']) * 1000);
     const timings = document.getElementById('timings');
     timings.textContent = formatDateTime(serverEvent['start'] * 1000) + ' - ' + formatDateTime(serverEvent['end'] * 1000);
-    editIcon.setAttribute('value', serverEvent['desc']);
+    editIcon.setAttribute('value', serverEvent['id']);
     fillEditForm(serverEvent);
     popupHeader.style.backgroundColor = colorValue;
     popup.style.display = 'inline';

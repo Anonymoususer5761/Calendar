@@ -155,6 +155,7 @@
                 <div class="form d-flex align-items-between justify-content-center"></div>
                     <form class="p-3" action="" method="post" style="width: 100%;">
                         {{ edit_event_form.hidden_tag() }}
+                        {{ edit_event_form.event_id() }}
                         <div class="m-2">
                             {{ edit_event_form.edit_name.label(id="edit-name-label", class="form-label h1 small fw-bold") }}
                             {{ edit_event_form.edit_name(class="form-control border-bottom", autocomplete="off", autofocus=autofocus) }}
