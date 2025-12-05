@@ -84,6 +84,15 @@ class EditEventForm(FlaskForm):
     edit_event_id = HiddenField("Event ID", validators=[DataRequired()])
     submit = SubmitField("Add Event")
 
+    def validate_edit_name(self, edit_name):
+        db = get_db()
+        try:
+            exists = db.execute("""SELECT name FROM events WHERE user_id = ? AND name = ? AND id != ?""", (self.edit_user_id.data, edit_name.data, self.edit_event_id.data)).fetchone()
+        finally:
+            db.close()
+        if exists:
+            raise ValidationError("Another event by that name already exists.")
+
     def validate_user_id(self, edit_user_id):
         db = get_db()
         try:
