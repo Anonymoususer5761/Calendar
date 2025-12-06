@@ -22,7 +22,7 @@ dropdownItems.forEach(dropdownItem => {
         removeActiveElements(menuType);
         event.target.classList.add('active');
         getCalendar().then(() => {
-            addToolbar();
+            toggleDetailsCard();
         });
     });
 });
@@ -68,7 +68,7 @@ document.querySelectorAll('.arrows').forEach(changeMonthButton => {
             monthDropdown.textContent = newActiveMonthElement.textContent;
             month = newActiveMonthElement;
             getCalendar().then(() => {
-                addToolbar();
+                toggleDetailsCard();
             });
             return;
         }
@@ -79,7 +79,7 @@ document.querySelectorAll('.arrows').forEach(changeMonthButton => {
         monthDropdown.textContent = newActiveMonthElement.textContent;
         month = newActiveMonthElement;
         getCalendar().then(() => {
-            addToolbar();
+            toggleDetailsCard();
         });
         return;
     });
@@ -203,56 +203,85 @@ async function getCalendar() {
     }
 }
 
-const dateTooltip = document.getElementById('date-tooltip')
-const dateTitle = document.getElementById('date-title');
-const holidayParagraph = document.getElementById('holiday-paragraph');
-const tooltipTitle = document.getElementById('toolbar-title');
-const eventsParagraph = document.getElementById('events-paragraph');
-
-getCalendar().then(() => {
-    addToolbar();
-});
-
-async function fillDateToolBar(dateCell) {
-    let holidays = await getHolidays(dateCell.id);
-    let todayString = dateCell.classList.contains('today') ? ' | Today' : '';
-    dateTitle.textContent = `${year.getAttribute('value')}-${month.getAttribute('value')}-${dateCell.textContent}${todayString}`;
-    dateTitle.setAttribute('value', dateCell.id);
-    holidayParagraph.innerHTML = '';
-    if (holidays) {
-        let unorderedList = document.createElement('ul');
-        for (let holiday of holidays) {
-            let listItem = document.createElement('li');
-            let spanHoliday = document.createElement('span');
-            spanHoliday.textContent = holiday['holiday'];
-            let spanCategory = document.createElement('span');
-            spanCategory.textContent = ` ${holiday['category']}`;
-            spanCategory.classList.add(toCSSClass(holiday['category'], 'text'))
-            listItem.append(spanHoliday);
-            listItem.append(spanCategory);
-            unorderedList.append(listItem);
+const dateDetailsCardUI = {
+    masterDiv: document.getElementById('date-tooltip'),
+    dateTitle: document.getElementById('date-title'),
+    holidayParagraph: document.getElementById('holiday-paragraph'),
+    tooltipTitle: document.getElementById('toolbar-title'),
+    eventsParagraph: document.getElementById('events-paragraph'),
+    async fill(dateCell) {
+        let holidays = await getHolidays(dateCell.id);
+        let todayString = dateCell.classList.contains('today') ? ' | Today' : '';
+        this.dateTitle.textContent = `${year.getAttribute('value')}-${month.getAttribute('value')}-${dateCell.textContent}${todayString}`;
+        this.dateTitle.setAttribute('value', dateCell.id);
+        this.holidayParagraph.innerHTML = '';
+        if (holidays) {
+            let unorderedList = document.createElement('ul');
+            for (let holiday of holidays) {
+                let listItem = document.createElement('li');
+                let spanHoliday = document.createElement('span');
+                spanHoliday.textContent = holiday['holiday'];
+                let spanCategory = document.createElement('span');
+                spanCategory.textContent = ` ${holiday['category']}`;
+                spanCategory.classList.add(toCSSClass(holiday['category'], 'text'))
+                listItem.append(spanHoliday);
+                listItem.append(spanCategory);
+                unorderedList.append(listItem);
+            }
+            this.holidayParagraph.append(unorderedList);
         }
-        holidayParagraph.append(unorderedList);
-    }
 
-    let events = await getEvents(dateCell.id);
-    eventsParagraph.innerHTML = '';
-    if (events) {
-        let unorderedList = document.createElement('ul');
-        for (let userEvent of events) {
-            let listItem = document.createElement('li');
-            listItem.setAttribute('value', dateCell.id);
-            listItem.classList.add('event-list-item');
-            listItem.textContent = userEvent['name'];
-            listItem.addEventListener('click', goToDate);
-            unorderedList.append(listItem);
+        let events = await getEvents(dateCell.id);
+        this.eventsParagraph.innerHTML = '';
+        if (events) {
+            let unorderedList = document.createElement('ul');
+            for (let userEvent of events) {
+                let listItem = document.createElement('li');
+                listItem.classList.add('event-list-item');
+                listItem.textContent = userEvent['name'];
+                listItem.addEventListener('click', (clickEvent) => {
+                    displayEventTooltip(clickEvent, userEvent);
+                });
+                unorderedList.append(listItem);
+            }
+            this.eventsParagraph.append(unorderedList);
         }
-        eventsParagraph.append(unorderedList);
+        return;
     }
-    return;
 }
 
-function addToolbar() {
+const eventDetailsCard = {
+    masterEL: document.getElementById('event-details-popup'),
+    header: document.getElementById('card-header'),
+    editIcon: document.getElementById('edit-icon'),
+    title: document.getElementById('event-title'),
+    desc: document.getElementById('description-card'),
+    duration: document.getElementById('duration'),
+    timings: document.getElementById('timings'),
+}
+
+async function displayEventTooltip(event, serverEvent) {
+    // AI Usage Disclaimer: Required some help to understand how to set the x and y coordinates of the popup.
+    let eventRect = event.target.getBoundingClientRect();
+    let yMouse = event.pageY - 65;
+    let xRightPlusPadding = Math.floor(eventRect.right + 20);
+    eventDetailsCard.masterEL.style.top = `${yMouse}px`;
+    eventDetailsCard.masterEL.style.left = `${xRightPlusPadding}px`;
+    eventDetailsCard.title.textContent = serverEvent['name'];
+    eventDetailsCard.desc.textContent = serverEvent['desc'];
+    eventDetailsCard.duration.textContent = formatTimestampDifference((serverEvent['end_time'] - serverEvent['start_time']) * 1000);
+    eventDetailsCard.timings.textContent = formatDateTime(serverEvent['start_time'] * 1000) + ' - ' + formatDateTime(serverEvent['end_time'] * 1000);
+    eventDetailsCard.editIcon.setAttribute('value', serverEvent['id']);
+    // fillEditForm(serverEvent);
+    eventDetailsCard.header.style.backgroundColor = serverEvent['color'];
+    eventDetailsCard.masterEL.style.display = 'inline';
+}
+
+getCalendar().then(() => {
+    toggleDetailsCard();
+});
+
+function toggleDetailsCard() {
     let displayStyle = 'grid';
     let previousCellId = 0;
     document.querySelectorAll('.calendar-col-data').forEach(date => {
@@ -260,13 +289,13 @@ function addToolbar() {
             if (previousCellId === event.target.id) {
                 previousCellId = 0;
                 displayStyle = 'none';
-                dateTooltip.style.display = displayStyle;
+                dateDetailsCardUI.masterDiv.style.display = displayStyle;
                 return;
             }
             displayStyle = 'grid';
-            fillDateToolBar(event.target);
+            dateDetailsCardUI.fill(event.target);
             previousCellId = event.target.id;
-            dateTooltip.style.display = displayStyle;
+            dateDetailsCardUI.masterDiv.style.display = displayStyle;
             return;
         });
     });
@@ -294,4 +323,4 @@ function goToDate(event) {
     window.location.href = `/dates?id=${dateId}`
 }
 
-dateTitle.addEventListener('click', goToDate);
+dateDetailsCardUI.dateTitle.addEventListener('click', goToDate);

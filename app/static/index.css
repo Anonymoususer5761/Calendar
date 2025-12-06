@@ -34,3 +34,7 @@
 .arrows {
     cursor: pointer;
 }
+
+#event-details-popup {
+    display: none;
+}

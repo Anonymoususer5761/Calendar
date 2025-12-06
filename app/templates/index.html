@@ -82,15 +82,43 @@
                 <div class="card-body bg-light">
                     <div>
                             <div id="events" class="h6 fw-bold text-dark">Events</div>
-                            <div id="events-paragraph" class="p text-muted lead fs-6"></div>
+                            <div id="events-paragraph" class="p lead fs-6"></div>
                     </div>
 
                     <div>
                         <div id="holiday-header" class="h6 fw-bold m-0 text-dark">Holidays</div>
-                        <div id="holiday-paragraph" class="p text-muted lead fs-6 mb-0"></div>
+                        <div id="holiday-paragraph" class="p lead fs-6 mb-0"></div>
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- AI Usage Disclaimer: I used Gemini to style this div element and its children. -->
+    <div id="event-details-popup" class="ms-2 mt-2 rounded bg-light position-absolute">
+        <div id="card-header" class="card-header bg-event-color container py-2 px-3 rounded d-flex justify-content-between">
+            <div class="d-flex align-items-center flex-start">
+                <small class="text-uppercase fw-bold">Events</small>
+            </div>
+            <div id="edit-icon" value="0" role="button" data-bs-toggle="modal" data-bs-target="#edit-event-modal"><i class="edit-icon bi bi-pen"></i></div>
+        </div>
+
+        <div class="card-body">
+            <h5 id="event-title" class="card-title fw-bold text-dark mb-2"></h5>
+            
+            <p id="description-card" class="card-text text-muted small border-bottom pb-2 mb-3"></p>
+
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item d-flex align-items-center px-0 py-1">
+                    <i class="bi bi-clock-history text-secondary me-2"></i>
+                    <span id="duration" class="card-link fw-semibold text-primary small"></span>
+                </li>
+                
+                <li class="list-group-item d-flex align-items-start px-0 py-1">
+                    <i class="bi bi-calendar-range text-secondary me-2 mt-1"></i>
+                    <span id="timings" class="card-link text-wrap small"></span>
+                </li>
+            </ul>
         </div>
     </div>
 

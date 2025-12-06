@@ -27,15 +27,6 @@ function formatTimestampDifference(timestamp) {
     return returnString.trim();
 }
 
-// Used ChatGPT because I couldn't figure out that I had to convert the timestamp into milliseconds.
-function formatDateTime(timestamp) {
-    timestamp = parseInt(timestamp);
-    let date = new Date(timestamp);
-    let datetime = date.toISOString();
-    datetime = datetime.replace('T', ' ').split('.')[0].slice(0, 16);
-    return datetime;
-}
-
 function displayNowLine() {
     let nowLine = document.querySelector('.now-line');
     let now = new Date();

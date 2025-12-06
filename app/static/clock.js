@@ -14,13 +14,3 @@ if (webpage_path === 'clock' | webpage_path === 'stopwatch') {
 } else {
     pomodoroSwitcher.classList.add('current-clock-option');
 }
-
-function formatTimeValue(timeValue, format) {
-    let hours = padNumber(Math.floor(timeValue / 3600000), 2);
-    let minutes = padNumber(Math.floor((timeValue / 60000) % 60), 2);
-    let seconds = padNumber(Math.floor((timeValue / 1000) % 60), 2);
-    let milliseconds = padNumber(Math.floor(timeValue % 1000), 3);
-    
-    return format.replace('%H', hours).replace('%M', minutes).replace('%S', seconds).replace('%MS', milliseconds);
-
-}
