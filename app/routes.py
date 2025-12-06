@@ -78,6 +78,7 @@ def pomodoro():
     form.short_break.data = session["pomodoro_settings"]["short_break"]
     form.long_break.data = session["pomodoro_settings"]["long_break"]
     form.long_break_interval.data = session["pomodoro_settings"]["long_break_interval"]
+    form.long_break_interval.render_kw['server-value'] = session["pomodoro_settings"]["long_break_interval"]
     return render_template("pomodoro.html", form=form)
 
 
@@ -202,7 +203,7 @@ def api_stopwatch_initialize(bypass_verification=False):
                 "lapTime": 0,
                 "totalTime": 0,
             }
-        ]
+        ],
     }
     return jsonify(True)
 
@@ -289,6 +290,7 @@ def api_pomodoro_initialize(bypass_verification=False):
         "break_time": False,
         "session_counter": 0,
         "break_counter": 0,
+        "total_sessions_duration": 0,
         "_exists": False,
     }
     return jsonify(True)
@@ -322,7 +324,7 @@ def api_pomodoro_start():
     if request.headers.get("Request-Source") != "JS-AJAX":
         return redirect(url_for("clock"))
     
-    if not session.get("stopwatch"):
+    if not session.get("pomodoro"):
         api_pomodoro_initialize(bypass_verification=True)
     
     session["pomodoro"] = update_dictionary(
@@ -367,6 +369,7 @@ def api_switch_session():
         break_time = break_time,
         session_counter = session_counter,
         break_counter = break_counter,
+        total_session_duration = int(request.args.get("total_session_duration")),
     )
     return jsonify(True)
 

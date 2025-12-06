@@ -28,6 +28,8 @@ const productivityTracerUI = {
     update() {
         if (!pomodoro.breakTime) {
             this.productivityDisplay.textContent = formatTimeValue(pomodoro.totalTime, "%H:%M:%S");
+        } else {
+            this.productivityDisplay.textContent = formatTimeValue(pomodoro.finishedSessionsDuration, "%H:%M:%S");
         }
     }
 }
@@ -58,7 +60,7 @@ class Pomodoro {
             counterDisplayUI.update();
             this.intervalId = setInterval(() => {
                 this.elapsedTime = Date.now() - this.startTime;
-                this.remainingDuration = this.sessionDuration - (this.elapsedTime * 8);
+                this.remainingDuration = this.sessionDuration - this.elapsedTime;
                 this.totalTime = this.finishedSessionsDuration + this.elapsedTime;
                 productivityTracerUI.update()
                 if (this.remainingDuration <= 0) {
@@ -105,6 +107,7 @@ class Pomodoro {
         this.finishedSessionsDuration = 0;
         this.sessionDuration = this.pomodoroDuration
         this.remainingDuration = this.sessionDuration;
+        counterDisplayUI.update();
         productivityTracerUI.update()
         this.updateClockStasistics();
         this.syncWithServer('reset');
@@ -154,7 +157,7 @@ class Pomodoro {
                 });
                 return;
             case 'switch_session':
-                await fetch(`/api/clock/pomodoro/${apiRoute}?start_time=${this.startTime}&session_duration=${this.sessionDuration}&break_time=${this.breakTime}&`, {
+                await fetch(`/api/clock/pomodoro/${apiRoute}?start_time=${this.startTime}&session_duration=${this.sessionDuration}&break_time=${this.breakTime}&total_session_duration=${this.finishedSessionsDuration}`, {
                     headers: {
                         "Request-Source": "JS-AJAX",
                     }
@@ -176,7 +179,7 @@ let pomodoro = new Pomodoro(
     parseInt(pomodoroDurationInputForm.value) * millisecondsInMinute,
     parseInt(shortBreakDurationInputForm.value) * millisecondsInMinute,
     parseInt(longBreakDurationInputForm.value) * millisecondsInMinute,
-    parseInt(longBreakIntervalInputForm.value)
+    parseInt(longBreakIntervalInputForm.getAttribute('server-value'))
 )
 pomodoro.updateDisplay();
 pomodoro.updateClockStasistics();
@@ -188,7 +191,7 @@ function togglePomodoroSettings() {
     if (!pomodoro.paused) {
         saveButton.classList.add('disabled');
     } else {
-        saveButton.removeAttribute('disabled');
+        saveButton.classList.remove('disabled');
     }
 }
 document.addEventListener('DOMContentLoaded', togglePomodoroSettings);
@@ -220,9 +223,13 @@ pomodoro.syncWithServer().then(serverPomodoro => {
         pomodoro.breakTime = serverPomodoro.break_time;
         pomodoro.sessionCounter = serverPomodoro.session_counter;
         pomodoro.breakCounter = serverPomodoro.break_counter;
+        pomodoro.finishedSessionsDuration = serverPomodoro.session_counter * pomodoro.pomodoroDuration
+        pomodoro.totalTime = pomodoro.finishedSessionsDuration + pomodoro.elapsedTime;
         if (!serverPomodoro.paused) {
             pomodoro.startTimer();
         }
+        counterDisplayUI.update();
+        productivityTracerUI.update();
         pomodoro.updateDisplay();
         pomodoro.updateClockOptions();
         pomodoro.updateClockStasistics();
