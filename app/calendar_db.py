@@ -97,10 +97,10 @@ def get_events(date_id, user_id, include_yesterday=True):
     try:
         events = db.execute(f"""
             SELECT (events.id) AS event_id, (events.name) AS event_name, (events.description) AS description, start_time, end_time, (events.color) AS color
-            FROM events JOIN users ON user_id = users.id 
+            FROM events
             WHERE user_id = ? 
             AND (start_time <= (SELECT (unix_time -1) AS unix_time FROM calendar WHERE id = (? + 1))
-            AND end_time > (SELECT (unix_time - {hours}) AS unix_time FROM calendar WHERE id = ?))
+            AND end_time >= (SELECT (unix_time - {hours}) AS unix_time FROM calendar WHERE id = ?))
     """,
             (user_id, date_id, date_id)
         ).fetchall()
