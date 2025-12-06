@@ -63,7 +63,7 @@ def stopwatch():
 @app.route("/clock/pomodoro", methods=["GET", "POST"])
 def pomodoro():
     form = PomodoroSettingsForm()
-    if session["pomodoro_settings"]:
+    if session.get("pomodoro_settings"):
         api_pomodoro_settings(bypass_verification=True, initialize=False)
     else:
         api_pomodoro_settings(bypass_verification=True, initialize=True)        

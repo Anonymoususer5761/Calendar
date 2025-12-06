@@ -8,17 +8,43 @@ const shortBreakDurationInputForm = document.getElementById('short_break');
 const longBreakDurationInputForm = document.getElementById('long_break');
 const longBreakIntervalInputForm = document.getElementById('long_break_interval');
 
+const counterDisplayUI = {
+    displayTitle: document.getElementById('counter-display-title'),
+    displayCount: document.getElementById('counter-display-count'),
+    displayDiv: document.getElementById('counter-display'),
+    longBreakInterval: document.getElementById('lb-interval'),
+    initialize() {
+        this.longBreakInterval.textContent = pomodoro.longBreakInterval;
+    },
+    show() {
+        this.update();
+    },
+    update() {
+        this.displayCount.textContent = pomodoro.sessionCounter;
+    }
+}
+const productivityTracerUI = {
+    productivityDisplay: document.getElementById('total-productivity-count'),
+    update() {
+        if (!pomodoro.breakTime) {
+            this.productivityDisplay.textContent = formatTimeValue(pomodoro.totalTime, "%H:%M:%S");
+        }
+    }
+}
+
 const millisecondsInMinute = 60000;
 
 class Pomodoro {
     constructor(pomodoroDuration, shortBreakDuration, longBreakDuration, longBreakInterval) {
         this.pomodoroDuration = pomodoroDuration;
         this.shortBreakDuration = shortBreakDuration;
-        this.longBreakDuration = longBreakDuration
+        this.longBreakDuration = longBreakDuration;
         this.sessionDuration = pomodoroDuration;
         this.remainingDuration = pomodoroDuration;
         this.startTime = 0;
         this.elapsedTime = 0;
+        this.totalTime = 0;
+        this.finishedSessionsDuration = 0;
         this.paused = true;
         this.pausedAt = 0;
         this.breakTime = false;
@@ -29,11 +55,15 @@ class Pomodoro {
     }
     startTimer() {
         if (this.paused) {
+            counterDisplayUI.update();
             this.intervalId = setInterval(() => {
                 this.elapsedTime = Date.now() - this.startTime;
                 this.remainingDuration = this.sessionDuration - (this.elapsedTime * 8);
+                this.totalTime = this.finishedSessionsDuration + this.elapsedTime;
+                productivityTracerUI.update()
                 if (this.remainingDuration <= 0) {
                     if (!this.breakTime) {
+                        this.finishedSessionsDuration += this.sessionDuration;
                         this.sessionCounter++;
                         this.sessionDuration = this.sessionCounter % this.longBreakInterval === 0 ? this.longBreakDuration : this.shortBreakDuration;
                         this.startTime = Date.now();
@@ -44,11 +74,12 @@ class Pomodoro {
                         this.startTime = Date.now();
                         this.breakTime = false;
                     }
-                    this.updateClockBackground();
+                    this.updateClockStasistics();
+                    counterDisplayUI.update();
                     this.syncWithServer('switch_session');
                 }
                 this.updateDisplay();
-            }, 25)
+            }, 500)
             this.paused = false;
             this.syncWithServer('start');
         }
@@ -70,13 +101,16 @@ class Pomodoro {
         this.breakTime = false;
         this.sessionCounter = 0;
         this.breakCounter = 0;
+        this.totalTime = 0;
+        this.finishedSessionsDuration = 0;
         this.sessionDuration = this.pomodoroDuration
         this.remainingDuration = this.sessionDuration;
-        this.updateClockBackground();
+        productivityTracerUI.update()
+        this.updateClockStasistics();
         this.syncWithServer('reset');
     }
     updateDisplay() {
-        pomodoroTimer.innerHTML = formatTimeValue(this.remainingDuration);
+        pomodoroTimer.innerHTML = formatTimeValue(this.remainingDuration, "%H:%M:%S");
     }
     updateClockOptions() {
         if (this.paused) {
@@ -87,13 +121,13 @@ class Pomodoro {
             pauseButton.style.display = 'inline-block';
         }
     }
-    updateClockBackground() {
+    updateClockStasistics() {
         if (this.breakTime) {
-            clock.classList.remove('pomodoro-background');
-            clock.classList.add('break-background');
+            pomodoroTimer.classList.remove('pomodoro-font-color');
+            pomodoroTimer.classList.add('break-font-color');
         } else {
-            clock.classList.remove('break-background');
-            clock.classList.add('pomodoro-background');
+            pomodoroTimer.classList.add('pomodoro-font-color');
+            pomodoroTimer.classList.remove('break-font-color');
         }
     }
     async syncWithServer(apiRoute='') {
@@ -144,8 +178,10 @@ let pomodoro = new Pomodoro(
     parseInt(longBreakDurationInputForm.value) * millisecondsInMinute,
     parseInt(longBreakIntervalInputForm.value)
 )
-pomodoro.updateDisplay()
-pomodoro.updateClockBackground();
+pomodoro.updateDisplay();
+pomodoro.updateClockStasistics();
+
+counterDisplayUI.initialize();
 
 const saveButton = document.querySelector('.save-pomodoro-settings-button');
 function togglePomodoroSettings() {
@@ -189,6 +225,6 @@ pomodoro.syncWithServer().then(serverPomodoro => {
         }
         pomodoro.updateDisplay();
         pomodoro.updateClockOptions();
-        pomodoro.updateClockBackground();
+        pomodoro.updateClockStasistics();
     }
 });

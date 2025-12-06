@@ -1,6 +1,18 @@
+:root {
+    --pomodoro-session: red;
+    --break-time: rgb(0, 183, 255);
+}
+
 #pomodoro-timer {
     font-family: var(--clock-font);
     font-size: clamp(0.75rem, 5vh, 5rem);
+}
+
+.pomodoro-font-color {
+    color: var(--pomodoro-session);
+}
+.break-font-color {
+    color: var(--break-time);
 }
 
 #stop-button {
@@ -21,3 +33,4 @@
 .form-control:hover {
     border: 0 solid #FCFCF5;
 }
+
