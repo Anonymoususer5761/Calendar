@@ -70,14 +70,20 @@
     border: 0;
     border-radius: 0;
     border-bottom: 1px solid #F8F9FA;
+    padding: 5px;
 }
 .form-control:focus {
     background-color: #FCFCF5;
     border: 0 solid #FCFCF5;
     box-shadow: #FCFCF5 0px 0px 0px 0px;
+    border-bottom: 1px solid #F8F9FA;
+    padding: 5px;
 }
 .form-control:hover {
     border: 0 solid #FCFCF5;
+    padding: 5px;
+    border-bottom: 1px solid #F8F9FA;
+
 }
 
 .edit-icon {
