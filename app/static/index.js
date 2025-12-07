@@ -255,6 +255,32 @@ const dateDetailsCardUI = {
     }
 }
 
+const editEventFormEl = {
+    id: document.getElementById('edit_event_id'),
+    name:  document.getElementById('edit_name'),
+    desc:  document.getElementById('edit_description'),
+    start:  document.getElementById('edit_start_time'),
+    end:    document.getElementById('edit_end_time'),
+    color: document.getElementById('edit_event_color'),
+    colorDisplay: document.getElementById('edit_event_color_display'),
+    fill(serverEvent) {
+        this.name.value = serverEvent['name'];
+        this.desc.value = serverEvent['desc'];
+        this.start.value = formatDateTime(serverEvent['start_time'] * 1000);
+        this.end.value = formatDateTime(serverEvent['end_time'] * 1000);
+        this.id.value = serverEvent['id'];
+        this.color.value = serverEvent['color'];
+        this.colorDisplay.style.backgroundColor = serverEvent['color'];
+    }
+}
+function displaySelectedColor(target, display) {
+    display.style.backgroundColor = target.value;
+}
+editEventFormEl.color.addEventListener('change', (event) => {
+    displaySelectedColor(event.target, editEventFormEl.colorDisplay);
+});
+displaySelectedColor(editEventFormEl.color, editEventFormEl.colorDisplay);
+
 const eventDetailsCard = {
     masterEL: document.getElementById('event-details-popup'),
     header: document.getElementById('card-header'),
@@ -278,7 +304,7 @@ const eventDetailsCard = {
         this.duration.textContent = formatTimestampDifference((serverEvent['end_time'] - serverEvent['start_time']) * 1000);
         this.timings.textContent = formatDateTime(serverEvent['start_time'] * 1000) + ' - ' + formatDateTime(serverEvent['end_time'] * 1000);
         this.editIcon.setAttribute('value', serverEvent['id']);
-        // fillEditForm(serverEvent);
+        editEventFormEl.fill(serverEvent);
         this.header.style.backgroundColor = serverEvent['color'];
         this.masterEL.style.display = 'inline';
         this.display = true;

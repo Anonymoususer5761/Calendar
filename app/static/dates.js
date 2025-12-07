@@ -71,11 +71,10 @@ function fillEditForm(serverEvent) {
     editEventFormEl.start.value = formatDateTime(serverEvent['start'] * 1000);
     editEventFormEl.end.value = formatDateTime(serverEvent['end'] * 1000);
     editEventFormEl.id.value = serverEvent['id'];
+    editEventFormEl.color.value = serverEvent['color'];
+    editEventFormEl.colorDisplay.style.backgroundColor = serverEvent['color'];
 }
 
-editEventFormEl.color.addEventListener('change', (event) => {
-    displaySelectedColor(event.target, editEventFormEl.colorDisplay);
-});
 function displaySelectedColor(target, display) {
     display.style.backgroundColor = target.value;
 }

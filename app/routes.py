@@ -18,6 +18,12 @@ milliseconds_in_second = 1000
 @app.route('/home', methods=["GET", "POST"])
 def index():
     edit_event_form = EditEventForm()
+    if edit_event_form.validate_on_submit():
+        if edit_event_form.submit_to_db():
+            flash("Successfully edited event.")
+            return redirect(url_for('index'))
+        flash("Sorry! Something went wrong...")
+        return redirect(url_for("index"))
     menses = get_months()
     years = get_years()
     today = date.today()
