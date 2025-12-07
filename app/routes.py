@@ -13,14 +13,15 @@ from datetime import date
 
 milliseconds_in_second = 1000
 
-@app.route('/')
-@app.route('/index')
-@app.route('/home')
+@app.route('/', methods=["GET", "POST"])
+@app.route('/index', methods=["GET", "POST"])
+@app.route('/home', methods=["GET", "POST"])
 def index():
+    edit_event_form = EditEventForm()
     menses = get_months()
     years = get_years()
     today = date.today()
-    return render_template("index.html", menses=menses, years=years, today=today)
+    return render_template("index.html", menses=menses, years=years, today=today, edit_event_form=edit_event_form)
 
 
 @app.route("/dates", methods=["GET", "POST"])
