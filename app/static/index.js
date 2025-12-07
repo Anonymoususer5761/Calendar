@@ -264,7 +264,7 @@ const editEventFormEl = {
     color: document.getElementById('edit_event_color'),
     colorDisplay: document.getElementById('edit_event_color_display'),
     fill(serverEvent) {
-        if (authorised) {
+        if (!authorised) {
             return false;
         }
         this.name.value = serverEvent['name'];
@@ -276,10 +276,10 @@ const editEventFormEl = {
         this.colorDisplay.style.backgroundColor = serverEvent['color'];
     },
 }
+function displaySelectedColor(target, display) {
+    display.style.backgroundColor = target.value;
+}
 if (authorised) {
-    function displaySelectedColor(target, display) {
-        display.style.backgroundColor = target.value;
-    }
     editEventFormEl.color.addEventListener('change', (event) => {
         displaySelectedColor(event.target, editEventFormEl.colorDisplay);
     });
