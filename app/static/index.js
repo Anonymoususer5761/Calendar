@@ -240,7 +240,16 @@ const dateDetailsCardUI = {
                 listItem.classList.add('event-list-item');
                 listItem.textContent = userEvent['name'];
                 listItem.addEventListener('click', (clickEvent) => {
-                    displayEventTooltip(clickEvent, userEvent);
+                    eventDetailsCard.eventID = userEvent['id'];
+                    if (!eventDetailsCard.display || eventDetailsCard.previousEventID != eventDetailsCard.eventID) {
+                        displayEventTooltip(clickEvent, userEvent);
+                        eventDetailsCard.display = true;
+                        eventDetailsCard.previousEventID = eventDetailsCard.eventID;
+                    } else {
+                        eventDetailsCard.masterEL.style.display = 'none';
+                        eventDetailsCard.display = false;
+                        eventDetailsCard.previousEventID = 0;
+                    }
                 });
                 unorderedList.append(listItem);
             }
@@ -258,6 +267,9 @@ const eventDetailsCard = {
     desc: document.getElementById('description-card'),
     duration: document.getElementById('duration'),
     timings: document.getElementById('timings'),
+    eventID: 0,
+    previousEventID: 0,
+    display: false,
 }
 
 async function displayEventTooltip(event, serverEvent) {
