@@ -242,13 +242,9 @@ const dateDetailsCardUI = {
                 listItem.addEventListener('click', (clickEvent) => {
                     eventDetailsCard.eventID = userEvent['id'];
                     if (!eventDetailsCard.display || eventDetailsCard.previousEventID != eventDetailsCard.eventID) {
-                        displayEventTooltip(clickEvent, userEvent);
-                        eventDetailsCard.display = true;
-                        eventDetailsCard.previousEventID = eventDetailsCard.eventID;
+                        eventDetailsCard.show(clickEvent, userEvent);
                     } else {
-                        eventDetailsCard.masterEL.style.display = 'none';
-                        eventDetailsCard.display = false;
-                        eventDetailsCard.previousEventID = 0;
+                        eventDetailsCard.hide();
                     }
                 });
                 unorderedList.append(listItem);
@@ -270,23 +266,29 @@ const eventDetailsCard = {
     eventID: 0,
     previousEventID: 0,
     display: false,
-}
-
-async function displayEventTooltip(event, serverEvent) {
-    // AI Usage Disclaimer: Required some help to understand how to set the x and y coordinates of the popup.
-    let eventRect = event.target.getBoundingClientRect();
-    let yMouse = event.pageY - 65;
-    let xRightPlusPadding = Math.floor(eventRect.right + 20);
-    eventDetailsCard.masterEL.style.top = `${yMouse}px`;
-    eventDetailsCard.masterEL.style.left = `${xRightPlusPadding}px`;
-    eventDetailsCard.title.textContent = serverEvent['name'];
-    eventDetailsCard.desc.textContent = serverEvent['desc'];
-    eventDetailsCard.duration.textContent = formatTimestampDifference((serverEvent['end_time'] - serverEvent['start_time']) * 1000);
-    eventDetailsCard.timings.textContent = formatDateTime(serverEvent['start_time'] * 1000) + ' - ' + formatDateTime(serverEvent['end_time'] * 1000);
-    eventDetailsCard.editIcon.setAttribute('value', serverEvent['id']);
-    // fillEditForm(serverEvent);
-    eventDetailsCard.header.style.backgroundColor = serverEvent['color'];
-    eventDetailsCard.masterEL.style.display = 'inline';
+    show(event, serverEvent) {
+        // AI Usage Disclaimer: Required some help to understand how to set the x and y coordinates of the popup.
+        let eventRect = event.target.getBoundingClientRect();
+        let yMouse = event.pageY - 65;
+        let xRightPlusPadding = Math.floor(eventRect.right + 20);
+        this.masterEL.style.top = `${yMouse}px`;
+        this.masterEL.style.left = `${xRightPlusPadding}px`;
+        this.title.textContent = serverEvent['name'];
+        this.desc.textContent = serverEvent['desc'];
+        this.duration.textContent = formatTimestampDifference((serverEvent['end_time'] - serverEvent['start_time']) * 1000);
+        this.timings.textContent = formatDateTime(serverEvent['start_time'] * 1000) + ' - ' + formatDateTime(serverEvent['end_time'] * 1000);
+        this.editIcon.setAttribute('value', serverEvent['id']);
+        // fillEditForm(serverEvent);
+        this.header.style.backgroundColor = serverEvent['color'];
+        this.masterEL.style.display = 'inline';
+        this.display = true;
+        this.previousEventID = this.eventID;
+    },
+    hide() {
+        this.masterEL.style.display = 'none';
+        this.display = false;
+        this.previousEventID = 0;
+    }
 }
 
 getCalendar().then(() => {
