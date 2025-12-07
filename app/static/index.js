@@ -264,6 +264,9 @@ const editEventFormEl = {
     color: document.getElementById('edit_event_color'),
     colorDisplay: document.getElementById('edit_event_color_display'),
     fill(serverEvent) {
+        if (authorised) {
+            return false;
+        }
         this.name.value = serverEvent['name'];
         this.desc.value = serverEvent['desc'];
         this.start.value = formatDateTime(serverEvent['start_time'] * 1000);
@@ -271,15 +274,17 @@ const editEventFormEl = {
         this.id.value = serverEvent['id'];
         this.color.value = serverEvent['color'];
         this.colorDisplay.style.backgroundColor = serverEvent['color'];
+    },
+}
+if (authorised) {
+    function displaySelectedColor(target, display) {
+        display.style.backgroundColor = target.value;
     }
+    editEventFormEl.color.addEventListener('change', (event) => {
+        displaySelectedColor(event.target, editEventFormEl.colorDisplay);
+    });
+    displaySelectedColor(editEventFormEl.color, editEventFormEl.colorDisplay);
 }
-function displaySelectedColor(target, display) {
-    display.style.backgroundColor = target.value;
-}
-editEventFormEl.color.addEventListener('change', (event) => {
-    displaySelectedColor(event.target, editEventFormEl.colorDisplay);
-});
-displaySelectedColor(editEventFormEl.color, editEventFormEl.colorDisplay);
 
 const eventDetailsCard = {
     masterEL: document.getElementById('event-details-popup'),
@@ -293,6 +298,9 @@ const eventDetailsCard = {
     previousEventID: 0,
     display: false,
     show(event, serverEvent) {
+        if (!authorised) {
+            return false;
+        }
         // AI Usage Disclaimer: Required some help to understand how to set the x and y coordinates of the popup.
         let eventRect = event.target.getBoundingClientRect();
         let yMouse = event.pageY - 65;
@@ -350,6 +358,9 @@ async function getHolidays(dayId) {
     return await response.json();
 }
 async function getEvents(dayId) {
+    if (!authorised) {
+        return false;
+    }
     let response = await fetch(`/api/index/events?id=${dayId}`, {
         headers: {
             'Request-Source': 'JS-AJAX',

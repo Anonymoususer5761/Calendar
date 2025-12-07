@@ -6,7 +6,7 @@ const resetButton = document.getElementById('reset-button');
 
 const lapCounter = document.getElementById('lap-counter');
 
-const defaultStopwatchString = '00:00:00.000';
+const defaultStopwatchString = '00:00:00';
 
 const stopwatch = {
     defaultPrimaryTimerString: defaultStopwatchString,
@@ -30,8 +30,8 @@ const stopwatch = {
             stopwatch.intervalId = setInterval(() => {
                 stopwatch.elapsedTime = Date.now() - stopwatch.startTime;
                 stopwatch.currentLapTime = stopwatch.elapsedTime - stopwatch.lapTimes[stopwatch.lapTimes.length - 1].totalTime;
-                stopwatch.primaryTimerString = formatTimeValue(stopwatch.elapsedTime, hideHours=false);
-                stopwatch.secondaryTimerString = formatTimeValue(stopwatch.currentLapTime, hideHours=false);
+                stopwatch.primaryTimerString = formatTimeValue(stopwatch.elapsedTime, '%H:%M:%S');
+                stopwatch.secondaryTimerString = formatTimeValue(stopwatch.currentLapTime, '%H:%M:%S');
                 stopwatch.updateDisplay();
             }, clockUpdateInterval);
             stopwatch.paused = false;
@@ -169,8 +169,8 @@ lapButton.addEventListener('click', () => {
     lapTableBody.prepend(
         formatLapTable(
             stopwatch.lapCount,
-            formatTimeValue(stopwatch.lapTimes[stopwatch.lapCount].lapTime),
-            formatTimeValue(stopwatch.lapTimes[stopwatch.lapCount].totalTime),
+            formatTimeValue(stopwatch.lapTimes[stopwatch.lapCount].lapTime, '%H:%M:%S'),
+            formatTimeValue(stopwatch.lapTimes[stopwatch.lapCount].totalTime, '%H:%M:%S'),
         )
     );
 });
@@ -206,7 +206,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (serverStopwatch) {
             stopwatch.startTime = serverStopwatch["start_time"];
             stopwatch.elapsedTime = serverStopwatch["elapsed_time"]
-            stopwatch.primaryTimerString = formatTimeValue(serverStopwatch["elapsed_time"], hideHours=false);
+            stopwatch.primaryTimerString = formatTimeValue(serverStopwatch["elapsed_time"], '%H:%M:%S');
             stopwatch.pausedAt = serverStopwatch["paused_at"];
             if (!serverStopwatch["paused"]) {
                 stopwatch.startTimer();
@@ -215,15 +215,15 @@ document.addEventListener('DOMContentLoaded', () => {
             stopwatch.lapTimes = serverStopwatch.lap_times;
             stopwatch.lapCount = serverStopwatch.lap_times.length - 1;
             stopwatch.currentLapTime = serverStopwatch.lap_times[stopwatch.lapCount].lapTime;
-            stopwatch.secondaryTimerString = formatTimeValue(stopwatch.elapsedTime - serverStopwatch.lap_times[stopwatch.lapCount].totalTime, hideHours=false);
+            stopwatch.secondaryTimerString = formatTimeValue(stopwatch.elapsedTime - serverStopwatch.lap_times[stopwatch.lapCount].totalTime, '%H:%M:%S');
             if (serverStopwatch.lap_times.length > 1) {
                 lapCounter.style.display = 'table';
                 for (let i = 1; i < serverStopwatch.lap_times.length; i++) {
                     lapTableBody.prepend(
                         formatLapTable(
                             i,
-                            formatTimeValue(stopwatch.lapTimes[i].lapTime),
-                            formatTimeValue(stopwatch.lapTimes[i].totalTime),
+                            formatTimeValue(stopwatch.lapTimes[i].lapTime, '%H:%M:%S'),
+                            formatTimeValue(stopwatch.lapTimes[i].totalTime, '%H:%M:%S'),
                         )
                     );
                 }
