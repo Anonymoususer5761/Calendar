@@ -54,9 +54,12 @@ class Pomodoro {
         this.breakCounter = 0;
         this.longBreakInterval = longBreakInterval;
         this.intervalId = null;
+        this.audio = new Audio("../static/assets/mixkit-digital-clock-digital-alarm-buzzer-992.wav")
+        this.audio.loop = true;
     }
     startTimer() {
         if (this.paused) {
+            this.audio.play();
             counterDisplayUI.update();
             this.intervalId = setInterval(() => {
                 this.elapsedTime = Date.now() - this.startTime;
@@ -224,7 +227,7 @@ pomodoro.syncWithServer().then(serverPomodoro => {
         pomodoro.sessionCounter = serverPomodoro.session_counter;
         pomodoro.breakCounter = serverPomodoro.break_counter;
         pomodoro.finishedSessionsDuration = serverPomodoro.session_counter * pomodoro.pomodoroDuration
-        pomodoro.totalTime = pomodoro.finishedSessionsDuration + pomodoro.elapsedTime;
+        pomodoro.totalTime = pomodoro.finishedSessionsDuration + serverPomodoro.elapsed_time;
         if (!serverPomodoro.paused) {
             pomodoro.startTimer();
         }

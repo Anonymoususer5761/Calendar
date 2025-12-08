@@ -282,6 +282,7 @@ def api_pomodoro_initialize(bypass_verification=False):
 
     session["pomodoro"] = {
         "start_time": 0,
+        "elapsed_time": 0,
         "session_duration": 0,
         "remaining_duration": 0,
         "paused": True,
@@ -382,6 +383,7 @@ def api_pomodoro_remaining_duration(bypass_verification=False):
     remaining_duration = session["pomodoro"]["session_duration"] - elapsed_time
     session["pomodoro"] = update_dictionary(
         session["pomodoro"],
+        elapsed_time = session["pomodoro"]["session_duration"] - remaining_duration,
         remaining_duration = remaining_duration,
     )
     return jsonify(session["pomodoro"]["remaining_duration"])
