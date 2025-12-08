@@ -1,9 +1,15 @@
 from flask_wtf import FlaskForm
+from flask import session
+from flask_login import login_user
 from wtforms import HiddenField, StringField, PasswordField, BooleanField, SubmitField, TextAreaField, DateTimeLocalField, SelectField, IntegerField
 from wtforms.validators import DataRequired, EqualTo, Email, NumberRange, ValidationError
+from werkzeug.security import generate_password_hash, check_password_hash
 
 from app.helpers import color_choices
+from app.user import User
 from app.database_manager import get_db
+
+from datetime import timedelta
 
 class LoginForm(FlaskForm):
     username = StringField("Username", validators=[DataRequired()])
@@ -11,13 +17,105 @@ class LoginForm(FlaskForm):
     remember_me = BooleanField("Remember me")
     submit = SubmitField("Sign In")
 
+    def validate_username(self, username):
+        db = get_db()
+        try:
+            is_valid = db.execute("""SELECT id FROM users WHERE username = ?""", (username.data,)).fetchone()
+        finally:
+            db.close()
+        if not is_valid:
+            raise ValidationError("Username not found.")
+        
+    def validate_password(self, password):
+        db = get_db()
+        try:
+            password_hash = db.execute("""SELECT password_hash FROM users WHERE username = ?""", (self.username.data,)).fetchone()[0]
+        finally:
+            db.close()
+
+        if not check_password_hash(password_hash , password.data):
+            raise ValidationError("Incorrect Password")
+        
+    def sign_in(self):
+        session.permanent = self.remember_me.data
+
+        db = get_db()
+        try:
+            db_user = db.execute("""SELECT * FROM users WHERE username = ?""", (self.username.data,)).fetchone()
+        finally:
+            db.close()
+
+        user = User(
+            id=db_user["id"],
+            username=db_user["username"],
+            email=db_user["email"],
+            password_hash=db_user["password_hash"],
+        )
+
+        login_user(user, remember=self.remember_me.data, duration=timedelta(days=365000))
+        return True
+
 
 class RegistrationForm(FlaskForm):
     username = StringField("Username", validators=[DataRequired()])
     email = StringField("Email", validators=[DataRequired(), Email()])
     password = PasswordField("Password", validators=[DataRequired()])
     password2 = PasswordField("Repeat Password", validators=[DataRequired(), EqualTo("password")])
+    sign_in = BooleanField("Sign In")
+    remember_me = BooleanField("Remember me")
     submit = SubmitField("Register")
+
+    def validate_username(self, username):
+        db = get_db()
+        try:
+            exists = db.execute("""SELECT id FROM users WHERE username = ?""", (username.data,)).fetchone()
+        finally:
+            db.close()
+        if exists:
+            raise ValidationError("Username already taken. Pick another name.")
+        
+    def validate_email(self, email):
+        db = get_db()
+        try:
+            exists = db.execute("""SELECT id FROM users WHERE username = ?""", (email.data,)).fetchone()
+        finally:
+            db.close()
+        if exists:
+            raise ValidationError("Username already taken. Pick another name.")
+        
+    def validate_remember_me(self, remember_me):
+        if not self.sign_in.data:
+            raise ValidationError("User cannot be remembered without signing in.")
+        
+    def register(self):
+        db = get_db()
+        password_hash = generate_password_hash(self.password.data)
+        try:
+            cursor = db.cursor()
+            cursor.execute(
+                """INSERT INTO users (username, email. password_hash) VALUES (?, ?, ?, )""", (
+                    self.username.data, self.email.data, password_hash,
+                )
+            )
+            user_id = cursor.lastrowid
+            cursor.execute(
+                """INSERT INTO pomodoro_settings (user_id) VALUES (?)""", (
+                    user_id,
+                )
+            )
+            db.commit()
+        finally:
+            db.close()
+        if self.sign_in.data:
+            session.permanent = self.remember_me.data
+
+            user = User(
+                id=user_id,
+                username=self.username.data,
+                email=self.email.data,
+                password_hash=password_hash
+            )
+            login_user(user, remember=self.remember_me.data, duration=timedelta(days=365000))
 
 
 class AddEventForm(FlaskForm):
@@ -68,8 +166,8 @@ class AddEventForm(FlaskForm):
             db.execute("""INSERT INTO events(name, description, start_time, end_time, color, user_id) VALUES (?, ?, unixepoch(?), unixepoch(?), ?, ?)""",
                 (self.name.data, self.description.data, self.start_time.data, self.end_time.data, self.event_color.data, self.user_id_add_event.data,)           
             )
-        finally:
             db.commit()
+        finally:
             db.close()
         return True
 
@@ -128,15 +226,10 @@ class EditEventForm(FlaskForm):
             db.execute("""UPDATE events SET name = ?, description = ?, start_time = unixepoch(?), end_time = unixepoch(?), color = ? WHERE id = ?""",
                 (self.edit_name.data, self.edit_description.data, self.edit_start_time.data, self.edit_end_time.data, self.edit_event_color.data, self.edit_event_id.data,)           
             )
-        finally:
             db.commit()
+        finally:
             db.close()
         return True
-
-class SettingsForm(FlaskForm):
-    color_mode = BooleanField("Dark Mode")
-    region = SelectField("Region", choices=((1, "None"), (2, "India")))
-    submit = SubmitField("Save Changes")
 
 
 class PomodoroSettingsForm(FlaskForm):
@@ -149,3 +242,15 @@ class PomodoroSettingsForm(FlaskForm):
     def validate_long_break(self, long_break):
         if self.short_break.data > long_break.data:
             raise ValidationError("The short break cannot be longer than the long break.")
+
+    def submit_to_db(self, user_id):
+        db = get_db()
+        try:
+            db.execute("""UPDATE pomodoro_settings
+            SET pomodoro_duration = ?, short_break = ?, long_break = ?, long_break_interval = ? 
+            WHERE user_id = ?""", (self.pomodoro_duration.data, self.short_break.data, self.long_break.data, self.long_break_interval.data, user_id,))
+            db.commit()
+        finally:
+            db.close()
+
+        return True

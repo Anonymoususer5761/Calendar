@@ -1,6 +1,6 @@
 from app import app
 from app.calendar_db import *
-from app.forms import LoginForm, RegistrationForm, AddEventForm, EditEventForm, SettingsForm, PomodoroSettingsForm
+from app.forms import LoginForm, RegistrationForm, AddEventForm, EditEventForm, PomodoroSettingsForm
 from app.user import sign_in_user, register_user
 from app.pytemplates import get_event_svg
 from app.helpers import update_dictionary
@@ -77,7 +77,7 @@ def pomodoro():
     if form.validate_on_submit():
         if session["pomodoro"]["paused"]:
             if current_user.is_authenticated:
-                submit_pomodoro_settings_to_db(form, current_user.id)
+                form.submit_to_db(current_user.id)
             return(redirect(url_for("pomodoro")))
         flash("Cannot update when pomodoro is not paused.")
         return redirect(url_for('pomodoro'))
@@ -94,12 +94,8 @@ def register():
     form = RegistrationForm()
 
     if form.validate_on_submit():
-        status, message = register_user(form)
-        flash(message)
-        if status:
-            return redirect(url_for('login'))
-        
-        return redirect(url_for('register'))
+        form.register()
+        return redirect(url_for('index'))
 
     return render_template("register.html", form=form)
 
@@ -109,11 +105,7 @@ def login():
     form = LoginForm()
 
     if form.validate_on_submit():
-        status, message = sign_in_user(form)
-        flash(message)
-        if status:
-            return redirect(url_for('index'))
-        return redirect(url_for('login'))
+        form.sign_in()
     return render_template("login.html", form=form)
 
 

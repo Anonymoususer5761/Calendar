@@ -63,6 +63,16 @@
                         <span style="color: red;">{{ error }}</span>
                     {% endfor %}
                 </div>
+
+                <div class="mt-2">
+                    {{ form.sign_in(class="form-check-input") }}{{ form.sign_in.label(class="form-check-label") }}
+                    {{ form.remember_me(class="form-check-input", disabled=disabled) }}{{ form.remember_me.label(class="form-check-label") }}
+                    <div>
+                        {% for error in form.remember_me.errors %}
+                            <span style="color: red;">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
     
                 <div class="my-3">
                     {{ form.submit(class="btn btn-quaternary") }}
