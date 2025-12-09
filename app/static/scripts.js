@@ -26,11 +26,17 @@ function updateDatetime(datetime) {
     datetime['datetime-time'].innerHTML = `${padNumber(now.getHours(), 2)}:${padNumber(now.getMinutes(), 2)}:${padNumber(now.getSeconds(), 2)}`;
 }
 
-function formatTimeValue(timeValue, format) {
+function formatTimeValue(timeValue, format, whole=false) {
+    let minutesRatio = (timeValue / 60000);
+    let secondsRatio = (timeValue / 1000);
+    let millisecondsRatio = timeValue;
+    let minutesModulo = whole ? minutesRatio + 1 : 60;
+    let secondsModule = whole ? secondsRatio + 1 : 60;
+    let millisecondsModule = whole ? millisecondsRatio + 1 : 1000;
     let hours = padNumber(Math.floor(timeValue / 3600000), 2);
-    let minutes = padNumber(Math.floor((timeValue / 60000) % 60), 2);
-    let seconds = padNumber(Math.floor((timeValue / 1000) % 60), 2);
-    let milliseconds = padNumber(Math.floor(timeValue % 1000), 3);
+    let minutes = padNumber(Math.floor((timeValue / 60000) % minutesModulo), 2);
+    let seconds = padNumber(Math.floor((timeValue / 1000) % secondsModule), 2);
+    let milliseconds = padNumber(Math.floor(timeValue % millisecondsModule), 3);
     
     return format.replace('%H', hours).replace('%M', minutes).replace('%S', seconds).replace('%MS', milliseconds);
 }

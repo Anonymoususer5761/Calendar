@@ -80,6 +80,23 @@
             </div>
         </div>
     </div>
+
+    <div id="audio-modal" class="modal fade" data-bs-backdrop="static" tabindex="-1" aria-labelledby="modal-title" data-bs-keyboard="false" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-header text-light">
+                    <h1 class="modal-title fs-5" id="audio-modal-header"></h1>
+                    <a class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></a>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <i class="bi bi-alarm"></i>
+                        <span id="audio-modal-body">...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block subpage_script %}

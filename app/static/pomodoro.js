@@ -36,6 +36,32 @@ const productivityTracerUI = {
 
 const millisecondsInMinute = 60000;
 
+class audioModalELClass {
+    constructor() {
+        this.master = document.getElementById('audio-modal');
+        this.header = document.getElementById('audio-modal-header');
+        this.body = document.getElementById('audio-modal-body');
+        this.close = document.getElementById('audio-modal-close');
+        this.bootstrapModal = new bootstrap.Modal(document.getElementById('audio-modal'));
+    }
+    show() {
+        if (pomodoro.breakTime) {
+            this.header.textContent = 'Finished Pomodoro';
+            this.body.textContent = `Starting ${formatTimeValue(pomodoro.sessionDuration, '%M minute', true)} long break`;
+        } else {
+            this.header.textContent = 'Finished Break';
+            this.body.textContent = `Starting ${formatTimeValue(pomodoro.sessionDuration, '%M minute', true)} pomodoro`;
+        }
+        this.master.style.display = 'dialog';
+        this.bootstrapModal.show();
+    }
+    hide() {
+        this.master.style.display = 'none';
+    }
+}
+
+const audioModalEL = new audioModalELClass();
+
 class Pomodoro {
     constructor(pomodoroDuration, shortBreakDuration, longBreakDuration, longBreakInterval) {
         this.pomodoroDuration = pomodoroDuration;
@@ -59,11 +85,10 @@ class Pomodoro {
     }
     startTimer() {
         if (this.paused) {
-            this.audio.play();
             counterDisplayUI.update();
             this.intervalId = setInterval(() => {
                 this.elapsedTime = Date.now() - this.startTime;
-                this.remainingDuration = this.sessionDuration - this.elapsedTime;
+                this.remainingDuration = this.sessionDuration - this.elapsedTime * 8;
                 this.totalTime = this.finishedSessionsDuration + this.elapsedTime;
                 productivityTracerUI.update()
                 if (this.remainingDuration <= 0) {
@@ -79,6 +104,7 @@ class Pomodoro {
                         this.startTime = Date.now();
                         this.breakTime = false;
                     }
+                    this.playAlarm();
                     this.updateClockStasistics();
                     counterDisplayUI.update();
                     this.syncWithServer('switch_session');
@@ -112,8 +138,19 @@ class Pomodoro {
         this.remainingDuration = this.sessionDuration;
         counterDisplayUI.update();
         productivityTracerUI.update()
+        this.audio.pause();
+        this.audio.currentTime = 0;
         this.updateClockStasistics();
         this.syncWithServer('reset');
+    }
+    playAlarm() {
+        audioModalEL.show();
+        this.audio.play();
+    }
+    stopAlarm() {
+        audioModalEL.bootstrapModal.hide()
+        this.audio.pause();
+        this.audio.currentTime = 0;
     }
     updateDisplay() {
         pomodoroTimer.innerHTML = formatTimeValue(this.remainingDuration, "%H:%M:%S");
