@@ -180,7 +180,7 @@ class EditEventForm(FlaskForm):
     edit_event_color = SelectField("Color Picker", choices=color_choices, validators=[DataRequired()])
     edit_user_id = HiddenField("User ID", validators=[DataRequired()])
     edit_event_id = HiddenField("Event ID", validators=[DataRequired()])
-    submit = SubmitField("Add Event")
+    submit = SubmitField("Edit")
 
     def validate_edit_name(self, edit_name):
         db = get_db()
