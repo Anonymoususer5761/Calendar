@@ -1,7 +1,6 @@
 from app import app
 from app.calendar_db import *
 from app.forms import LoginForm, RegistrationForm, AddEventForm, EditEventForm, PomodoroSettingsForm
-from app.user import sign_in_user, register_user
 from app.pytemplates import get_event_svg
 from app.helpers import update_dictionary
 
@@ -417,3 +416,11 @@ def api_get_settings():
     if current_user.is_authenticated:
         return jsonify(current_user.settings)
     return jsonify("User is not logged in.")
+
+@app.errorhandler(404)
+def not_found_error(error):
+    return render_template('404.html'), 404
+
+@app.errorhandler(500)
+def internal_error(error):
+    return render_template('500.html'), 500
