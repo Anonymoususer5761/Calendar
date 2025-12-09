@@ -52,15 +52,12 @@ class audioModalELClass {
             this.header.textContent = 'Finished Break';
             this.body.textContent = `Starting ${formatTimeValue(pomodoro.sessionDuration, '%M minute', true)} pomodoro`;
         }
-        this.master.style.display = 'dialog';
         this.bootstrapModal.show();
     }
     hide() {
-        this.master.style.display = 'none';
+        this.bootstrapModal.hide();
     }
 }
-
-const audioModalEL = new audioModalELClass();
 
 class Pomodoro {
     constructor(pomodoroDuration, shortBreakDuration, longBreakDuration, longBreakInterval) {
@@ -225,6 +222,11 @@ pomodoro.updateDisplay();
 pomodoro.updateClockStasistics();
 
 counterDisplayUI.initialize();
+
+const audioModalEL = new audioModalELClass();
+audioModalEL.close.addEventListener('click', () => {
+        pomodoro.stopAlarm();
+});
 
 const saveButton = document.querySelector('.save-pomodoro-settings-button');
 function togglePomodoroSettings() {
