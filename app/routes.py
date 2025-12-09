@@ -105,6 +105,7 @@ def login():
 
     if form.validate_on_submit():
         form.sign_in()
+        return redirect(url_for('index'))
     return render_template("login.html", form=form)
 
 

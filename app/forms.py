@@ -84,7 +84,7 @@ class RegistrationForm(FlaskForm):
             raise ValidationError("Username already taken. Pick another name.")
         
     def validate_remember_me(self, remember_me):
-        if not self.sign_in.data:
+        if remember_me.data and not self.sign_in.data:
             raise ValidationError("User cannot be remembered without signing in.")
         
     def register(self):
