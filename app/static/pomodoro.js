@@ -85,7 +85,7 @@ class Pomodoro {
             counterDisplayUI.update();
             this.intervalId = setInterval(() => {
                 this.elapsedTime = Date.now() - this.startTime;
-                this.remainingDuration = this.sessionDuration - this.elapsedTime * 8;
+                this.remainingDuration = this.sessionDuration - this.elapsedTime;
                 this.totalTime = this.finishedSessionsDuration + this.elapsedTime;
                 productivityTracerUI.update()
                 if (this.remainingDuration <= 0) {
