@@ -93,7 +93,7 @@ class RegistrationForm(FlaskForm):
         try:
             cursor = db.cursor()
             cursor.execute(
-                """INSERT INTO users (username, email. password_hash) VALUES (?, ?, ?, )""", (
+                """INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)""", (
                     self.username.data, self.email.data, password_hash,
                 )
             )
