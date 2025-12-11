@@ -1,6 +1,5 @@
 from app.database_manager import get_db
 from app.helpers import  pad_digit
-from app.forms import AddEventForm
 
 def get_years():
     db = get_db()
