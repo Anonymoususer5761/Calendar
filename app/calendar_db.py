@@ -1,9 +1,6 @@
 from app.database_manager import get_db
-from app.helpers import get_color_hex, pad_digit
+from app.helpers import  pad_digit
 from app.forms import AddEventForm
-
-from datetime import datetime
-import re
 
 def get_years():
     db = get_db()
@@ -75,22 +72,6 @@ def get_date(date_id: int) -> str:
     return date
 
 
-def submit_event_form_to_db(form: AddEventForm, user_id: int):
-    name = form.name.data
-    description = form.description.data
-    start_time = form.start_time.data
-    end_time = form.end_time.data
-    color = form.event_color.data
-
-    db = get_db()
-    db.execute("""INSERT INTO events(name, description, start_time, end_time, color, user_id) VALUES (?, ?, unixepoch(?), unixepoch(?), ?, ?)""",
-        (name, description, start_time, end_time, color, user_id,)
-    )
-    db.commit()
-    db.close()
-    return True
-
-
 def get_events(date_id, user_id, include_yesterday=True):
     db = get_db()
     hours = 3600 if include_yesterday else 0
@@ -154,24 +135,6 @@ def get_specific_holidays(date_id):
         dict_day = [{"id": holiday["id"], "holiday": holiday["holiday"], "category": holiday["category"]} for holiday in holidays]
         return dict_day
     return None
-
-
-def submit_pomodoro_settings_to_db(form, user_id):
-    pomodoro_duration = form.pomodoro_duration.data
-    short_break = form.short_break.data
-    long_break = form.long_break.data
-    long_break_interval = form.long_break_interval.data
-
-    db = get_db()
-    try:
-        db.execute("""UPDATE pomodoro_settings
-        SET pomodoro_duration = ?, short_break = ?, long_break = ?, long_break_interval = ? 
-        WHERE user_id = ?""", (pomodoro_duration, short_break, long_break, long_break_interval, user_id,))
-        db.commit()
-    finally:
-        db.close()
-
-    return True
 
 def get_pomodoro_values(user_id):
     db = get_db()
