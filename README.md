@@ -2,7 +2,7 @@
 
 ## Introduction
 This is my submission for CS50x's final project.<br>
-I made the calendar app with the typical functionality expected of such an app, adding events, displaying national holidays, a clock, among other features. Initially, I intended the project to support multiple nations and national calendar systems, but decided to scale it back due to time constraints.
+A calendar app with the typical functionality expected of such an app, adding events, displaying national holidays, a clock, among other features. Initially, I intended the project to support multiple nations and national calendar systems, but decided to scale it back due to time constraints.
 
 ## Files
 <ul>
